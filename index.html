@@ -4,27 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>J.A.R.V.I.S. - Sistema Operacional</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-color: #00ffff;
             --secondary-color: #00ff88;
             --bg-color: #050505;
             --panel-bg: rgba(0, 20, 20, 0.6);
-            --text-color: #e0f7fa;
-            --danger-color: #ff3333;
+            --text-glow: 0 0 10px rgba(0, 255, 255, 0.5);
+            --border-glow: 0 0 15px rgba(0, 255, 255, 0.3);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
 
         body {
             background-color: var(--bg-color);
             background-image: 
-                radial-gradient(circle at 50% 50%, rgba(0, 50, 50, 0.2) 0%, transparent 80%),
-                linear-gradient(0deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+                radial-gradient(circle at 50% 50%, rgba(0, 50, 50, 0.2) 0%, transparent 70%),
+                linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.8) 0%, transparent 1px);
             background-size: 100% 100%, 40px 40px, 40px 40px;
-            color: var(--text-color);
+            color: var(--primary-color);
             font-family: 'Rajdhani', sans-serif;
             height: 100vh;
             overflow: hidden;
@@ -36,38 +41,32 @@
         header {
             text-align: center;
             padding: 15px;
-            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
-            background: rgba(0, 0, 0, 0.8);
-            position: relative;
+            border-bottom: 2px solid var(--primary-color);
+            box-shadow: var(--border-glow);
+            background: rgba(0,0,0,0.8);
             z-index: 10;
         }
 
         h1 {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.8rem;
-            color: var(--primary-color);
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             text-transform: uppercase;
+            text-shadow: var(--text-glow);
+            animation: pulseText 3s infinite;
         }
 
-        .status-badge {
-            font-size: 0.8rem;
-            color: var(--secondary-color);
-            margin-top: 5px;
-            display: inline-block;
-            border: 1px solid var(--secondary-color);
-            padding: 2px 10px;
-            border-radius: 4px;
-            box-shadow: 0 0 5px var(--secondary-color);
+        @keyframes pulseText {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
         }
 
-        /* Chat Area */
+        /* Main Chat Area */
         .chat-container {
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 15px;
+            padding: 10px;
             overflow: hidden;
             position: relative;
         }
@@ -75,19 +74,26 @@
         .chat-history {
             flex: 1;
             overflow-y: auto;
-            padding: 10px;
-            margin-bottom: 15px;
+            padding: 15px;
             scroll-behavior: smooth;
+            mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
         }
 
         /* Scrollbar customizada */
-        .chat-history::-webkit-scrollbar { width: 6px; }
-        .chat-history::-webkit-scrollbar-track { background: rgba(0,0,0,0.5); }
-        .chat-history::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 3px; }
+        .chat-history::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-history::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.5);
+        }
+        .chat-history::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 3px;
+        }
 
         .message {
-            margin-bottom: 12px;
-            padding: 12px 16px;
+            margin-bottom: 15px;
+            padding: 12px 18px;
             border-radius: 4px;
             max-width: 85%;
             word-wrap: break-word;
@@ -105,100 +111,78 @@
         .user-message {
             align-self: flex-end;
             background: rgba(0, 100, 100, 0.2);
-            border: 1px solid rgba(0, 255, 255, 0.3);
-            border-right: 3px solid var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-right: 4px solid var(--primary-color);
+            color: #e0ffff;
             margin-left: auto;
-            color: #fff;
+            border-radius: 4px 0 4px 4px;
         }
 
         .jarvis-message {
             align-self: flex-start;
             background: rgba(0, 30, 30, 0.4);
-            border: 1px solid rgba(0, 255, 136, 0.3);
-            border-left: 3px solid var(--secondary-color);
+            border: 1px solid var(--secondary-color);
+            border-left: 4px solid var(--secondary-color);
             color: var(--secondary-color);
-            font-weight: 500;
+            margin-right: auto;
+            border-radius: 0 4px 4px 4px;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.1);
         }
-
-        .typing-indicator {
-            font-style: italic;
-            color: var(--primary-color);
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-            display: none;
-            padding-left: 10px;
-        }
-
-        .typing-indicator::after {
-            content: '...';
-            animation: blink 1.5s infinite;
-        }
-
-        @keyframes blink { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
         /* Input Area */
         .input-area {
             display: flex;
             gap: 10px;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 10px;
-            border-top: 1px solid rgba(0, 255, 255, 0.3);
-            backdrop-filter: blur(5px);
+            padding: 15px;
+            background: rgba(0,0,0,0.9);
+            border-top: 1px solid var(--primary-color);
+            align-items: center;
         }
 
-        input[type="text"] {
+        #command-input {
             flex: 1;
-            background: rgba(0, 20, 20, 0.8);
+            padding: 15px;
+            background: rgba(0, 20, 20, 0.5);
             border: 1px solid var(--primary-color);
+            border-radius: 4px;
             color: #fff;
-            padding: 12px 15px;
             font-family: 'Rajdhani', sans-serif;
             font-size: 1.1rem;
-            border-radius: 4px;
             outline: none;
             transition: 0.3s;
         }
 
-        input[type="text"]:focus {
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
-            background: rgba(0, 30, 30, 0.9);
+        #command-input:focus {
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+            background: rgba(0, 30, 30, 0.8);
         }
 
         button {
-            background: rgba(0, 255, 255, 0.1);
+            padding: 15px 20px;
+            background: rgba(0, 100, 100, 0.3);
             border: 1px solid var(--primary-color);
+            border-radius: 4px;
             color: var(--primary-color);
-            padding: 0 20px;
+            cursor: pointer;
             font-family: 'Orbitron', sans-serif;
             font-weight: bold;
-            cursor: pointer;
-            border-radius: 4px;
+            font-size: 1rem;
             transition: all 0.2s;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-        }
-
-        button:hover {
-            background: var(--primary-color);
-            color: #000;
-            box-shadow: 0 0 15px var(--primary-color);
-        }
-
-        button:active { transform: scale(0.95); }
-
-        .mic-btn {
-            width: 50px;
-            padding: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            min-width: 50px;
         }
 
-        .mic-btn.listening {
-            background: var(--danger-color);
-            border-color: var(--danger-color);
-            color: #fff;
+        button:active {
+            transform: scale(0.95);
+            background: rgba(0, 255, 255, 0.2);
+        }
+
+        button.listening {
+            background: rgba(255, 0, 0, 0.3);
+            border-color: #ff3333;
+            color: #ff3333;
             animation: pulseRed 1s infinite;
         }
 
@@ -208,157 +192,136 @@
             100% { box-shadow: 0 0 0 0 rgba(255, 51, 51, 0); }
         }
 
-        /* HUD Elements (Decorativos) */
-        .hud-corner {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            border: 2px solid rgba(0, 255, 255, 0.1);
-            pointer-events: none;
-            z-index: 1;
+        /* Status Bar */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 15px;
+            font-size: 0.8rem;
+            color: #008888;
+            background: rgba(0,0,0,0.8);
+            border-top: 1px solid #003333;
         }
-        .top-left { top: 20px; left: 20px; border-right: none; border-bottom: none; }
-        .top-right { top: 20px; right: 20px; border-left: none; border-bottom: none; }
-        .bottom-left { bottom: 80px; left: 20px; border-right: none; border-top: none; }
-        .bottom-right { bottom: 80px; right: 20px; border-left: none; border-top: none; }
+
+        .typing-indicator {
+            color: var(--secondary-color);
+            font-style: italic;
+            font-size: 0.9rem;
+            padding: 5px 15px;
+            display: none;
+        }
 
         /* Mobile Adjustments */
         @media (max-width: 600px) {
-            h1 { font-size: 1.4rem; }
+            h1 { font-size: 1.4rem; letter-spacing: 2px; }
             .message { font-size: 1rem; max-width: 90%; }
-            .hud-corner { display: none; } /* Esconde HUD decorativo no mobile para limpar tela */
-            button { padding: 0 15px; }
+            button { padding: 12px 15px; }
+            #command-input { font-size: 1rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Elementos Decorativos HUD -->
-    <div class="hud-corner top-left"></div>
-    <div class="hud-corner top-right"></div>
-    <div class="hud-corner bottom-left"></div>
-    <div class="hud-corner bottom-right"></div>
-
     <header>
         <h1>J.A.R.V.I.S.</h1>
-        <div class="status-badge" id="systemStatus">SISTEMA ONLINE</div>
     </header>
 
+    <div class="status-bar">
+        <span id="connection-status">SISTEMA: ONLINE</span>
+        <span id="model-status">MODELO: ATIVO</span>
+    </div>
+
     <div class="chat-container">
-        <div class="chat-history" id="chatHistory">
+        <div class="chat-history" id="chat-history">
             <div class="message jarvis-message">
-                Sistemas iniciados. Olá, senhor. Estou pronto para operar.
+                Sistemas iniciados. Olá, senhor. Estou pronto para operar. Como posso auxiliar?
             </div>
         </div>
-        <div class="typing-indicator" id="typingIndicator">JARVIS processando dados</div>
-
-        <div class="input-area">
-            <input type="text" id="userInput" placeholder="Digite um comando ou fale..." autocomplete="off">
-            <button class="mic-btn" id="micBtn" title="Falar">🎤</button>
-            <button id="sendBtn">ENVIAR</button>
+        <div class="typing-indicator" id="typing-indicator">
+            PROCESSANDO DADOS...
         </div>
     </div>
 
+    <div class="input-area">
+        <button id="voice-btn" title="Ativar Voz">🎤</button>
+        <input type="text" id="command-input" placeholder="Digite seu comando ou fale..." autocomplete="off">
+        <button id="send-btn">ENVIAR</button>
+    </div>
+
     <script>
-        // ============================================================
-        // CONFIGURAÇÃO DA API
-        // ============================================================
+        // CONFIGURAÇÕES DA API
         const API_KEY = "sk-hvnrnWWAFZQDygNaqXgT7vzaoAvdcIHeqopGanhZcaC80pxP";
         const BASE_URL = "https://api.chatanywhere.tech/v1";
         const MODEL = "gpt-3.5-turbo";
 
-        // Elementos do DOM
-        const chatHistory = document.getElementById('chatHistory');
-        const userInput = document.getElementById('userInput');
-        const sendBtn = document.getElementById('sendBtn');
-        const micBtn = document.getElementById('micBtn');
-        const typingIndicator = document.getElementById('typingIndicator');
-        const systemStatus = document.getElementById('systemStatus');
+        // ELEMENTOS DOM
+        const chatHistory = document.getElementById('chat-history');
+        const commandInput = document.getElementById('command-input');
+        const sendBtn = document.getElementById('send-btn');
+        const voiceBtn = document.getElementById('voice-btn');
+        const typingIndicator = document.getElementById('typing-indicator');
+        const connectionStatus = document.getElementById('connection-status');
 
-        let isListening = false;
-        let recognition = null;
+        // CONFIGURAÇÃO DE VOZ (MAIS RÁPIDA E GROSSA)
+        let synth = window.speechSynthesis;
+        let voices = [];
 
-        // ============================================================
-        // FUNÇÕES DE INTERFACE
-        // ============================================================
-        function addMessage(text, sender) {
+        function loadVoices() {
+            voices = synth.getVoices();
+        }
+
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = loadVoices;
+        }
+
+        function speakText(text) {
+            if (synth.speaking) {
+                console.error('Já estou falando, senhor.');
+                synth.cancel(); // Interrompe fala anterior para começar a nova imediatamente
+            }
+
+            const utterThis = new SpeechSynthesisUtterance(text);
+            
+            // Tenta encontrar uma voz em Português ou Inglês de boa qualidade
+            const preferredVoice = voices.find(voice => voice.lang === 'pt-BR') || 
+                                   voices.find(voice => voice.lang.includes('pt')) ||
+                                   voices.find(voice => voice.lang === 'en-US') ||
+                                   voices[0];
+
+            if (preferredVoice) {
+                utterThis.voice = preferredVoice;
+            }
+
+            // CONFIGURAÇÕES SOLICITADAS
+            utterThis.rate = 2.0;   // 100% mais rápido (Máximo recomendado para clareza)
+            utterThis.pitch = 0.5;  // Bem grosso (0 é o mínimo, 1 é normal)
+            utterThis.volume = 1.0;
+
+            utterThis.onend = function (event) {
+                console.log('Fala concluída.');
+            };
+
+            utterThis.onerror = function (event) {
+                console.error('Erro na síntese de voz:', event.error);
+            };
+
+            synth.speak(utterThis);
+        }
+
+        // FUNÇÕES DE CHAT
+        function addMessage(text, isUser) {
             const div = document.createElement('div');
-            div.className = `message ${sender === 'user' ? 'user-message' : 'jarvis-message'}`;
+            div.classList.add('message');
+            div.classList.add(isUser ? 'user-message' : 'jarvis-message');
             div.textContent = text;
             chatHistory.appendChild(div);
             chatHistory.scrollTop = chatHistory.scrollHeight;
         }
 
-        function showTyping() {
+        async function sendMessageToAI(userMessage) {
             typingIndicator.style.display = 'block';
-            chatHistory.scrollTop = chatHistory.scrollHeight;
-        }
-
-        function hideTyping() {
-            typingIndicator.style.display = 'none';
-        }
-
-        function updateStatus(text, color) {
-            systemStatus.textContent = text;
-            systemStatus.style.color = color || '#00ff88';
-            systemStatus.style.borderColor = color || '#00ff88';
-            systemStatus.style.boxShadow = color ? `0 0 10px ${color}` : 'none';
-        }
-
-        // ============================================================
-        // LÓGICA DE VOZ (TTS) - OTIMIZADA PARA SER GROSSA E RÁPIDA
-        // ============================================================
-        function speakText(text) {
-            if (!window.speechSynthesis) return;
-
-            // Cancela falas anteriores para não acumular
-            window.speechSynthesis.cancel();
-
-            const utterance = new SpeechSynthesisUtterance(text);
-            
-            // Configurações solicitadas: Mais rápido e mais grosso
-            utterance.rate = 1.4;  // 40% mais rápido que o normal
-            utterance.pitch = 0.7; // Tom bem grave (0 é o mínimo, 1 é normal)
-            utterance.volume = 1.0;
-            utterance.lang = 'pt-BR';
-
-            // Tentativa de encontrar uma voz específica masculina/grave
-            const voices = window.speechSynthesis.getVoices();
-            // Prioriza vozes Google ou Microsoft em PT-BR
-            const preferredVoice = voices.find(voice => 
-                (voice.name.includes('Google') || voice.name.includes('Daniel') || voice.name.includes('Felipe')) 
-                && voice.lang.includes('pt')
-            );
-
-            if (preferredVoice) {
-                utterance.voice = preferredVoice;
-            } else {
-                // Fallback para qualquer voz em português
-                const ptVoice = voices.find(voice => voice.lang.includes('pt'));
-                if (ptVoice) utterance.voice = ptVoice;
-            }
-
-            // Correção para mobile: às vezes precisa de um pequeno delay ou interação prévia
-            try {
-                window.speechSynthesis.speak(utterance);
-            } catch (e) {
-                console.error("Erro ao falar:", e);
-            }
-        }
-
-        // Carrega as vozes assim que possível (necessário em alguns browsers)
-        if (speechSynthesis.onvoiceschanged !== undefined) {
-            speechSynthesis.onvoiceschanged = () => {
-                // Vozes carregadas
-            };
-        }
-
-        // ============================================================
-        // COMUNICAÇÃO COM A IA (API REAL)
-        // ============================================================
-        async function sendMessageToAI(message) {
-            showTyping();
-            updateStatus('PROCESSANDO...', '#ffff00');
+            connectionStatus.textContent = "PROCESSANDO...";
+            connectionStatus.style.color = "#ffff00";
 
             try {
                 const response = await fetch(`${BASE_URL}/chat/completions`, {
@@ -372,9 +335,9 @@
                         messages: [
                             { 
                                 role: 'system', 
-                                content: 'Você é JARVIS, a IA do Homem de Ferro. Seja conciso, direto, extremamente inteligente e leal. Fale como um mordomo britânico altamente tecnológico. Responda em português do Brasil. Não use emojis bobos, seja profissional.' 
+                                content: 'Você é JARVIS, a IA do Homem de Ferro. Fale de forma direta, técnica, leal e rápida. Chame o usuário de "Senhor". Seja eficiente.' 
                             },
-                            { role: 'user', content: message }
+                            { role: 'user', content: userMessage }
                         ],
                         max_tokens: 300,
                         temperature: 0.7
@@ -382,50 +345,50 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error(`Falha na conexão: ${response.status}`);
+                    throw new Error(`Erro na conexão: ${response.status}`);
                 }
 
                 const data = await response.json();
-                const reply = data.choices?.[0]?.message?.content || "Não recebi dados dos servidores.";
+                const reply = data.choices[0].message.content;
 
-                hideTyping();
-                addMessage(reply, 'bot');
-                updateStatus('ONLINE', '#00ff88');
-                
-                // Fala a resposta
-                speakText(reply);
+                typingIndicator.style.display = 'none';
+                connectionStatus.textContent = "SISTEMA: ONLINE";
+                connectionStatus.style.color = "#00ff88";
+
+                addMessage(reply, false);
+                speakText(reply); // Fala a resposta
 
             } catch (error) {
-                hideTyping();
+                typingIndicator.style.display = 'none';
+                connectionStatus.textContent = "ERRO DE CONEXÃO";
+                connectionStatus.style.color = "#ff3333";
+                addMessage("Falha na comunicação com o servidor central, senhor.", false);
                 console.error(error);
-                addMessage("Erro de conexão com a rede neural. Verifique sua internet.", 'bot');
-                updateStatus('ERRO DE CONEXÃO', '#ff3333');
             }
         }
 
-        // ============================================================
-        // MANIPULADORES DE EVENTOS
-        // ============================================================
         function handleSend() {
-            const text = userInput.value.trim();
+            const text = commandInput.value.trim();
             if (!text) return;
 
-            addMessage(text, 'user');
-            userInput.value = '';
+            addMessage(text, true);
+            commandInput.value = '';
             
-            // Envia para a IA
-            sendMessageToAI(text);
+            // Pequeno delay para simular processamento local antes de chamar a API
+            setTimeout(() => {
+                sendMessageToAI(text);
+            }, 300);
         }
 
+        // EVENT LISTENERS
         sendBtn.addEventListener('click', handleSend);
         
-        userInput.addEventListener('keydown', (e) => {
+        commandInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') handleSend();
         });
 
-        // ============================================================
         // RECONHECIMENTO DE VOZ (MICROFONE)
-        // ============================================================
+        let recognition;
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             recognition = new SpeechRecognition();
@@ -434,42 +397,35 @@
             recognition.interimResults = false;
 
             recognition.onstart = () => {
-                isListening = true;
-                micBtn.classList.add('listening');
-                micBtn.textContent = '⏹️';
-                updateStatus('OUVINDO...', '#00ffff');
+                voiceBtn.classList.add('listening');
+                connectionStatus.textContent = "OUVINDO...";
+                connectionStatus.style.color = "#00ffff";
             };
 
             recognition.onend = () => {
-                isListening = false;
-                micBtn.classList.remove('listening');
-                micBtn.textContent = '🎤';
-                if (systemStatus.textContent === 'OUVINDO...') {
-                    updateStatus('ONLINE', '#00ff88');
-                }
-            };
-
-            recognition.onerror = (event) => {
-                console.warn('Erro no mic:', event.error);
-                isListening = false;
-                micBtn.classList.remove('listening');
-                micBtn.textContent = '🎤';
-                updateStatus('ONLINE', '#00ff88');
-                
-                if (event.error === 'not-allowed') {
-                    alert("Permissão de microfone negada. Por favor, permita no navegador.");
+                voiceBtn.classList.remove('listening');
+                if(connectionStatus.textContent === "OUVINDO...") {
+                    connectionStatus.textContent = "SISTEMA: ONLINE";
+                    connectionStatus.style.color = "#00ff88";
                 }
             };
 
             recognition.onresult = (event) => {
                 const transcript = event.results[0][0].transcript;
-                userInput.value = transcript;
-                // Pequeno delay para UX antes de enviar
-                setTimeout(() => handleSend(), 400);
+                commandInput.value = transcript;
+                handleSend(); // Envia automaticamente após falar
             };
 
-            micBtn.addEventListener('click', () => {
-                if (isListening) {
+            recognition.onerror = (event) => {
+                console.warn('Erro no mic:', event.error);
+                voiceBtn.classList.remove('listening');
+                if(event.error === 'not-allowed') {
+                    alert("Senhor, preciso de permissão para acessar o microfone.");
+                }
+            };
+
+            voiceBtn.addEventListener('click', () => {
+                if (voiceBtn.classList.contains('listening')) {
                     recognition.stop();
                 } else {
                     try {
@@ -480,12 +436,17 @@
                 }
             });
         } else {
-            micBtn.style.display = 'none';
+            voiceBtn.style.display = 'none';
             console.log("Navegador não suporta reconhecimento de voz.");
         }
 
         // Inicialização
-        console.log("JARVIS v2.0 Iniciado. Aguardando comandos.");
+        window.onload = () => {
+            loadVoices();
+            // Tenta carregar vozes novamente após um tempo se estiver vazio
+            setTimeout(loadVoices, 500);
+        };
+
     </script>
 </body>
 </html>
