@@ -2,208 +2,149 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>J.A.R.V.I.S. - Deep Voice Protocol</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J.A.R.V.I.S. - Ultimate Voice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #000000;
-            --panel-bg: rgba(5, 10, 5, 0.9);
-            --primary-color: #001100;
-            --highlight-color: #00ff41;
-            --text-color: #ccffcc;
-            --border-color: #003300;
-            --alert-color: #ff3333;
+            --bg: #000000;
+            --panel: rgba(5, 10, 5, 0.9);
+            --main: #00ff41;
+            --dim: #003b00;
+            --alert: #ff3333;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background: var(--bg);
+            color: var(--main);
             font-family: 'Rajdhani', sans-serif;
             height: 100vh;
-            overflow: hidden;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
-
-        /* Efeito de Scanline */
-        body::after {
-            content: " ";
-            display: block;
-            position: absolute;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 2;
-            background-size: 100% 2px, 3px 100%;
-            pointer-events: none;
+        /* Grid de fundo */
+        body::before {
+            content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
+            background: linear-gradient(rgba(0,255,65,0.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0,255,65,0.03) 1px, transparent 1px);
+            background-size: 30px 30px; z-index: -1;
         }
-
         .container {
             flex: 1;
             display: flex;
             flex-direction: column;
-            max-width: 900px;
+            max-width: 800px;
             width: 100%;
             margin: 0 auto;
-            padding: 15px;
+            padding: 20px;
             position: relative;
-            z-index: 10;
         }
-
         header {
             text-align: center;
-            padding: 15px 0;
-            border-bottom: 2px solid var(--highlight-color);
-            margin-bottom: 15px;
-            box-shadow: 0 10px 20px rgba(0, 255, 65, 0.1);
-        }
-
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
-            color: var(--highlight-color);
+            border-bottom: 2px solid var(--main);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
             text-transform: uppercase;
-            letter-spacing: 5px;
-            text-shadow: 0 0 15px var(--highlight-color);
-            font-weight: 900;
         }
-
-        .chat-area {
+        h1 { font-family: 'Orbitron'; font-size: 2rem; text-shadow: 0 0 10px var(--main); }
+        
+        .chat-box {
             flex: 1;
-            background: var(--panel-bg);
-            border: 1px solid var(--highlight-color);
-            border-radius: 5px;
-            padding: 20px;
+            background: var(--panel);
+            border: 1px solid var(--dim);
+            padding: 15px;
             overflow-y: auto;
-            margin-bottom: 15px;
-            box-shadow: inset 0 0 50px rgba(0, 255, 65, 0.05);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            position: relative;
-        }
-
-        .message {
-            max-width: 80%;
-            padding: 12px 18px;
+            margin-bottom: 20px;
             border-radius: 4px;
-            font-size: 1.1rem;
+            box-shadow: 0 0 20px rgba(0,255,65,0.05);
+        }
+        .msg {
+            margin-bottom: 12px;
+            padding: 10px 15px;
+            border-radius: 2px;
+            max-width: 85%;
             line-height: 1.4;
-            position: relative;
-            word-wrap: break-word;
-            animation: slideIn 0.3s ease-out;
+            font-size: 1.1rem;
         }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .message.bot {
-            align-self: flex-start;
-            border-left: 4px solid var(--highlight-color);
-            background: linear-gradient(90deg, rgba(0, 50, 0, 0.4), transparent);
-            color: #fff;
-            text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 1px;
-        }
-
-        .message.user {
+        .msg.user {
             align-self: flex-end;
-            border-right: 4px solid #008f11;
-            background: rgba(0, 30, 0, 0.6);
-            color: #e0ffe0;
+            margin-left: auto;
+            background: rgba(0, 50, 0, 0.4);
+            border-right: 3px solid var(--main);
             text-align: right;
         }
-
-        .input-group {
+        .msg.bot {
+            align-self: flex-start;
+            background: rgba(0, 20, 0, 0.6);
+            border-left: 3px solid var(--main);
+            color: #fff;
+        }
+        .input-area {
             display: flex;
             gap: 10px;
-            background: var(--panel-bg);
+            background: var(--panel);
             padding: 10px;
-            border: 1px solid var(--highlight-color);
-            border-radius: 5px;
-            box-shadow: 0 0 15px rgba(0, 255, 65, 0.1);
+            border: 1px solid var(--dim);
         }
-
-        input[type="text"] {
+        input {
             flex: 1;
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid var(--border-color);
-            color: var(--highlight-color);
-            padding: 15px;
-            font-family: 'Rajdhani', sans-serif;
+            background: #000;
+            border: 1px solid var(--dim);
+            color: var(--main);
+            padding: 12px;
+            font-family: 'Rajdhani';
             font-size: 1.2rem;
-            font-weight: 700;
-            border-radius: 2px;
-            transition: 0.3s;
+            outline: none;
         }
-
-        input[type="text"]:focus {
-            border-color: var(--highlight-color);
-            box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
-        }
-
+        input:focus { border-color: var(--main); }
         button {
-            background: rgba(0, 50, 0, 0.8);
-            border: 1px solid var(--highlight-color);
-            color: var(--highlight-color);
-            padding: 0 25px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
+            background: var(--dim);
+            color: var(--main);
+            border: 1px solid var(--main);
+            padding: 0 20px;
+            font-family: 'Orbitron';
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.2s;
-            border-radius: 2px;
             text-transform: uppercase;
-            font-size: 1rem;
-            letter-spacing: 1px;
         }
-
-        button:hover {
-            background: var(--highlight-color);
-            color: #000;
-            box-shadow: 0 0 20px var(--highlight-color);
+        button:active { background: var(--main); color: #000; }
+        button.listening {
+            background: var(--alert);
+            border-color: var(--alert);
+            color: #fff;
+            animation: pulse 1s infinite;
         }
-
-        button:active {
-            transform: scale(0.95);
-        }
-
-        button.mic-active {
-            background: #300;
-            border-color: var(--alert-color);
-            color: var(--alert-color);
-            animation: pulseRed 1s infinite;
-        }
-
-        @keyframes pulseRed {
-            0% { box-shadow: 0 0 0 0 rgba(255, 50, 50, 0.4); }
-            70% { box-shadow: 0 0 0 15px rgba(255, 50, 50, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 50, 50, 0); }
-        }
-
-        .status-bar {
-            font-size: 0.9rem;
-            color: var(--highlight-color);
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        
+        .status {
             text-align: center;
+            font-size: 0.8rem;
+            color: #448844;
             margin-top: 10px;
-            font-family: 'Orbitron', monospace;
-            text-shadow: 0 0 5px var(--highlight-color);
-            letter-spacing: 2px;
+            font-family: 'Orbitron';
         }
-
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #000; border-left: 1px solid var(--border-color); }
-        ::-webkit-scrollbar-thumb { background: var(--highlight-color); }
-
-        @media (max-width: 600px) {
-            h1 { font-size: 1.5rem; }
-            .container { padding: 10px; }
-            .input-group { flex-direction: column; }
-            button { padding: 15px; }
+        
+        /* Configuração de API no topo do chat para facilitar */
+        .api-config {
+            background: #111;
+            border: 1px solid #333;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: #aaa;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .api-config input {
+            font-size: 0.9rem;
+            padding: 5px;
+            flex: 1;
+            color: #fff;
+        }
+        .hide-config {
+            display: none;
         }
     </style>
 </head>
@@ -211,31 +152,62 @@
 
 <div class="container">
     <header>
-        <h1>J.A.R.V.I.S. <span style="font-size:0.4em; vertical-align: middle; opacity: 0.8;">DEEP CORE</span></h1>
+        <h1>J.A.R.V.I.S.</h1>
+        <div style="font-size: 0.8rem; letter-spacing: 2px;">SISTEMA DE VOZ PROFUNDA ATIVO</div>
     </header>
 
-    <div class="chat-area" id="chatBox">
-        <div class="message bot">
-            SISTEMA DE ÁUDIO PROFUNDO ATIVADO. PRONTO PARA COMANDOS, SENHOR.
-        </div>
+    <!-- Área para colar a chave facilmente se não quiser editar o código -->
+    <div class="api-config" id="configPanel">
+        <span>CHAVE ELEVENLABS:</span>
+        <input type="password" id="apiKeyInput" placeholder="Cole sua chave sk_... aqui">
+        <button onclick="saveKey()" style="padding: 5px 10px; font-size: 0.8rem;">SALVAR</button>
     </div>
 
-    <div class="input-group">
-        <input type="text" id="userInput" placeholder="DIGITE O COMANDO..." autocomplete="off">
+    <div class="chat-box" id="chatBox">
+        <div class="msg bot">Sistemas online. Voz neural carregada. Aguardando comandos, senhor.</div>
+    </div>
+
+    <div class="input-area">
+        <input type="text" id="userInput" placeholder="Digite ou fale..." autocomplete="off">
         <button id="sendBtn">ENVIAR</button>
         <button id="micBtn">🎙️</button>
     </div>
-
-    <div class="status-bar" id="statusText">AGUARDANDO INPUT...</div>
+    
+    <div class="status" id="statusText">PRONTO</div>
 </div>
 
 <script>
-    // CONFIGURAÇÃO DA API
-    const API_KEY = "sk-hvnrnWWAFZQDygNaqXgT7vzaoAvdcIHeqopGanhZcaC80pxP";
-    const BASE_URL = "https://api.chatanywhere.tech/v1";
-    const MODEL = "gpt-3.5-turbo";
+    // ============================================================
+    // CONFIGURAÇÃO
+    // ============================================================
+    // 1. Coloque sua chave da ElevenLabs aqui entre as aspas
+    // 2. Ou use o campo na tela para salvar no navegador
+    let ELEVEN_KEY = ""; 
+    
+    // ID da voz "Adam" (A mais grave e profissional)
+    const VOICE_ID = "pNInz6obpgDQGcFmaJgB"; 
+    const API_URL = "https://api.elevenlabs.io/v1/text-to-speech/" + VOICE_ID;
 
-    // ELEMENTOS
+    // Carregar chave salva
+    if(localStorage.getItem('elevenKey')) {
+        ELEVEN_KEY = localStorage.getItem('elevenKey');
+        document.getElementById('apiKeyInput').value = ELEVEN_KEY;
+        document.getElementById('configPanel').style.display = 'none';
+    }
+
+    function saveKey() {
+        const key = document.getElementById('apiKeyInput').value.trim();
+        if(key) {
+            ELEVEN_KEY = key;
+            localStorage.setItem('elevenKey', key);
+            document.getElementById('configPanel').style.display = 'none';
+            alert("Chave salva! JARVIS pronto.");
+        } else {
+            alert("Por favor, cole a chave primeiro.");
+        }
+    }
+
+    // Elementos
     const chatBox = document.getElementById('chatBox');
     const userInput = document.getElementById('userInput');
     const sendBtn = document.getElementById('sendBtn');
@@ -246,203 +218,137 @@
     let recognition = null;
 
     // ============================================================
-    // MOTOR DE ÁUDIO PROFUNDO (WEB AUDIO API)
-    // Isso cria o efeito de voz grossa artificialmente
+    // FUNÇÃO DE FALA (ELEVENLABS - VOZ REALMENTE GROSSA)
     // ============================================================
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    
-    async function speakDeep(text) {
-        if (!window.speechSynthesis) return;
-        
-        // Cancela falas anteriores
-        window.speechSynthesis.cancel();
-        if (audioCtx.state === 'suspended') await audioCtx.resume();
+    async function speak(text) {
+        if (!ELEVEN_KEY) {
+            addMessage("⚠️ ERRO: Chave da API não configurada. Preencha o campo no topo.", 'bot');
+            return;
+        }
 
-        const utterance = new SpeechSynthesisUtterance(text);
+        statusText.textContent = "GERANDO ÁUDIO NEURAL...";
         
-        // Configuração base da voz nativa (a mais grave possível)
-        utterance.pitch = 0.01; // Mínimo absoluto
-        utterance.rate = 1.1;   // Velocidade normal para não distorcer o efeito de áudio
-        utterance.volume = 1.0;
-        utterance.lang = 'pt-BR';
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'xi-api-key': ELEVEN_KEY
+                },
+                body: JSON.stringify({
+                    text: text,
+                    model_id: "eleven_monolingual_v1",
+                    voice_settings: {
+                        stability: 0.5,
+                        similarity_boost: 0.75,
+                        style: 0.0,
+                        use_speaker_boost: true
+                    }
+                })
+            });
 
-        // Selecionar a voz mais grave disponível
-        const voices = window.speechSynthesis.getVoices();
-        // Tenta encontrar vozes masculinas específicas
-        const deepVoice = voices.find(v => 
-            v.name.includes('Google') || 
-            v.name.includes('Daniel') || 
-            v.name.includes('Fred') ||
-            v.name.includes('Luciano') ||
-            v.name.includes('Felipe')
-        );
-        
-        if (deepVoice) utterance.voice = deepVoice;
-        else if (voices.length > 0) utterance.voice = voices[0];
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.detail?.message || "Erro na API");
+            }
 
-        // Quando a fala começar, aplicamos o efeito de áudio
-        utterance.onstart = () => {
-            statusText.textContent = "FALANDO...";
+            const audioBlob = await response.blob();
+            const audioUrl = URL.createObjectURL(audioBlob);
+            const audio = new Audio(audioUrl);
             
-            // Criar fonte de áudio a partir da fala (não suportado diretamente em todos os browsers)
-            // Fallback: Usamos o truque de criar um oscilador modulado ou apenas confiamos no pitch baixo
-            // Como a API SpeechSynthesis não permite conectar nodes diretamente na maioria dos browsers móveis,
-            // vamos forçar o máximo de gravidade possível nas configurações nativas acima.
+            // Tocar áudio
+            audio.play();
             
-            // NOTA TÉCNICA: Para um efeito REAL de "monstro", precisaríamos de gravações pré-renderizadas.
-            // Este código maximiza o que o navegador permite via software.
-        };
+            audio.onended = () => {
+                statusText.textContent = "PRONTO";
+                URL.revokeObjectURL(audioUrl);
+            };
 
-        utterance.onend = () => {
-            statusText.textContent = "AGUARDANDO INPUT...";
-        };
-
-        window.speechSynthesis.speak(utterance);
+        } catch (error) {
+            console.error(error);
+            statusText.textContent = "ERRO DE VOZ";
+            addMessage(`Erro de áudio: ${error.message}. Verifique sua chave.`, 'bot');
+        }
     }
 
     // ============================================================
-    // INTERFACE E LÓGICA
+    // CHAT E API DE TEXTO (ChatAnywhere - Grátis)
     // ============================================================
+    const TEXT_API_KEY = "sk-hvnrnWWAFZQDygNaqXgT7vzaoAvdcIHeqopGanhZcaC80pxP";
+    const TEXT_URL = "https://api.chatanywhere.tech/v1/chat/completions";
+
+    async function getResponse(userText) {
+        addMessage(userText, 'user');
+        userInput.value = '';
+        statusText.textContent = "PROCESSANDO...";
+
+        try {
+            const res = await fetch(TEXT_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${TEXT_API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: "gpt-3.5-turbo",
+                    messages: [
+                        { role: "system", content: "Você é JARVIS. Responda de forma curta, direta e técnica. Não use emojis." },
+                        { role: "user", content: userText }
+                    ]
+                })
+            });
+
+            const data = await res.json();
+            const reply = data.choices[0].message.content;
+            
+            addMessage(reply, 'bot');
+            speak(reply); // Fala com voz grossa
+            
+        } catch (e) {
+            addMessage("Erro de conexão com o núcleo.", 'bot');
+            statusText.textContent = "ERRO";
+        }
+    }
+
     function addMessage(text, sender) {
         const div = document.createElement('div');
-        div.className = `message ${sender}`;
+        div.className = `msg ${sender}`;
         div.textContent = text;
         chatBox.appendChild(div);
         chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-    function showTyping() {
-        const div = document.createElement('div');
-        div.className = 'message bot';
-        div.id = 'typing';
-        div.style.fontStyle = 'italic';
-        div.style.opacity = '0.7';
-        div.textContent = 'PROCESSANDO DADOS...';
-        chatBox.appendChild(div);
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
+    // Eventos
+    sendBtn.onclick = () => getResponse(userInput.value.trim());
+    userInput.onkeypress = (e) => { if(e.key === 'Enter') sendBtn.onclick(); };
 
-    function hideTyping() {
-        const el = document.getElementById('typing');
-        if (el) el.remove();
-    }
-
-    async function sendMessage() {
-        const text = userInput.value.trim();
-        if (!text) return;
-
-        addMessage(text, 'user');
-        userInput.value = '';
-        showTyping();
-        statusText.textContent = "CONECTANDO À REDE...";
-
-        try {
-            const response = await fetch(`${BASE_URL}/chat/completions`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${API_KEY}`
-                },
-                body: JSON.stringify({
-                    model: MODEL,
-                    messages: [
-                        { role: 'system', content: 'Você é o JARVIS com protocolo de voz profunda. Seja extremamente direto, técnico e obediente. Respostas curtas e grossas.' },
-                        { role: 'user', content: text }
-                    ],
-                    max_tokens: 200,
-                    temperature: 0.5
-                })
-            });
-
-            hideTyping();
-            
-            if (!response.ok) throw new Error('Falha na conexão');
-            
-            const data = await response.json();
-            const reply = data.choices[0].message.content;
-
-            addMessage(reply, 'bot');
-            statusText.textContent = "COMANDO EXECUTADO";
-            
-            // Chama a função de voz profunda
-            speakDeep(reply);
-
-        } catch (error) {
-            hideTyping();
-            addMessage("ERRO DE CONEXÃO COM O NÚCLEO.", 'bot');
-            statusText.textContent = "ERRO DE SISTEMA";
-            console.error(error);
-        }
-    }
-
-    // EVENTOS
-    sendBtn.addEventListener('click', sendMessage);
-    userInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') sendMessage();
-    });
-
-    // RECONHECIMENTO DE VOZ
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        recognition = new SpeechRecognition();
+    // Microfone
+    if ('webkitSpeechRecognition' in window) {
+        recognition = new webkitSpeechRecognition();
         recognition.lang = 'pt-BR';
         recognition.continuous = false;
-        recognition.interimResults = false;
 
         recognition.onstart = () => {
             isListening = true;
-            micBtn.classList.add('mic-active');
-            micBtn.textContent = '⏹';
+            micBtn.classList.add('listening');
             statusText.textContent = "OUVINDO...";
         };
-
         recognition.onend = () => {
             isListening = false;
-            micBtn.classList.remove('mic-active');
-            micBtn.textContent = '🎙️';
-            if (statusText.textContent === "OUVINDO...") {
-                statusText.textContent = "AGUARDANDO INPUT...";
-            }
+            micBtn.classList.remove('listening');
+            statusText.textContent = "PRONTO";
+        };
+        recognition.onresult = (e) => {
+            const txt = e.results[0][0].transcript;
+            getResponse(txt);
         };
 
-        recognition.onresult = (event) => {
-            const transcript = event.results[0][0].transcript;
-            userInput.value = transcript;
-            setTimeout(() => {
-                sendMessage();
-            }, 300);
+        micBtn.onclick = () => {
+            if(isListening) recognition.stop();
+            else recognition.start();
         };
-
-        recognition.onerror = (event) => {
-            console.warn("Erro mic:", event.error);
-            isListening = false;
-            micBtn.classList.remove('mic-active');
-            micBtn.textContent = '🎙️';
-            if(event.error === 'not-allowed') {
-                alert("PERMISSÃO DE MICROFONE NEGADA.");
-            }
-        };
-
-        micBtn.addEventListener('click', () => {
-            if (isListening) {
-                recognition.stop();
-            } else {
-                try {
-                    recognition.start();
-                } catch(e) {
-                    console.log("Mic já iniciado");
-                }
-            }
-        });
     } else {
         micBtn.style.display = 'none';
-    }
-
-    // Carregar vozes
-    if (window.speechSynthesis) {
-        window.speechSynthesis.onvoiceschanged = () => {
-            // Garante que a lista de vozes esteja carregada
-        };
     }
 </script>
 
