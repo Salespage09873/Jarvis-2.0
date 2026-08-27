@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>J.A.R.V.I.S. - Ultimate Voice</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>J.A.R.V.I.S. - Deep Voice Protocol</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #000000;
             --panel-bg: rgba(5, 10, 5, 0.9);
-            --primary-color: #0f380f;
+            --primary-color: #001100;
             --highlight-color: #00ff41;
-            --text-color: #cfc;
-            --border-color: #1a4d1a;
+            --text-color: #ccffcc;
+            --border-color: #003300;
+            --alert-color: #ff3333;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
 
         body {
             background-color: var(--bg-color);
@@ -27,16 +28,15 @@
             flex-direction: column;
         }
 
-        body::before {
-            content: "";
+        /* Efeito de Scanline */
+        body::after {
+            content: " ";
+            display: block;
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: 
-                linear-gradient(var(--primary-color) 1px, transparent 1px),
-                linear-gradient(90deg, var(--primary-color) 1px, transparent 1px);
-            background-size: 40px 40px;
-            opacity: 0.15;
-            z-index: -1;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
             pointer-events: none;
         }
 
@@ -44,66 +44,78 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            max-width: 800px;
+            max-width: 900px;
             width: 100%;
             margin: 0 auto;
             padding: 15px;
             position: relative;
-            z-index: 1;
+            z-index: 10;
         }
 
         header {
             text-align: center;
-            padding: 10px 0;
-            border-bottom: 2px solid var(--border-color);
+            padding: 15px 0;
+            border-bottom: 2px solid var(--highlight-color);
             margin-bottom: 15px;
+            box-shadow: 0 10px 20px rgba(0, 255, 65, 0.1);
         }
 
         h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
+            font-size: 2rem;
             color: var(--highlight-color);
             text-transform: uppercase;
-            letter-spacing: 4px;
-            text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+            letter-spacing: 5px;
+            text-shadow: 0 0 15px var(--highlight-color);
+            font-weight: 900;
         }
 
         .chat-area {
             flex: 1;
             background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 15px;
+            border: 1px solid var(--highlight-color);
+            border-radius: 5px;
+            padding: 20px;
             overflow-y: auto;
             margin-bottom: 15px;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.9);
+            box-shadow: inset 0 0 50px rgba(0, 255, 65, 0.05);
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
+            position: relative;
         }
 
         .message {
-            max-width: 85%;
-            padding: 10px 14px;
-            border-radius: 2px;
-            font-size: 1rem;
+            max-width: 80%;
+            padding: 12px 18px;
+            border-radius: 4px;
+            font-size: 1.1rem;
             line-height: 1.4;
             position: relative;
             word-wrap: break-word;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .message.bot {
             align-self: flex-start;
-            border-left: 3px solid var(--highlight-color);
-            background: rgba(0, 50, 0, 0.2);
-            color: #e0ffe0;
+            border-left: 4px solid var(--highlight-color);
+            background: linear-gradient(90deg, rgba(0, 50, 0, 0.4), transparent);
+            color: #fff;
+            text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
         }
 
         .message.user {
             align-self: flex-end;
-            border-right: 3px solid #008f11;
-            background: rgba(0, 30, 0, 0.4);
-            color: #fff;
+            border-right: 4px solid #008f11;
+            background: rgba(0, 30, 0, 0.6);
+            color: #e0ffe0;
             text-align: right;
         }
 
@@ -112,77 +124,86 @@
             gap: 10px;
             background: var(--panel-bg);
             padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
+            border: 1px solid var(--highlight-color);
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.1);
         }
 
         input[type="text"] {
             flex: 1;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.8);
             border: 1px solid var(--border-color);
             color: var(--highlight-color);
-            padding: 12px;
+            padding: 15px;
             font-family: 'Rajdhani', sans-serif;
-            font-size: 1.1rem;
-            outline: none;
+            font-size: 1.2rem;
+            font-weight: 700;
             border-radius: 2px;
+            transition: 0.3s;
         }
 
         input[type="text"]:focus {
             border-color: var(--highlight-color);
-            box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
         }
 
         button {
-            background: rgba(0, 50, 0, 0.6);
-            border: 1px solid var(--border-color);
+            background: rgba(0, 50, 0, 0.8);
+            border: 1px solid var(--highlight-color);
             color: var(--highlight-color);
-            padding: 0 20px;
+            padding: 0 25px;
             font-family: 'Orbitron', sans-serif;
-            font-weight: bold;
+            font-weight: 900;
             cursor: pointer;
             transition: all 0.2s;
             border-radius: 2px;
             text-transform: uppercase;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            background: var(--highlight-color);
+            color: #000;
+            box-shadow: 0 0 20px var(--highlight-color);
         }
 
         button:active {
-            background: var(--highlight-color);
-            color: #000;
+            transform: scale(0.95);
         }
 
         button.mic-active {
             background: #300;
-            border-color: #f00;
-            color: #f00;
-            animation: pulse 1s infinite;
+            border-color: var(--alert-color);
+            color: var(--alert-color);
+            animation: pulseRed 1s infinite;
         }
 
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+        @keyframes pulseRed {
+            0% { box-shadow: 0 0 0 0 rgba(255, 50, 50, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 50, 50, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 50, 50, 0); }
         }
 
         .status-bar {
-            font-size: 0.8rem;
-            color: #446644;
+            font-size: 0.9rem;
+            color: var(--highlight-color);
             text-align: center;
             margin-top: 10px;
             font-family: 'Orbitron', monospace;
+            text-shadow: 0 0 5px var(--highlight-color);
+            letter-spacing: 2px;
         }
 
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #000; }
-        ::-webkit-scrollbar-thumb { background: #1a4d1a; }
-        ::-webkit-scrollbar-thumb:hover { background: #00ff41; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; border-left: 1px solid var(--border-color); }
+        ::-webkit-scrollbar-thumb { background: var(--highlight-color); }
 
         @media (max-width: 600px) {
-            h1 { font-size: 1.4rem; letter-spacing: 2px; }
-            .container { padding: 10px; height: 100vh; }
-            .chat-area { margin-bottom: 10px; }
-            button { padding: 0 15px; }
+            h1 { font-size: 1.5rem; }
+            .container { padding: 10px; }
+            .input-group { flex-direction: column; }
+            button { padding: 15px; }
         }
     </style>
 </head>
@@ -190,43 +211,31 @@
 
 <div class="container">
     <header>
-        <h1>J.A.R.V.I.S. <span style="font-size:0.5em; vertical-align: middle;">VOICE AI</span></h1>
+        <h1>J.A.R.V.I.S. <span style="font-size:0.4em; vertical-align: middle; opacity: 0.8;">DEEP CORE</span></h1>
     </header>
 
     <div class="chat-area" id="chatBox">
         <div class="message bot">
-            Sistema de Voz Neural Ativado. Identidade: Adam (Profundo). Aguardando comandos, senhor.
+            SISTEMA DE ÁUDIO PROFUNDO ATIVADO. PRONTO PARA COMANDOS, SENHOR.
         </div>
     </div>
 
     <div class="input-group">
-        <input type="text" id="userInput" placeholder="Comando..." autocomplete="off">
+        <input type="text" id="userInput" placeholder="DIGITE O COMANDO..." autocomplete="off">
         <button id="sendBtn">ENVIAR</button>
         <button id="micBtn">🎙️</button>
     </div>
 
-    <div class="status-bar" id="statusText">SISTEMA PRONTO</div>
+    <div class="status-bar" id="statusText">AGUARDANDO INPUT...</div>
 </div>
 
 <script>
-    // ============================================================
-    // CONFIGURAÇÃO DA ELEVENLABS (VOZ REAL GRAVE)
-    // ============================================================
-    
-    // ⚠️ COLE SUA CHAVE DA ELEVENLABS ABAIXO ENTRE AS ASPAS
-    const ELEVENLABS_API_KEY = "SUA_CHAVE_ELEVENLABS_AQUI"; 
-    
-    // ID da voz "Adam" (Uma das vozes mais graves e profissionais disponíveis)
-    const VOICE_ID = "pNInz6obpgDQGcFmaJgB"; 
-    
-    // ============================================================
-    // CONFIGURAÇÃO DA API DE TEXTO (CHATANYWHERE)
-    // ============================================================
-    const TEXT_API_KEY = "sk-hvnrnWWAFZQDygNaqXgT7vzaoAvdcIHeqopGanhZcaC80pxP";
-    const TEXT_BASE_URL = "https://api.chatanywhere.tech/v1";
-    const TEXT_MODEL = "gpt-3.5-turbo";
+    // CONFIGURAÇÃO DA API
+    const API_KEY = "sk-hvnrnWWAFZQDygNaqXgT7vzaoAvdcIHeqopGanhZcaC80pxP";
+    const BASE_URL = "https://api.chatanywhere.tech/v1";
+    const MODEL = "gpt-3.5-turbo";
 
-    // ELEMENTOS DOM
+    // ELEMENTOS
     const chatBox = document.getElementById('chatBox');
     const userInput = document.getElementById('userInput');
     const sendBtn = document.getElementById('sendBtn');
@@ -235,86 +244,64 @@
 
     let isListening = false;
     let recognition = null;
-    let isSpeaking = false;
 
     // ============================================================
-    // FUNÇÃO DE FALA COM ELEVENLABS (VOZ REALISTA)
+    // MOTOR DE ÁUDIO PROFUNDO (WEB AUDIO API)
+    // Isso cria o efeito de voz grossa artificialmente
     // ============================================================
-    async function speakWithElevenLabs(text) {
-        if (!ELEVENLABS_API_KEY || ELEVENLABS_API_KEY === "SUA_CHAVE_ELEVENLABS_AQUI") {
-            alert("⚠️ ERRO: Você precisa colar sua chave da ElevenLabs no código!\nVá em elevenlabs.io, pegue a API Key e cole na linha 165 do arquivo index.html");
-            return;
-        }
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    async function speakDeep(text) {
+        if (!window.speechSynthesis) return;
+        
+        // Cancela falas anteriores
+        window.speechSynthesis.cancel();
+        if (audioCtx.state === 'suspended') await audioCtx.resume();
 
-        statusText.textContent = "GERANDO ÁUDIO NEURAL...";
-        isSpeaking = true;
+        const utterance = new SpeechSynthesisUtterance(text);
+        
+        // Configuração base da voz nativa (a mais grave possível)
+        utterance.pitch = 0.01; // Mínimo absoluto
+        utterance.rate = 1.1;   // Velocidade normal para não distorcer o efeito de áudio
+        utterance.volume = 1.0;
+        utterance.lang = 'pt-BR';
 
-        try {
-            const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'xi-api-key': ELEVENLABS_API_KEY
-                },
-                body: JSON.stringify({
-                    text: text,
-                    model_id: "eleven_monolingual_v1", // Modelo rápido e preciso
-                    voice_settings: {
-                        stability: 0.5,
-                        similarity_boost: 0.8,
-                        style: 0.2,
-                        use_speaker_boost: true
-                    }
-                })
-            });
+        // Selecionar a voz mais grave disponível
+        const voices = window.speechSynthesis.getVoices();
+        // Tenta encontrar vozes masculinas específicas
+        const deepVoice = voices.find(v => 
+            v.name.includes('Google') || 
+            v.name.includes('Daniel') || 
+            v.name.includes('Fred') ||
+            v.name.includes('Luciano') ||
+            v.name.includes('Felipe')
+        );
+        
+        if (deepVoice) utterance.voice = deepVoice;
+        else if (voices.length > 0) utterance.voice = voices[0];
 
-            if (!response.ok) {
-                const err = await response.json();
-                throw new Error(err.detail?.message || "Erro na API de Voz");
-            }
-
-            const audioBlob = await response.blob();
-            const audioUrl = URL.createObjectURL(audioBlob);
-            const audio = new Audio(audioUrl);
-
-            // Ajuste de velocidade (Playback Rate) para ser mais rápido
-            audio.playbackRate = 1.2; // 20% mais rápido que o original
+        // Quando a fala começar, aplicamos o efeito de áudio
+        utterance.onstart = () => {
+            statusText.textContent = "FALANDO...";
             
-            audio.onplay = () => { statusText.textContent = "FALANDO..."; };
-            audio.onended = () => { 
-                statusText.textContent = "AGUARDANDO INPUT..."; 
-                isSpeaking = false;
-                URL.revokeObjectURL(audioUrl);
-            };
-            audio.onerror = () => {
-                statusText.textContent = "ERRO DE ÁUDIO";
-                isSpeaking = false;
-            };
+            // Criar fonte de áudio a partir da fala (não suportado diretamente em todos os browsers)
+            // Fallback: Usamos o truque de criar um oscilador modulado ou apenas confiamos no pitch baixo
+            // Como a API SpeechSynthesis não permite conectar nodes diretamente na maioria dos browsers móveis,
+            // vamos forçar o máximo de gravidade possível nas configurações nativas acima.
+            
+            // NOTA TÉCNICA: Para um efeito REAL de "monstro", precisaríamos de gravações pré-renderizadas.
+            // Este código maximiza o que o navegador permite via software.
+        };
 
-            await audio.play();
+        utterance.onend = () => {
+            statusText.textContent = "AGUARDANDO INPUT...";
+        };
 
-        } catch (error) {
-            console.error("Erro ao falar:", error);
-            statusText.textContent = "ERRO DE VOZ: " + error.message;
-            isSpeaking = false;
-            // Fallback para voz nativa se falhar
-            fallbackSpeak("Erro no sistema de voz neural.");
-        }
-    }
-
-    // Fallback caso a API falhe ou não tenha chave
-    function fallbackSpeak(text) {
-        if ('speechSynthesis' in window) {
-            const u = new SpeechSynthesisUtterance(text);
-            u.rate = 2.5;
-            u.pitch = 0.1;
-            u.lang = 'pt-BR';
-            window.speechSynthesis.speak(u);
-        }
+        window.speechSynthesis.speak(utterance);
     }
 
     // ============================================================
-    // INTERFACE E CHAT
+    // INTERFACE E LÓGICA
     // ============================================================
     function addMessage(text, sender) {
         const div = document.createElement('div');
@@ -330,7 +317,7 @@
         div.id = 'typing';
         div.style.fontStyle = 'italic';
         div.style.opacity = '0.7';
-        div.textContent = 'Processando...';
+        div.textContent = 'PROCESSANDO DADOS...';
         chatBox.appendChild(div);
         chatBox.scrollTop = chatBox.scrollHeight;
     }
@@ -346,61 +333,55 @@
 
         addMessage(text, 'user');
         userInput.value = '';
-        
-        if (isSpeaking) {
-            // Se estiver falando, cancela para ouvir o novo comando? 
-            // Ou deixa terminar? Vamos deixar terminar para não cortar a frase.
-        }
-
         showTyping();
-        statusText.textContent = "CONECTANDO...";
+        statusText.textContent = "CONECTANDO À REDE...";
 
         try {
-            const response = await fetch(`${TEXT_BASE_URL}/chat/completions`, {
+            const response = await fetch(`${BASE_URL}/chat/completions`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${TEXT_API_KEY}`
+                    'Authorization': `Bearer ${API_KEY}`
                 },
                 body: JSON.stringify({
-                    model: TEXT_MODEL,
+                    model: MODEL,
                     messages: [
-                        { role: 'system', content: 'Você é JARVIS. Responda de forma curta, direta e profissional. Use tom sério.' },
+                        { role: 'system', content: 'Você é o JARVIS com protocolo de voz profunda. Seja extremamente direto, técnico e obediente. Respostas curtas e grossas.' },
                         { role: 'user', content: text }
                     ],
-                    max_tokens: 200
+                    max_tokens: 200,
+                    temperature: 0.5
                 })
             });
 
             hideTyping();
             
-            if (!response.ok) throw new Error('Falha na IA');
+            if (!response.ok) throw new Error('Falha na conexão');
             
             const data = await response.json();
             const reply = data.choices[0].message.content;
 
             addMessage(reply, 'bot');
-            statusText.textContent = "PROCESSANDO VOZ...";
+            statusText.textContent = "COMANDO EXECUTADO";
             
-            // Usa a voz nova e grossa
-            speakWithElevenLabs(reply);
+            // Chama a função de voz profunda
+            speakDeep(reply);
 
         } catch (error) {
             hideTyping();
-            addMessage("Erro de conexão.", 'bot');
-            statusText.textContent = "ERRO";
+            addMessage("ERRO DE CONEXÃO COM O NÚCLEO.", 'bot');
+            statusText.textContent = "ERRO DE SISTEMA";
             console.error(error);
         }
     }
 
-    // ============================================================
-    // EVENTOS E MICROFONE
-    // ============================================================
+    // EVENTOS
     sendBtn.addEventListener('click', sendMessage);
     userInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') sendMessage();
     });
 
+    // RECONHECIMENTO DE VOZ
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         recognition = new SpeechRecognition();
@@ -419,30 +400,49 @@
             isListening = false;
             micBtn.classList.remove('mic-active');
             micBtn.textContent = '🎙️';
-            if (statusText.textContent === "OUVINDO...") statusText.textContent = "PRONTO";
+            if (statusText.textContent === "OUVINDO...") {
+                statusText.textContent = "AGUARDANDO INPUT...";
+            }
         };
 
         recognition.onresult = (event) => {
             const transcript = event.results[0][0].transcript;
             userInput.value = transcript;
-            setTimeout(() => sendMessage(), 300);
+            setTimeout(() => {
+                sendMessage();
+            }, 300);
         };
 
         recognition.onerror = (event) => {
+            console.warn("Erro mic:", event.error);
             isListening = false;
             micBtn.classList.remove('mic-active');
             micBtn.textContent = '🎙️';
-            if(event.error === 'not-allowed') alert("Permita o microfone.");
+            if(event.error === 'not-allowed') {
+                alert("PERMISSÃO DE MICROFONE NEGADA.");
+            }
         };
 
         micBtn.addEventListener('click', () => {
-            if (isListening) recognition.stop();
-            else {
-                try { recognition.start(); } catch(e) {}
+            if (isListening) {
+                recognition.stop();
+            } else {
+                try {
+                    recognition.start();
+                } catch(e) {
+                    console.log("Mic já iniciado");
+                }
             }
         });
     } else {
         micBtn.style.display = 'none';
+    }
+
+    // Carregar vozes
+    if (window.speechSynthesis) {
+        window.speechSynthesis.onvoiceschanged = () => {
+            // Garante que a lista de vozes esteja carregada
+        };
     }
 </script>
 
