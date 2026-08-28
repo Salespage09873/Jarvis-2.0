@@ -1,356 +1,861 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>J.A.R.V.I.S. - Ultimate Voice</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>J.A.R.V.I.S - Assistente IA</title>
     <style>
-        :root {
-            --bg: #000000;
-            --panel: rgba(5, 10, 5, 0.9);
-            --main: #00ff41;
-            --dim: #003b00;
-            --alert: #ff3333;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        /* ============================================================
+           RESET E CONFIGURAÇÃO GLOBAL
+           ============================================================ */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
         body {
-            background: var(--bg);
-            color: var(--main);
-            font-family: 'Rajdhani', sans-serif;
-            height: 100vh;
+            font-family: 'Orbitron', 'Segoe UI', sans-serif;
+            background: radial-gradient(ellipse at center, #0a0e1a 0%, #050812 100%);
+            min-height: 100vh;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
             overflow: hidden;
         }
-        /* Grid de fundo */
+
+        /* ============================================================
+           FUNDO COM PARTÍCULAS ESTILO JARVIS
+           ============================================================ */
         body::before {
-            content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
-            background: linear-gradient(rgba(0,255,65,0.03) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(0,255,65,0.03) 1px, transparent 1px);
-            background-size: 30px 30px; z-index: -1;
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                radial-gradient(2px 2px at 20% 30%, rgba(100, 180, 255, 0.3), transparent),
+                radial-gradient(2px 2px at 40% 70%, rgba(100, 180, 255, 0.2), transparent),
+                radial-gradient(2px 2px at 60% 40%, rgba(100, 180, 255, 0.3), transparent),
+                radial-gradient(2px 2px at 80% 80%, rgba(100, 180, 255, 0.2), transparent),
+                radial-gradient(2px 2px at 10% 90%, rgba(100, 180, 255, 0.15), transparent),
+                radial-gradient(2px 2px at 90% 10%, rgba(100, 180, 255, 0.15), transparent);
+            background-size: 200px 200px;
+            pointer-events: none;
+            z-index: 0;
         }
+
+        /* ============================================================
+           CONTAINER PRINCIPAL
+           ============================================================ */
         .container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
+            position: relative;
+            z-index: 1;
+            background: rgba(10, 14, 30, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 40px 45px 35px;
             max-width: 800px;
             width: 100%;
-            margin: 0 auto;
-            padding: 20px;
+            border: 1px solid rgba(100, 180, 255, 0.15);
+            box-shadow:
+                0 0 60px rgba(50, 100, 255, 0.08),
+                inset 0 0 60px rgba(50, 100, 255, 0.03);
+        }
+
+        /* ============================================================
+           CABEÇALHO
+           ============================================================ */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(100, 180, 255, 0.08);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            font-size: 1.8rem;
+            filter: drop-shadow(0 0 20px rgba(100, 180, 255, 0.3));
+        }
+
+        .logo-text {
+            font-size: 1.3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #64b5f6, #1a73e8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 3px;
+        }
+
+        .logo-text span {
+            color: #64b5f6;
+            -webkit-text-fill-color: #64b5f6;
+            font-weight: 300;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+            color: #445577;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            transition: all 0.5s;
+        }
+        .status-dot.online { background: #4caf50; box-shadow: 0 0 20px rgba(76, 175, 80, 0.4); }
+        .status-dot.offline { background: #f44336; box-shadow: 0 0 20px rgba(244, 67, 54, 0.4); }
+        .status-dot.processing { background: #ff9800; box-shadow: 0 0 30px rgba(255, 152, 0, 0.6); animation: pulse-dot 0.8s infinite; }
+
+        @keyframes pulse-dot {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.4); }
+        }
+
+        .model-badge {
+            background: rgba(100, 180, 255, 0.08);
+            padding: 4px 14px;
+            border-radius: 20px;
+            color: #64b5f6;
+            font-size: 0.55rem;
+            letter-spacing: 1px;
+            border: 1px solid rgba(100, 180, 255, 0.1);
+        }
+
+        /* ============================================================
+           ESFERA DE PLASMA - ESTILO CHATGPT + JARVIS
+           ============================================================ */
+        .sphere-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 10px auto 25px;
             position: relative;
         }
-        header {
-            text-align: center;
-            border-bottom: 2px solid var(--main);
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-            text-transform: uppercase;
+
+        .sphere {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(100, 200, 255, 0.15), rgba(20, 60, 150, 0.4));
+            box-shadow:
+                0 0 40px rgba(50, 150, 255, 0.15),
+                inset 0 0 60px rgba(50, 150, 255, 0.05),
+                inset -20px -20px 60px rgba(0, 0, 0, 0.5);
+            position: relative;
+            transition: all 0.8s ease;
+            cursor: default;
         }
-        h1 { font-family: 'Orbitron'; font-size: 2rem; text-shadow: 0 0 10px var(--main); }
-        
+
+        /* Camada interna da esfera (líquido) */
+        .sphere-liquid {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(circle at 35% 35%, rgba(60, 160, 255, 0.3), rgba(10, 30, 80, 0.6));
+            transition: all 0.8s ease;
+        }
+
+        /* Ondulações do líquido */
+        .sphere-liquid::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background:
+                radial-gradient(circle at 30% 40%, rgba(100, 200, 255, 0.25), transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(80, 180, 255, 0.15), transparent 40%),
+                radial-gradient(circle at 50% 80%, rgba(50, 150, 255, 0.2), transparent 30%);
+            animation: liquid-move 8s ease-in-out infinite alternate;
+            transition: all 0.8s ease;
+        }
+
+        .sphere-liquid::after {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            top: -25%;
+            left: -25%;
+            background: radial-gradient(circle at 60% 20%, rgba(255, 255, 255, 0.08), transparent 40%);
+            animation: liquid-move-alt 6s ease-in-out infinite alternate;
+            transition: all 0.8s ease;
+        }
+
+        /* Animações do líquido */
+        @keyframes liquid-move {
+            0% { transform: translate(-10%, -5%) rotate(0deg) scale(1); }
+            25% { transform: translate(5%, -15%) rotate(5deg) scale(1.05); }
+            50% { transform: translate(15%, 5%) rotate(-3deg) scale(0.95); }
+            75% { transform: translate(-5%, 15%) rotate(8deg) scale(1.03); }
+            100% { transform: translate(-15%, -10%) rotate(-5deg) scale(1); }
+        }
+
+        @keyframes liquid-move-alt {
+            0% { transform: translate(-5%, 10%) rotate(0deg) scale(1); }
+            50% { transform: translate(10%, -10%) rotate(-8deg) scale(1.1); }
+            100% { transform: translate(-10%, -5%) rotate(5deg) scale(0.95); }
+        }
+
+        /* Brilho superior da esfera */
+        .sphere-shine {
+            position: absolute;
+            top: 5%;
+            left: 15%;
+            width: 40%;
+            height: 25%;
+            background: radial-gradient(ellipse, rgba(255, 255, 255, 0.2), transparent 70%);
+            border-radius: 50%;
+            transform: rotate(-30deg);
+            pointer-events: none;
+            filter: blur(2px);
+        }
+
+        /* Anéis orbitais estilo JARVIS */
+        .sphere-rings {
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            top: -20px;
+            left: -20px;
+            pointer-events: none;
+        }
+
+        .ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 1px solid rgba(100, 180, 255, 0.06);
+            animation: ring-rotate 20s linear infinite;
+        }
+
+        .ring:nth-child(1) { animation-duration: 15s; border-color: rgba(100, 180, 255, 0.08); }
+        .ring:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            top: -30px;
+            left: -30px;
+            animation-duration: 25s;
+            animation-direction: reverse;
+            border-color: rgba(100, 180, 255, 0.05);
+        }
+        .ring:nth-child(3) {
+            width: 160px;
+            height: 160px;
+            top: -10px;
+            left: -10px;
+            animation-duration: 18s;
+            border-color: rgba(100, 180, 255, 0.04);
+            border-style: dashed;
+        }
+
+        @keyframes ring-rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Estado da esfera quando está processando/falando */
+        .sphere.active .sphere-liquid::before {
+            animation-duration: 2s;
+            animation-timing-function: ease-in-out;
+        }
+        .sphere.active .sphere-liquid::after {
+            animation-duration: 1.5s;
+            animation-timing-function: ease-in-out;
+        }
+        .sphere.active {
+            box-shadow:
+                0 0 80px rgba(50, 150, 255, 0.3),
+                0 0 120px rgba(50, 150, 255, 0.1),
+                inset 0 0 60px rgba(50, 150, 255, 0.1);
+            animation: sphere-pulse 1.2s ease-in-out infinite;
+        }
+
+        @keyframes sphere-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        /* ============================================================
+           CHAT BOX
+           ============================================================ */
         .chat-box {
-            flex: 1;
-            background: var(--panel);
-            border: 1px solid var(--dim);
-            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 20px 22px;
+            min-height: 280px;
+            max-height: 380px;
             overflow-y: auto;
             margin-bottom: 20px;
-            border-radius: 4px;
-            box-shadow: 0 0 20px rgba(0,255,65,0.05);
+            border: 1px solid rgba(100, 150, 255, 0.06);
+            position: relative;
         }
-        .msg {
-            margin-bottom: 12px;
-            padding: 10px 15px;
-            border-radius: 2px;
-            max-width: 85%;
-            line-height: 1.4;
-            font-size: 1.1rem;
+
+        .chat-box::-webkit-scrollbar { width: 4px; }
+        .chat-box::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 10px; }
+        .chat-box::-webkit-scrollbar-thumb { background: rgba(100, 180, 255, 0.2); border-radius: 10px; }
+
+        .message {
+            display: flex;
+            margin-bottom: 14px;
+            animation: msg-fade 0.4s ease;
         }
-        .msg.user {
-            align-self: flex-end;
-            margin-left: auto;
-            background: rgba(0, 50, 0, 0.4);
-            border-right: 3px solid var(--main);
-            text-align: right;
+        .message.user { justify-content: flex-end; }
+        .message.bot { justify-content: flex-start; }
+
+        @keyframes msg-fade {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .msg.bot {
-            align-self: flex-start;
-            background: rgba(0, 20, 0, 0.6);
-            border-left: 3px solid var(--main);
+
+        .bubble {
+            max-width: 80%;
+            padding: 12px 20px;
+            border-radius: 18px;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            word-wrap: break-word;
+            font-family: 'Segoe UI', sans-serif;
+            letter-spacing: 0.3px;
+        }
+
+        .user .bubble {
+            background: linear-gradient(135deg, #1a73e8, #0d47a1);
             color: #fff;
+            border-bottom-right-radius: 4px;
+            box-shadow: 0 4px 20px rgba(26, 115, 232, 0.2);
         }
+
+        .bot .bubble {
+            background: rgba(30, 40, 80, 0.6);
+            color: #b0c8ff;
+            border-bottom-left-radius: 4px;
+            border: 1px solid rgba(100, 180, 255, 0.06);
+            backdrop-filter: blur(5px);
+        }
+
+        .bot .bubble .timestamp {
+            font-size: 0.55rem;
+            color: #445577;
+            display: block;
+            margin-top: 6px;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 0.5px;
+        }
+
+        /* ============================================================
+           TYPING INDICATOR
+           ============================================================ */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 0;
+        }
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #445577;
+            animation: typing-bounce 1.4s infinite;
+        }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing-bounce {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.3; }
+            30% { transform: translateY(-8px); opacity: 1; }
+        }
+
+        /* ============================================================
+           INPUT AREA
+           ============================================================ */
         .input-area {
             display: flex;
-            gap: 10px;
-            background: var(--panel);
-            padding: 10px;
-            border: 1px solid var(--dim);
-        }
-        input {
-            flex: 1;
-            background: #000;
-            border: 1px solid var(--dim);
-            color: var(--main);
-            padding: 12px;
-            font-family: 'Rajdhani';
-            font-size: 1.2rem;
-            outline: none;
-        }
-        input:focus { border-color: var(--main); }
-        button {
-            background: var(--dim);
-            color: var(--main);
-            border: 1px solid var(--main);
-            padding: 0 20px;
-            font-family: 'Orbitron';
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-        }
-        button:active { background: var(--main); color: #000; }
-        button.listening {
-            background: var(--alert);
-            border-color: var(--alert);
-            color: #fff;
-            animation: pulse 1s infinite;
-        }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-        
-        .status {
-            text-align: center;
-            font-size: 0.8rem;
-            color: #448844;
-            margin-top: 10px;
-            font-family: 'Orbitron';
-        }
-        
-        /* Configuração de API no topo do chat para facilitar */
-        .api-config {
-            background: #111;
-            border: 1px solid #333;
-            padding: 10px;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-            color: #aaa;
-            display: flex;
-            gap: 10px;
+            gap: 12px;
+            flex-wrap: wrap;
             align-items: center;
         }
-        .api-config input {
-            font-size: 0.9rem;
-            padding: 5px;
+
+        .input-wrapper {
             flex: 1;
-            color: #fff;
+            position: relative;
+            min-width: 150px;
         }
-        .hide-config {
-            display: none;
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 16px 22px;
+            border-radius: 30px;
+            border: 1px solid rgba(100, 150, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
+            color: #c0d0ff;
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.4s;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .input-wrapper input::placeholder {
+            color: #334466;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+        }
+
+        .input-wrapper input:focus {
+            border-color: rgba(100, 180, 255, 0.2);
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 0 30px rgba(50, 150, 255, 0.05);
+        }
+
+        .btn {
+            padding: 16px 28px;
+            border: none;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, rgba(26, 115, 232, 0.8), rgba(13, 71, 161, 0.8));
+            color: #fff;
+            border: 1px solid rgba(100, 180, 255, 0.15);
+            box-shadow: 0 4px 25px rgba(26, 115, 232, 0.15);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 40px rgba(26, 115, 232, 0.3);
+            border-color: rgba(100, 180, 255, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-mic {
+            background: rgba(255, 255, 255, 0.04);
+            color: #6677aa;
+            border: 1px solid rgba(100, 150, 255, 0.06);
+            padding: 16px 20px;
+            font-size: 1.2rem;
+        }
+
+        .btn-mic:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(100, 150, 255, 0.15);
+        }
+
+        .btn-mic.listening {
+            background: rgba(244, 67, 54, 0.2);
+            border-color: rgba(244, 67, 54, 0.3);
+            color: #f44336;
+            animation: mic-pulse 1s infinite;
+        }
+
+        @keyframes mic-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.2); }
+            50% { box-shadow: 0 0 0 15px rgba(244, 67, 54, 0); }
+        }
+
+        /* ============================================================
+           FOOTER
+           ============================================================ */
+        .footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.5rem;
+            font-family: 'Orbitron', monospace;
+            color: #223355;
+            letter-spacing: 0.5px;
+        }
+
+        .footer .stats span {
+            color: #4466aa;
+            margin: 0 4px;
+        }
+
+        .footer .stats .highlight {
+            color: #64b5f6;
+        }
+
+        /* ============================================================
+           RESPONSIVIDADE
+           ============================================================ */
+        @media (max-width: 600px) {
+            .container { padding: 25px 18px; }
+            .sphere { width: 100px; height: 100px; }
+            .sphere-rings { width: 130px; height: 130px; top: -15px; left: -15px; }
+            .ring:nth-child(2) { width: 150px; height: 150px; top: -25px; left: -25px; }
+            .ring:nth-child(3) { width: 115px; height: 115px; top: -7px; left: -7px; }
+            .logo-text { font-size: 1rem; }
+            .chat-box { min-height: 200px; max-height: 280px; padding: 15px; }
+            .btn { padding: 12px 18px; font-size: 0.6rem; }
+            .header { flex-wrap: wrap; gap: 10px; }
+            .status-indicator { font-size: 0.5rem; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <header>
-        <h1>J.A.R.V.I.S.</h1>
-        <div style="font-size: 0.8rem; letter-spacing: 2px;">SISTEMA DE VOZ PROFUNDA ATIVO</div>
-    </header>
-
-    <!-- Área para colar a chave facilmente se não quiser editar o código -->
-    <div class="api-config" id="configPanel">
-        <span>CHAVE ELEVENLABS:</span>
-        <input type="password" id="apiKeyInput" placeholder="Cole sua chave sk_... aqui">
-        <button onclick="saveKey()" style="padding: 5px 10px; font-size: 0.8rem;">SALVAR</button>
+    <!-- CABEÇALHO -->
+    <div class="header">
+        <div class="logo-area">
+            <span class="logo-icon">⚡</span>
+            <span class="logo-text">J.A.R.V.I.S</span>
+        </div>
+        <div class="status-indicator">
+            <span class="status-dot online" id="statusDot"></span>
+            <span id="statusText">CONECTADO</span>
+            <span class="model-badge" id="modelBadge">GPT-3.5</span>
+        </div>
     </div>
 
+    <!-- ESFERA DE PLASMA -->
+    <div class="sphere-container">
+        <div class="sphere" id="sphere">
+            <div class="sphere-liquid"></div>
+            <div class="sphere-shine"></div>
+            <div class="sphere-rings">
+                <div class="ring"></div>
+                <div class="ring"></div>
+                <div class="ring"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHAT -->
     <div class="chat-box" id="chatBox">
-        <div class="msg bot">Sistemas online. Voz neural carregada. Aguardando comandos, senhor.</div>
+        <div class="message bot">
+            <div class="bubble">
+                ⚡ Sistema J.A.R.V.I.S ativado.<br />
+                Como posso ajudá-lo hoje, senhor?
+                <span class="timestamp">● INICIALIZADO</span>
+            </div>
+        </div>
     </div>
 
+    <!-- INPUT -->
     <div class="input-area">
-        <input type="text" id="userInput" placeholder="Digite ou fale..." autocomplete="off">
-        <button id="sendBtn">ENVIAR</button>
-        <button id="micBtn">🎙️</button>
+        <div class="input-wrapper">
+            <input type="text" id="userInput" placeholder="DIGITE SUA MENSAGEM..." />
+        </div>
+        <button class="btn btn-primary" id="sendBtn">→ ENVIAR</button>
+        <button class="btn btn-mic" id="micBtn" title="Comando de voz">🎙</button>
     </div>
-    
-    <div class="status" id="statusText">PRONTO</div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <div class="stats">
+            <span>●</span> <span class="highlight">200</span> CHAMADAS/DIA
+        </div>
+        <div class="stats">
+            <span>●</span> CHATANYWHERE <span>●</span> v2.0
+        </div>
+    </div>
 </div>
 
 <script>
-    // ============================================================
-    // CONFIGURAÇÃO
-    // ============================================================
-    // 1. Coloque sua chave da ElevenLabs aqui entre as aspas
-    // 2. Ou use o campo na tela para salvar no navegador
-    let ELEVEN_KEY = ""; 
-    
-    // ID da voz "Adam" (A mais grave e profissional)
-    const VOICE_ID = "pNInz6obpgDQGcFmaJgB"; 
-    const API_URL = "https://api.elevenlabs.io/v1/text-to-speech/" + VOICE_ID;
+// ============================================================
+// CONFIGURAÇÃO DA API
+// ============================================================
+const API_KEY = "sk-hvnrnWWAFZQDygNaqXgT7vzaoAvdcIHeqopGanhZcaC80pxP";
+const BASE_URL = "https://api.chatanywhere.tech/v1";
+const MODEL = "gpt-3.5-turbo";
 
-    // Carregar chave salva
-    if(localStorage.getItem('elevenKey')) {
-        ELEVEN_KEY = localStorage.getItem('elevenKey');
-        document.getElementById('apiKeyInput').value = ELEVEN_KEY;
-        document.getElementById('configPanel').style.display = 'none';
+// ============================================================
+// CONFIGURAÇÃO DE VOZ
+// ============================================================
+const SPEECH_RATE = 1.5;
+
+// ============================================================
+// ELEMENTOS DOM
+// ============================================================
+const chatBox = document.getElementById('chatBox');
+const userInput = document.getElementById('userInput');
+const sendBtn = document.getElementById('sendBtn');
+const micBtn = document.getElementById('micBtn');
+const statusDot = document.getElementById('statusDot');
+const statusText = document.getElementById('statusText');
+const modelBadge = document.getElementById('modelBadge');
+const sphere = document.getElementById('sphere');
+
+modelBadge.textContent = MODEL.toUpperCase();
+
+let isListening = false;
+let recognition = null;
+let isProcessing = false;
+
+// ============================================================
+// FUNÇÕES DA ESFERA
+// ============================================================
+function setSphereState(state) {
+    sphere.classList.remove('active');
+    if (state === 'active') {
+        sphere.classList.add('active');
+    }
+}
+
+function setStatus(state, text) {
+    statusDot.className = `status-dot ${state}`;
+    statusText.textContent = text.toUpperCase();
+
+    if (state === 'processing') {
+        setSphereState('active');
+    } else {
+        setSphereState('idle');
+    }
+}
+
+// ============================================================
+// MENSAGENS
+// ============================================================
+function addMessage(text, sender) {
+    const div = document.createElement('div');
+    div.className = `message ${sender}`;
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+
+    if (sender === 'bot') {
+        const timestamp = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        bubble.innerHTML = `${text}<span class="timestamp">● ${timestamp}</span>`;
+    } else {
+        bubble.textContent = text;
     }
 
-    function saveKey() {
-        const key = document.getElementById('apiKeyInput').value.trim();
-        if(key) {
-            ELEVEN_KEY = key;
-            localStorage.setItem('elevenKey', key);
-            document.getElementById('configPanel').style.display = 'none';
-            alert("Chave salva! JARVIS pronto.");
-        } else {
-            alert("Por favor, cole a chave primeiro.");
+    div.appendChild(bubble);
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+// ============================================================
+// TYPING INDICATOR
+// ============================================================
+function showTyping() {
+    const div = document.createElement('div');
+    div.className = 'message bot';
+    div.id = 'typingIndicator';
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    bubble.innerHTML = `
+        <div class="typing-indicator">
+            <span></span><span></span><span></span>
+        </div>
+    `;
+    div.appendChild(bubble);
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function hideTyping() {
+    const el = document.getElementById('typingIndicator');
+    if (el) el.remove();
+}
+
+// ============================================================
+// TEXTO-TO-SPEECH
+// ============================================================
+function speakText(text) {
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'pt-BR';
+        utterance.rate = SPEECH_RATE;
+        utterance.pitch = 1.0;
+        utterance.volume = 1;
+
+        // Ativa a esfera enquanto fala
+        utterance.onstart = () => setSphereState('active');
+        utterance.onend = () => setSphereState('idle');
+        utterance.onerror = () => setSphereState('idle');
+
+        window.speechSynthesis.speak(utterance);
+    }
+}
+
+// ============================================================
+// CHAMADA À API
+// ============================================================
+async function sendMessageToAI(userMessage) {
+    if (isProcessing) return;
+    isProcessing = true;
+    sendBtn.disabled = true;
+
+    try {
+        showTyping();
+        setStatus('processing', 'Processando...');
+
+        const response = await fetch(`${BASE_URL}/chat/completions`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${API_KEY}`
+            },
+            body: JSON.stringify({
+                model: MODEL,
+                messages: [
+                    { role: 'system', content: 'Você é o JARVIS, assistente pessoal inteligente e sofisticado. Responda de forma clara, direta e com um toque de elegância em português.' },
+                    { role: 'user', content: userMessage }
+                ],
+                max_tokens: 500,
+                temperature: 0.7
+            })
+        });
+
+        hideTyping();
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(`Erro ${response.status}: ${errorData.error?.message || response.statusText}`);
         }
+
+        const data = await response.json();
+        const reply = data.choices?.[0]?.message?.content || 'Desculpe, não consegui gerar uma resposta.';
+
+        addMessage(reply, 'bot');
+        setStatus('online', 'Conectado');
+        speakText(reply);
+
+    } catch (error) {
+        hideTyping();
+        addMessage(`⚠️ ${error.message}`, 'bot');
+        setStatus('offline', 'Erro');
+        console.error('Erro na API:', error);
+    } finally {
+        isProcessing = false;
+        sendBtn.disabled = false;
     }
+}
 
-    // Elementos
-    const chatBox = document.getElementById('chatBox');
-    const userInput = document.getElementById('userInput');
-    const sendBtn = document.getElementById('sendBtn');
-    const micBtn = document.getElementById('micBtn');
-    const statusText = document.getElementById('statusText');
+// ============================================================
+// ENVIO DE MENSAGEM
+// ============================================================
+function handleSend() {
+    const text = userInput.value.trim();
+    if (!text || isProcessing) return;
 
-    let isListening = false;
-    let recognition = null;
+    addMessage(text, 'user');
+    userInput.value = '';
+    userInput.focus();
+    sendMessageToAI(text);
+}
 
-    // ============================================================
-    // FUNÇÃO DE FALA (ELEVENLABS - VOZ REALMENTE GROSSA)
-    // ============================================================
-    async function speak(text) {
-        if (!ELEVEN_KEY) {
-            addMessage("⚠️ ERRO: Chave da API não configurada. Preencha o campo no topo.", 'bot');
+sendBtn.addEventListener('click', handleSend);
+userInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') handleSend();
+});
+
+// ============================================================
+// MICROFONE
+// ============================================================
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SpeechRecognition();
+    recognition.lang = 'pt-BR';
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    recognition.onstart = () => {
+        isListening = true;
+        micBtn.classList.add('listening');
+        micBtn.textContent = '⏹';
+        setStatus('processing', 'Ouvindo...');
+    };
+
+    recognition.onend = () => {
+        isListening = false;
+        micBtn.classList.remove('listening');
+        micBtn.textContent = '🎙';
+        if (statusText.textContent === 'OUVINDO...') {
+            setStatus('online', 'Conectado');
+        }
+    };
+
+    recognition.onerror = (event) => {
+        console.warn('Erro no microfone:', event.error);
+        isListening = false;
+        micBtn.classList.remove('listening');
+        micBtn.textContent = '🎙';
+        setStatus('online', 'Conectado');
+        if (event.error === 'not-allowed') {
+            addMessage('⚠️ Permita o acesso ao microfone.', 'bot');
+        }
+    };
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        userInput.value = transcript;
+        setTimeout(() => handleSend(), 300);
+    };
+
+    micBtn.addEventListener('click', () => {
+        if (isListening) {
+            recognition.stop();
             return;
         }
-
-        statusText.textContent = "GERANDO ÁUDIO NEURAL...";
-        
         try {
-            const response = await fetch(API_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'xi-api-key': ELEVEN_KEY
-                },
-                body: JSON.stringify({
-                    text: text,
-                    model_id: "eleven_monolingual_v1",
-                    voice_settings: {
-                        stability: 0.5,
-                        similarity_boost: 0.75,
-                        style: 0.0,
-                        use_speaker_boost: true
-                    }
-                })
-            });
-
-            if (!response.ok) {
-                const err = await response.json();
-                throw new Error(err.detail?.message || "Erro na API");
-            }
-
-            const audioBlob = await response.blob();
-            const audioUrl = URL.createObjectURL(audioBlob);
-            const audio = new Audio(audioUrl);
-            
-            // Tocar áudio
-            audio.play();
-            
-            audio.onended = () => {
-                statusText.textContent = "PRONTO";
-                URL.revokeObjectURL(audioUrl);
-            };
-
-        } catch (error) {
-            console.error(error);
-            statusText.textContent = "ERRO DE VOZ";
-            addMessage(`Erro de áudio: ${error.message}. Verifique sua chave.`, 'bot');
-        }
-    }
-
-    // ============================================================
-    // CHAT E API DE TEXTO (ChatAnywhere - Grátis)
-    // ============================================================
-    const TEXT_API_KEY = "sk-hvnrnWWAFZQDygNaqXgT7vzaoAvdcIHeqopGanhZcaC80pxP";
-    const TEXT_URL = "https://api.chatanywhere.tech/v1/chat/completions";
-
-    async function getResponse(userText) {
-        addMessage(userText, 'user');
-        userInput.value = '';
-        statusText.textContent = "PROCESSANDO...";
-
-        try {
-            const res = await fetch(TEXT_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${TEXT_API_KEY}`
-                },
-                body: JSON.stringify({
-                    model: "gpt-3.5-turbo",
-                    messages: [
-                        { role: "system", content: "Você é JARVIS. Responda de forma curta, direta e técnica. Não use emojis." },
-                        { role: "user", content: userText }
-                    ]
-                })
-            });
-
-            const data = await res.json();
-            const reply = data.choices[0].message.content;
-            
-            addMessage(reply, 'bot');
-            speak(reply); // Fala com voz grossa
-            
+            recognition.start();
         } catch (e) {
-            addMessage("Erro de conexão com o núcleo.", 'bot');
-            statusText.textContent = "ERRO";
+            console.warn('Erro ao iniciar microfone:', e);
         }
+    });
+
+} else {
+    micBtn.style.display = 'none';
+}
+
+// ============================================================
+// TESTE DE CONEXÃO
+// ============================================================
+async function testConnection() {
+    try {
+        const response = await fetch(`${BASE_URL}/models`, {
+            headers: { 'Authorization': `Bearer ${API_KEY}` }
+        });
+        if (response.ok) {
+            setStatus('online', 'Conectado');
+            console.log('✅ API Key válida!');
+        } else {
+            setStatus('offline', 'Falha na chave');
+            console.warn('⚠️ Verifique sua API Key');
+        }
+    } catch (e) {
+        setStatus('offline', 'Sem conexão');
+        console.warn('⚠️ Não foi possível conectar');
     }
+}
+testConnection();
 
-    function addMessage(text, sender) {
-        const div = document.createElement('div');
-        div.className = `msg ${sender}`;
-        div.textContent = text;
-        chatBox.appendChild(div);
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    // Eventos
-    sendBtn.onclick = () => getResponse(userInput.value.trim());
-    userInput.onkeypress = (e) => { if(e.key === 'Enter') sendBtn.onclick(); };
-
-    // Microfone
-    if ('webkitSpeechRecognition' in window) {
-        recognition = new webkitSpeechRecognition();
-        recognition.lang = 'pt-BR';
-        recognition.continuous = false;
-
-        recognition.onstart = () => {
-            isListening = true;
-            micBtn.classList.add('listening');
-            statusText.textContent = "OUVINDO...";
-        };
-        recognition.onend = () => {
-            isListening = false;
-            micBtn.classList.remove('listening');
-            statusText.textContent = "PRONTO";
-        };
-        recognition.onresult = (e) => {
-            const txt = e.results[0][0].transcript;
-            getResponse(txt);
-        };
-
-        micBtn.onclick = () => {
-            if(isListening) recognition.stop();
-            else recognition.start();
-        };
-    } else {
-        micBtn.style.display = 'none';
-    }
+console.log('🚀 J.A.R.V.I.S iniciado com sucesso!');
+console.log(`📦 Modelo: ${MODEL} | Velocidade: ${SPEECH_RATE}x`);
 </script>
-
 </body>
 </html>
