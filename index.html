@@ -47,8 +47,8 @@
             left: 20%;
             right: 20%;
             height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(100, 180, 255, 0.3), transparent);
-            opacity: 0.5;
+            background: linear-gradient(90deg, transparent, #4fc3f7, transparent);
+            opacity: 0.4;
             border-radius: 2px;
         }
 
@@ -72,7 +72,7 @@
 
         .logo-icon {
             font-size: 1.4rem;
-            color: rgba(100, 180, 255, 0.6);
+            color: #4fc3f7;
         }
 
         .logo-text {
@@ -84,7 +84,7 @@
         }
 
         .logo-text span {
-            color: rgba(100, 180, 255, 0.6);
+            color: #4fc3f7;
             font-weight: 300;
         }
 
@@ -105,9 +105,9 @@
             display: inline-block;
             transition: all 0.3s;
         }
-        .status-dot.online { background: #4fc3f7; box-shadow: 0 0 12px rgba(79, 195, 247, 0.2); }
-        .status-dot.offline { background: #ff3333; box-shadow: 0 0 12px rgba(255, 51, 51, 0.2); }
-        .status-dot.processing { background: #4fc3f7; box-shadow: 0 0 20px rgba(79, 195, 247, 0.4); animation: dot-pulse 0.8s infinite; }
+        .status-dot.online { background: #4fc3f7; box-shadow: 0 0 15px rgba(79, 195, 247, 0.4); }
+        .status-dot.offline { background: #ff3333; box-shadow: 0 0 15px rgba(255, 51, 51, 0.3); }
+        .status-dot.processing { background: #4fc3f7; box-shadow: 0 0 30px rgba(79, 195, 247, 0.6); animation: dot-pulse 0.8s infinite; }
 
         @keyframes dot-pulse {
             0%, 100% { transform: scale(1); }
@@ -130,7 +130,7 @@
         }
 
         /* ============================================================
-           ESFERA - AZUL CLARO PROFISSIONAL
+           ESFERA - AZUL VIBRANTE E VISÍVEL
            ============================================================ */
         .sphere-container {
             display: flex;
@@ -141,27 +141,28 @@
         }
 
         .sphere {
-            width: 140px;
-            height: 140px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
-            background: radial-gradient(circle at 35% 30%, rgba(100, 180, 255, 0.06), rgba(100, 180, 255, 0.01));
+            background: radial-gradient(circle at 35% 30%, rgba(79, 195, 247, 0.25), rgba(30, 100, 200, 0.1));
             box-shadow:
-                0 0 40px rgba(100, 180, 255, 0.03),
-                inset 0 -30px 60px rgba(0, 0, 0, 0.8),
-                inset 0 20px 40px rgba(100, 180, 255, 0.02);
+                0 0 60px rgba(79, 195, 247, 0.15),
+                0 0 120px rgba(79, 195, 247, 0.05),
+                inset 0 -30px 60px rgba(0, 0, 0, 0.6),
+                inset 0 20px 40px rgba(79, 195, 247, 0.1);
             position: relative;
             transition: all 0.6s ease;
-            border: 1px solid rgba(100, 180, 255, 0.08);
+            border: 2px solid rgba(79, 195, 247, 0.3);
         }
 
-        /* Líquido interno - azul claro sutil */
+        /* Líquido interno - azul vibrante */
         .sphere-liquid {
             width: 100%;
             height: 100%;
             border-radius: 50%;
             position: relative;
             overflow: hidden;
-            background: radial-gradient(circle at 30% 30%, rgba(100, 180, 255, 0.03), transparent);
+            background: radial-gradient(circle at 30% 30%, rgba(79, 195, 247, 0.15), rgba(30, 100, 200, 0.05));
         }
 
         .sphere-liquid::before {
@@ -172,8 +173,9 @@
             top: -50%;
             left: -50%;
             background:
-                radial-gradient(circle at 30% 40%, rgba(100, 200, 255, 0.06), transparent 50%),
-                radial-gradient(circle at 70% 60%, rgba(80, 180, 255, 0.03), transparent 40%);
+                radial-gradient(circle at 30% 40%, rgba(79, 195, 247, 0.2), transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(50, 150, 255, 0.15), transparent 40%),
+                radial-gradient(circle at 50% 80%, rgba(100, 200, 255, 0.1), transparent 30%);
             animation: liquid-move 10s ease-in-out infinite alternate;
         }
 
@@ -184,7 +186,7 @@
             height: 150%;
             top: -25%;
             left: -25%;
-            background: radial-gradient(circle at 60% 20%, rgba(100, 200, 255, 0.02), transparent 40%);
+            background: radial-gradient(circle at 60% 20%, rgba(79, 195, 247, 0.1), transparent 40%);
             animation: liquid-move-alt 7s ease-in-out infinite alternate;
         }
 
@@ -199,25 +201,25 @@
             100% { transform: translate(10%, -10%) rotate(-5deg) scale(1.05); }
         }
 
-        /* Brilho superior - azul claro */
+        /* Brilho superior */
         .sphere-shine {
             position: absolute;
             top: 8%;
             left: 18%;
             width: 35%;
             height: 20%;
-            background: radial-gradient(ellipse, rgba(100, 200, 255, 0.06), transparent 70%);
+            background: radial-gradient(ellipse, rgba(255, 255, 255, 0.15), transparent 70%);
             border-radius: 50%;
             transform: rotate(-30deg);
             pointer-events: none;
-            filter: blur(3px);
+            filter: blur(2px);
         }
 
-        /* Anéis orbitais - azul claro fino */
+        /* Anéis orbitais - azul visível */
         .sphere-rings {
             position: absolute;
-            width: 180px;
-            height: 180px;
+            width: 190px;
+            height: 190px;
             top: -20px;
             left: -20px;
             pointer-events: none;
@@ -228,31 +230,29 @@
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            border: 1px solid rgba(100, 180, 255, 0.04);
             animation: ring-rotate 25s linear infinite;
         }
 
         .ring:nth-child(1) {
             animation-duration: 18s;
-            border-color: rgba(100, 180, 255, 0.06);
+            border: 1px solid rgba(79, 195, 247, 0.15);
         }
         .ring:nth-child(2) {
-            width: 200px;
-            height: 200px;
+            width: 210px;
+            height: 210px;
             top: -30px;
             left: -30px;
             animation-duration: 28s;
             animation-direction: reverse;
-            border-color: rgba(100, 180, 255, 0.04);
+            border: 1px solid rgba(79, 195, 247, 0.08);
         }
         .ring:nth-child(3) {
-            width: 160px;
-            height: 160px;
+            width: 170px;
+            height: 170px;
             top: -10px;
             left: -10px;
             animation-duration: 22s;
-            border-color: rgba(100, 180, 255, 0.03);
-            border-style: dashed;
+            border: 1px dashed rgba(79, 195, 247, 0.06);
         }
 
         @keyframes ring-rotate {
@@ -260,13 +260,13 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Estado ATIVO - azul claro com brilho fino */
+        /* Estado ATIVO - brilho intenso */
         .sphere.active {
             box-shadow:
-                0 0 60px rgba(100, 180, 255, 0.06),
-                0 0 120px rgba(100, 180, 255, 0.02),
-                inset 0 0 60px rgba(100, 180, 255, 0.02);
-            border-color: rgba(100, 180, 255, 0.15);
+                0 0 80px rgba(79, 195, 247, 0.3),
+                0 0 160px rgba(79, 195, 247, 0.1),
+                inset 0 0 60px rgba(79, 195, 247, 0.1);
+            border-color: rgba(79, 195, 247, 0.6);
             animation: sphere-pulse 1.5s ease-in-out infinite;
         }
 
@@ -277,7 +277,7 @@
 
         @keyframes sphere-pulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
+            50% { transform: scale(1.03); }
         }
 
         /* ============================================================
@@ -296,7 +296,7 @@
 
         .chat-box::-webkit-scrollbar { width: 3px; }
         .chat-box::-webkit-scrollbar-track { background: #0a0a0a; }
-        .chat-box::-webkit-scrollbar-thumb { background: rgba(100, 180, 255, 0.15); border-radius: 10px; }
+        .chat-box::-webkit-scrollbar-thumb { background: rgba(79, 195, 247, 0.2); border-radius: 10px; }
 
         .message {
             display: flex;
@@ -359,7 +359,7 @@
             width: 6px;
             height: 6px;
             border-radius: 50%;
-            background: rgba(100, 180, 255, 0.15);
+            background: rgba(79, 195, 247, 0.3);
             animation: typing-bounce 1.4s infinite;
         }
         .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
@@ -367,7 +367,7 @@
 
         @keyframes typing-bounce {
             0%, 60%, 100% { transform: translateY(0); opacity: 0.2; }
-            30% { transform: translateY(-6px); opacity: 0.6; }
+            30% { transform: translateY(-6px); opacity: 0.8; }
         }
 
         /* ============================================================
@@ -408,7 +408,7 @@
         }
 
         .input-wrapper input:focus {
-            border-color: rgba(100, 180, 255, 0.1);
+            border-color: rgba(79, 195, 247, 0.15);
             background: #0a0a0a;
         }
 
@@ -438,8 +438,8 @@
 
         .btn-primary:hover {
             background: #111;
-            color: rgba(100, 180, 255, 0.5);
-            border-color: rgba(100, 180, 255, 0.08);
+            color: #4fc3f7;
+            border-color: rgba(79, 195, 247, 0.15);
         }
 
         .btn-primary:disabled {
@@ -457,19 +457,19 @@
 
         .btn-mic:hover {
             background: #0f0f0f;
-            border-color: rgba(100, 180, 255, 0.05);
+            border-color: rgba(79, 195, 247, 0.1);
         }
 
         .btn-mic.listening {
             background: #0a0a0a;
-            border-color: rgba(100, 180, 255, 0.15);
-            color: rgba(100, 180, 255, 0.6);
+            border-color: #4fc3f7;
+            color: #4fc3f7;
             animation: mic-pulse 1s infinite;
         }
 
         @keyframes mic-pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(100, 180, 255, 0.03); }
-            50% { box-shadow: 0 0 0 10px rgba(100, 180, 255, 0); }
+            0%, 100% { box-shadow: 0 0 0 0 rgba(79, 195, 247, 0.1); }
+            50% { box-shadow: 0 0 0 12px rgba(79, 195, 247, 0); }
         }
 
         /* ============================================================
@@ -492,7 +492,8 @@
         }
 
         .footer .stats .highlight {
-            color: rgba(100, 180, 255, 0.4);
+            color: #4fc3f7;
+            opacity: 0.6;
         }
 
         /* ============================================================
@@ -500,10 +501,10 @@
            ============================================================ */
         @media (max-width: 600px) {
             .container { padding: 20px 16px; }
-            .sphere { width: 110px; height: 110px; }
-            .sphere-rings { width: 140px; height: 140px; top: -15px; left: -15px; }
-            .ring:nth-child(2) { width: 160px; height: 160px; top: -25px; left: -25px; }
-            .ring:nth-child(3) { width: 125px; height: 125px; top: -7px; left: -7px; }
+            .sphere { width: 120px; height: 120px; }
+            .sphere-rings { width: 150px; height: 150px; top: -15px; left: -15px; }
+            .ring:nth-child(2) { width: 170px; height: 170px; top: -25px; left: -25px; }
+            .ring:nth-child(3) { width: 135px; height: 135px; top: -7px; left: -7px; }
             .logo-text { font-size: 0.9rem; letter-spacing: 2px; }
             .chat-box { min-height: 180px; max-height: 250px; padding: 14px; }
             .btn { padding: 12px 16px; font-size: 0.55rem; }
