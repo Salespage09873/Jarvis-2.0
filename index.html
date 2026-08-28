@@ -3,60 +3,54 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>J.A.R.V.I.S - Assistente IA</title>
+    <title>J.A.R.V.I.S</title>
     <style>
         /* ============================================================
            RESET E CONFIGURAÇÃO GLOBAL
            ============================================================ */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap');
 
         body {
-            font-family: 'Orbitron', 'Segoe UI', sans-serif;
-            background: radial-gradient(ellipse at center, #0a0e1a 0%, #050812 100%);
+            font-family: 'Rajdhani', 'Segoe UI', sans-serif;
+            background: #0a0a0a;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            overflow: hidden;
         }
 
         /* ============================================================
-           FUNDO COM PARTÍCULAS ESTILO JARVIS
-           ============================================================ */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background:
-                radial-gradient(2px 2px at 20% 30%, rgba(100, 180, 255, 0.3), transparent),
-                radial-gradient(2px 2px at 40% 70%, rgba(100, 180, 255, 0.2), transparent),
-                radial-gradient(2px 2px at 60% 40%, rgba(100, 180, 255, 0.3), transparent),
-                radial-gradient(2px 2px at 80% 80%, rgba(100, 180, 255, 0.2), transparent),
-                radial-gradient(2px 2px at 10% 90%, rgba(100, 180, 255, 0.15), transparent),
-                radial-gradient(2px 2px at 90% 10%, rgba(100, 180, 255, 0.15), transparent);
-            background-size: 200px 200px;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* ============================================================
-           CONTAINER PRINCIPAL
+           CONTAINER PRINCIPAL - TOTALMENTE PRETO
            ============================================================ */
         .container {
-            position: relative;
-            z-index: 1;
-            background: rgba(10, 14, 30, 0.85);
-            backdrop-filter: blur(20px);
-            border-radius: 40px;
-            padding: 40px 45px 35px;
-            max-width: 800px;
+            background: #0d0d0d;
+            border-radius: 24px;
+            padding: 35px 40px 30px;
+            max-width: 780px;
             width: 100%;
-            border: 1px solid rgba(100, 180, 255, 0.15);
-            box-shadow:
-                0 0 60px rgba(50, 100, 255, 0.08),
-                inset 0 0 60px rgba(50, 100, 255, 0.03);
+            border: 1px solid #1a1a1a;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.9), inset 0 0 80px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        /* Linha de destaque no topo */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 20%;
+            right: 20%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #1a73e8, transparent);
+            opacity: 0.3;
+            border-radius: 2px;
         }
 
         /* ============================================================
@@ -66,109 +60,112 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(100, 180, 255, 0.08);
+            margin-bottom: 28px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #141414;
         }
 
         .logo-area {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .logo-icon {
-            font-size: 1.8rem;
-            filter: drop-shadow(0 0 20px rgba(100, 180, 255, 0.3));
+            font-size: 1.4rem;
+            color: #1a73e8;
+            opacity: 0.7;
         }
 
         .logo-text {
-            font-size: 1.3rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, #64b5f6, #1a73e8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 3px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: 'Orbitron', monospace;
+            color: #e0e0e0;
+            letter-spacing: 4px;
         }
 
         .logo-text span {
-            color: #64b5f6;
-            -webkit-text-fill-color: #64b5f6;
+            color: #1a73e8;
             font-weight: 300;
         }
 
-        .status-indicator {
+        .status-area {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 0.6rem;
+            gap: 12px;
+            font-size: 0.55rem;
+            font-family: 'Orbitron', monospace;
             letter-spacing: 1px;
-            color: #445577;
+            color: #333;
         }
 
         .status-dot {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             display: inline-block;
-            transition: all 0.5s;
+            transition: all 0.3s;
         }
-        .status-dot.online { background: #4caf50; box-shadow: 0 0 20px rgba(76, 175, 80, 0.4); }
-        .status-dot.offline { background: #f44336; box-shadow: 0 0 20px rgba(244, 67, 54, 0.4); }
-        .status-dot.processing { background: #ff9800; box-shadow: 0 0 30px rgba(255, 152, 0, 0.6); animation: pulse-dot 0.8s infinite; }
+        .status-dot.online { background: #00ff88; box-shadow: 0 0 12px rgba(0, 255, 136, 0.2); }
+        .status-dot.offline { background: #ff3333; box-shadow: 0 0 12px rgba(255, 51, 51, 0.2); }
+        .status-dot.processing { background: #ffaa00; box-shadow: 0 0 20px rgba(255, 170, 0, 0.3); animation: dot-pulse 0.8s infinite; }
 
-        @keyframes pulse-dot {
+        @keyframes dot-pulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.4); }
+            50% { transform: scale(1.5); }
+        }
+
+        .status-text {
+            color: #555;
+            font-size: 0.5rem;
         }
 
         .model-badge {
-            background: rgba(100, 180, 255, 0.08);
-            padding: 4px 14px;
-            border-radius: 20px;
-            color: #64b5f6;
-            font-size: 0.55rem;
+            background: #111;
+            padding: 3px 12px;
+            border-radius: 12px;
+            color: #444;
+            font-size: 0.5rem;
             letter-spacing: 1px;
-            border: 1px solid rgba(100, 180, 255, 0.1);
+            border: 1px solid #1a1a1a;
         }
 
         /* ============================================================
-           ESFERA DE PLASMA - ESTILO CHATGPT + JARVIS
+           ESFERA - MAIS SÓBRIA E PRETA
            ============================================================ */
         .sphere-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 10px auto 25px;
+            margin: 5px auto 25px;
             position: relative;
         }
 
         .sphere {
-            width: 140px;
-            height: 140px;
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, rgba(100, 200, 255, 0.15), rgba(20, 60, 150, 0.4));
+            background: radial-gradient(circle at 35% 30%, #1a1a1a, #080808);
             box-shadow:
-                0 0 40px rgba(50, 150, 255, 0.15),
-                inset 0 0 60px rgba(50, 150, 255, 0.05),
-                inset -20px -20px 60px rgba(0, 0, 0, 0.5);
+                0 0 30px rgba(0, 0, 0, 0.8),
+                inset 0 -20px 60px rgba(0, 0, 0, 0.9),
+                inset 0 20px 40px rgba(255, 255, 255, 0.02);
             position: relative;
-            transition: all 0.8s ease;
-            cursor: default;
+            transition: all 0.6s ease;
+            border: 1px solid #1a1a1a;
         }
 
-        /* Camada interna da esfera (líquido) */
+        /* Líquido interno - mais sutil */
         .sphere-liquid {
             width: 100%;
             height: 100%;
             border-radius: 50%;
             position: relative;
             overflow: hidden;
-            background: radial-gradient(circle at 35% 35%, rgba(60, 160, 255, 0.3), rgba(10, 30, 80, 0.6));
-            transition: all 0.8s ease;
+            background: radial-gradient(circle at 30% 30%, #111, #050505);
         }
 
-        /* Ondulações do líquido */
         .sphere-liquid::before {
             content: '';
             position: absolute;
@@ -177,11 +174,9 @@
             top: -50%;
             left: -50%;
             background:
-                radial-gradient(circle at 30% 40%, rgba(100, 200, 255, 0.25), transparent 50%),
-                radial-gradient(circle at 70% 60%, rgba(80, 180, 255, 0.15), transparent 40%),
-                radial-gradient(circle at 50% 80%, rgba(50, 150, 255, 0.2), transparent 30%);
-            animation: liquid-move 8s ease-in-out infinite alternate;
-            transition: all 0.8s ease;
+                radial-gradient(circle at 30% 40%, rgba(26, 115, 232, 0.08), transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(26, 115, 232, 0.04), transparent 40%);
+            animation: liquid-move 10s ease-in-out infinite alternate;
         }
 
         .sphere-liquid::after {
@@ -191,45 +186,40 @@
             height: 150%;
             top: -25%;
             left: -25%;
-            background: radial-gradient(circle at 60% 20%, rgba(255, 255, 255, 0.08), transparent 40%);
-            animation: liquid-move-alt 6s ease-in-out infinite alternate;
-            transition: all 0.8s ease;
+            background: radial-gradient(circle at 60% 20%, rgba(255, 255, 255, 0.02), transparent 40%);
+            animation: liquid-move-alt 7s ease-in-out infinite alternate;
         }
 
-        /* Animações do líquido */
         @keyframes liquid-move {
             0% { transform: translate(-10%, -5%) rotate(0deg) scale(1); }
-            25% { transform: translate(5%, -15%) rotate(5deg) scale(1.05); }
-            50% { transform: translate(15%, 5%) rotate(-3deg) scale(0.95); }
-            75% { transform: translate(-5%, 15%) rotate(8deg) scale(1.03); }
-            100% { transform: translate(-15%, -10%) rotate(-5deg) scale(1); }
+            50% { transform: translate(10%, 5%) rotate(3deg) scale(1.02); }
+            100% { transform: translate(-5%, 10%) rotate(-3deg) scale(0.98); }
         }
 
         @keyframes liquid-move-alt {
             0% { transform: translate(-5%, 10%) rotate(0deg) scale(1); }
-            50% { transform: translate(10%, -10%) rotate(-8deg) scale(1.1); }
-            100% { transform: translate(-10%, -5%) rotate(5deg) scale(0.95); }
+            100% { transform: translate(10%, -10%) rotate(-5deg) scale(1.05); }
         }
 
-        /* Brilho superior da esfera */
+        /* Brilho superior sutil */
         .sphere-shine {
             position: absolute;
-            top: 5%;
-            left: 15%;
-            width: 40%;
-            height: 25%;
-            background: radial-gradient(ellipse, rgba(255, 255, 255, 0.2), transparent 70%);
+            top: 8%;
+            left: 18%;
+            width: 35%;
+            height: 20%;
+            background: radial-gradient(ellipse, rgba(255, 255, 255, 0.04), transparent 70%);
             border-radius: 50%;
             transform: rotate(-30deg);
             pointer-events: none;
-            filter: blur(2px);
+            filter: blur(3px);
         }
 
-        /* Anéis orbitais estilo JARVIS */
+        /* Anéis orbitais - mais discretos */
         .sphere-rings {
             position: absolute;
-            width: 180px;
-            height: 180px;
+            width: 170px;
+            height: 170px;
             top: -20px;
             left: -20px;
             pointer-events: none;
@@ -240,27 +230,27 @@
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            border: 1px solid rgba(100, 180, 255, 0.06);
-            animation: ring-rotate 20s linear infinite;
+            border: 1px solid rgba(26, 115, 232, 0.04);
+            animation: ring-rotate 25s linear infinite;
         }
 
-        .ring:nth-child(1) { animation-duration: 15s; border-color: rgba(100, 180, 255, 0.08); }
+        .ring:nth-child(1) { animation-duration: 18s; border-color: rgba(26, 115, 232, 0.05); }
         .ring:nth-child(2) {
-            width: 200px;
-            height: 200px;
+            width: 190px;
+            height: 190px;
             top: -30px;
             left: -30px;
-            animation-duration: 25s;
+            animation-duration: 28s;
             animation-direction: reverse;
-            border-color: rgba(100, 180, 255, 0.05);
+            border-color: rgba(26, 115, 232, 0.03);
         }
         .ring:nth-child(3) {
-            width: 160px;
-            height: 160px;
+            width: 150px;
+            height: 150px;
             top: -10px;
             left: -10px;
-            animation-duration: 18s;
-            border-color: rgba(100, 180, 255, 0.04);
+            animation-duration: 22s;
+            border-color: rgba(26, 115, 232, 0.02);
             border-style: dashed;
         }
 
@@ -269,91 +259,86 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Estado da esfera quando está processando/falando */
+        /* Estado ATIVO da esfera - mais sutil */
+        .sphere.active {
+            box-shadow:
+                0 0 40px rgba(26, 115, 232, 0.04),
+                inset 0 0 40px rgba(26, 115, 232, 0.02);
+            animation: sphere-pulse 1.5s ease-in-out infinite;
+        }
+
         .sphere.active .sphere-liquid::before {
             animation-duration: 2s;
             animation-timing-function: ease-in-out;
         }
-        .sphere.active .sphere-liquid::after {
-            animation-duration: 1.5s;
-            animation-timing-function: ease-in-out;
-        }
-        .sphere.active {
-            box-shadow:
-                0 0 80px rgba(50, 150, 255, 0.3),
-                0 0 120px rgba(50, 150, 255, 0.1),
-                inset 0 0 60px rgba(50, 150, 255, 0.1);
-            animation: sphere-pulse 1.2s ease-in-out infinite;
-        }
 
         @keyframes sphere-pulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.03); }
+            50% { transform: scale(1.02); }
         }
 
         /* ============================================================
-           CHAT BOX
+           CHAT BOX - PRETO E MINIMALISTA
            ============================================================ */
         .chat-box {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 20px;
-            padding: 20px 22px;
-            min-height: 280px;
-            max-height: 380px;
+            background: #080808;
+            border-radius: 16px;
+            padding: 18px 20px;
+            min-height: 260px;
+            max-height: 350px;
             overflow-y: auto;
-            margin-bottom: 20px;
-            border: 1px solid rgba(100, 150, 255, 0.06);
-            position: relative;
+            margin-bottom: 18px;
+            border: 1px solid #111;
         }
 
-        .chat-box::-webkit-scrollbar { width: 4px; }
-        .chat-box::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 10px; }
-        .chat-box::-webkit-scrollbar-thumb { background: rgba(100, 180, 255, 0.2); border-radius: 10px; }
+        .chat-box::-webkit-scrollbar { width: 3px; }
+        .chat-box::-webkit-scrollbar-track { background: #0a0a0a; }
+        .chat-box::-webkit-scrollbar-thumb { background: #1a1a1a; border-radius: 10px; }
 
         .message {
             display: flex;
-            margin-bottom: 14px;
-            animation: msg-fade 0.4s ease;
+            margin-bottom: 12px;
+            animation: msg-fade 0.3s ease;
         }
         .message.user { justify-content: flex-end; }
         .message.bot { justify-content: flex-start; }
 
         @keyframes msg-fade {
-            from { opacity: 0; transform: translateY(12px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .bubble {
             max-width: 80%;
-            padding: 12px 20px;
-            border-radius: 18px;
+            padding: 10px 18px;
+            border-radius: 14px;
             font-size: 0.85rem;
             line-height: 1.6;
             word-wrap: break-word;
-            font-family: 'Segoe UI', sans-serif;
-            letter-spacing: 0.3px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 400;
+            letter-spacing: 0.2px;
         }
 
         .user .bubble {
-            background: linear-gradient(135deg, #1a73e8, #0d47a1);
-            color: #fff;
-            border-bottom-right-radius: 4px;
-            box-shadow: 0 4px 20px rgba(26, 115, 232, 0.2);
+            background: #121212;
+            color: #ccc;
+            border-bottom-right-radius: 3px;
+            border: 1px solid #1a1a1a;
         }
 
         .bot .bubble {
-            background: rgba(30, 40, 80, 0.6);
-            color: #b0c8ff;
-            border-bottom-left-radius: 4px;
-            border: 1px solid rgba(100, 180, 255, 0.06);
-            backdrop-filter: blur(5px);
+            background: #0a0a0a;
+            color: #aaa;
+            border-bottom-left-radius: 3px;
+            border: 1px solid #111;
         }
 
         .bot .bubble .timestamp {
-            font-size: 0.55rem;
-            color: #445577;
+            font-size: 0.5rem;
+            color: #222;
             display: block;
-            margin-top: 6px;
+            margin-top: 4px;
             font-family: 'Orbitron', monospace;
             letter-spacing: 0.5px;
         }
@@ -364,30 +349,30 @@
         .typing-indicator {
             display: flex;
             align-items: center;
-            gap: 6px;
-            padding: 8px 0;
+            gap: 5px;
+            padding: 4px 0;
         }
         .typing-indicator span {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            background: #445577;
+            background: #222;
             animation: typing-bounce 1.4s infinite;
         }
         .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
         .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
 
         @keyframes typing-bounce {
-            0%, 60%, 100% { transform: translateY(0); opacity: 0.3; }
-            30% { transform: translateY(-8px); opacity: 1; }
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.2; }
+            30% { transform: translateY(-6px); opacity: 0.6; }
         }
 
         /* ============================================================
-           INPUT AREA
+           INPUT AREA - PRETA E MINIMALISTA
            ============================================================ */
         .input-area {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
             align-items: center;
         }
@@ -395,131 +380,132 @@
         .input-wrapper {
             flex: 1;
             position: relative;
-            min-width: 150px;
+            min-width: 140px;
         }
 
         .input-wrapper input {
             width: 100%;
-            padding: 16px 22px;
-            border-radius: 30px;
-            border: 1px solid rgba(100, 150, 255, 0.08);
-            background: rgba(255, 255, 255, 0.03);
-            color: #c0d0ff;
-            font-size: 0.9rem;
+            padding: 14px 20px;
+            border-radius: 25px;
+            border: 1px solid #141414;
+            background: #080808;
+            color: #aaa;
+            font-size: 0.85rem;
             outline: none;
-            transition: all 0.4s;
-            font-family: 'Segoe UI', sans-serif;
+            transition: all 0.3s;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 300;
         }
 
         .input-wrapper input::placeholder {
-            color: #334466;
+            color: #222;
             font-family: 'Orbitron', monospace;
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             letter-spacing: 1px;
         }
 
         .input-wrapper input:focus {
-            border-color: rgba(100, 180, 255, 0.2);
-            background: rgba(255, 255, 255, 0.06);
-            box-shadow: 0 0 30px rgba(50, 150, 255, 0.05);
+            border-color: #1a1a1a;
+            background: #0a0a0a;
         }
 
         .btn {
-            padding: 16px 28px;
+            padding: 14px 24px;
             border: none;
-            border-radius: 30px;
-            font-size: 0.75rem;
-            font-weight: 700;
+            border-radius: 25px;
+            font-size: 0.65rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             font-family: 'Orbitron', monospace;
             letter-spacing: 1px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            background: #0d0d0d;
+            color: #333;
+            border: 1px solid #141414;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, rgba(26, 115, 232, 0.8), rgba(13, 71, 161, 0.8));
-            color: #fff;
-            border: 1px solid rgba(100, 180, 255, 0.15);
-            box-shadow: 0 4px 25px rgba(26, 115, 232, 0.15);
+            background: #0d0d0d;
+            color: #666;
+            border: 1px solid #1a1a1a;
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 40px rgba(26, 115, 232, 0.3);
-            border-color: rgba(100, 180, 255, 0.3);
+            background: #111;
+            color: #888;
+            border-color: #222;
         }
 
         .btn-primary:disabled {
-            opacity: 0.4;
+            opacity: 0.3;
             cursor: not-allowed;
-            transform: none;
         }
 
         .btn-mic {
-            background: rgba(255, 255, 255, 0.04);
-            color: #6677aa;
-            border: 1px solid rgba(100, 150, 255, 0.06);
-            padding: 16px 20px;
-            font-size: 1.2rem;
+            background: #0a0a0a;
+            color: #333;
+            border: 1px solid #141414;
+            padding: 14px 18px;
+            font-size: 1rem;
         }
 
         .btn-mic:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(100, 150, 255, 0.15);
+            background: #0f0f0f;
+            border-color: #1a1a1a;
         }
 
         .btn-mic.listening {
-            background: rgba(244, 67, 54, 0.2);
-            border-color: rgba(244, 67, 54, 0.3);
-            color: #f44336;
+            background: #1a0a0a;
+            border-color: #ff3333;
+            color: #ff3333;
             animation: mic-pulse 1s infinite;
         }
 
         @keyframes mic-pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.2); }
-            50% { box-shadow: 0 0 0 15px rgba(244, 67, 54, 0); }
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 51, 51, 0.05); }
+            50% { box-shadow: 0 0 0 10px rgba(255, 51, 51, 0); }
         }
 
         /* ============================================================
            FOOTER
            ============================================================ */
         .footer {
-            margin-top: 20px;
+            margin-top: 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.5rem;
+            font-size: 0.45rem;
             font-family: 'Orbitron', monospace;
-            color: #223355;
+            color: #1a1a1a;
             letter-spacing: 0.5px;
         }
 
         .footer .stats span {
-            color: #4466aa;
-            margin: 0 4px;
+            color: #222;
+            margin: 0 3px;
         }
 
         .footer .stats .highlight {
-            color: #64b5f6;
+            color: #1a73e8;
+            opacity: 0.5;
         }
 
         /* ============================================================
            RESPONSIVIDADE
            ============================================================ */
         @media (max-width: 600px) {
-            .container { padding: 25px 18px; }
+            .container { padding: 20px 16px; }
             .sphere { width: 100px; height: 100px; }
             .sphere-rings { width: 130px; height: 130px; top: -15px; left: -15px; }
             .ring:nth-child(2) { width: 150px; height: 150px; top: -25px; left: -25px; }
             .ring:nth-child(3) { width: 115px; height: 115px; top: -7px; left: -7px; }
-            .logo-text { font-size: 1rem; }
-            .chat-box { min-height: 200px; max-height: 280px; padding: 15px; }
-            .btn { padding: 12px 18px; font-size: 0.6rem; }
-            .header { flex-wrap: wrap; gap: 10px; }
-            .status-indicator { font-size: 0.5rem; }
+            .logo-text { font-size: 0.9rem; letter-spacing: 2px; }
+            .chat-box { min-height: 180px; max-height: 250px; padding: 14px; }
+            .btn { padding: 12px 16px; font-size: 0.55rem; }
+            .header { flex-wrap: wrap; gap: 8px; }
         }
     </style>
 </head>
@@ -529,17 +515,17 @@
     <!-- CABEÇALHO -->
     <div class="header">
         <div class="logo-area">
-            <span class="logo-icon">⚡</span>
+            <span class="logo-icon">●</span>
             <span class="logo-text">J.A.R.V.I.S</span>
         </div>
-        <div class="status-indicator">
+        <div class="status-area">
             <span class="status-dot online" id="statusDot"></span>
-            <span id="statusText">CONECTADO</span>
+            <span class="status-text" id="statusText">ONLINE</span>
             <span class="model-badge" id="modelBadge">GPT-3.5</span>
         </div>
     </div>
 
-    <!-- ESFERA DE PLASMA -->
+    <!-- ESFERA -->
     <div class="sphere-container">
         <div class="sphere" id="sphere">
             <div class="sphere-liquid"></div>
@@ -556,8 +542,7 @@
     <div class="chat-box" id="chatBox">
         <div class="message bot">
             <div class="bubble">
-                ⚡ Sistema J.A.R.V.I.S ativado.<br />
-                Como posso ajudá-lo hoje, senhor?
+                Sistema J.A.R.V.I.S ativado.
                 <span class="timestamp">● INICIALIZADO</span>
             </div>
         </div>
@@ -568,17 +553,17 @@
         <div class="input-wrapper">
             <input type="text" id="userInput" placeholder="DIGITE SUA MENSAGEM..." />
         </div>
-        <button class="btn btn-primary" id="sendBtn">→ ENVIAR</button>
-        <button class="btn btn-mic" id="micBtn" title="Comando de voz">🎙</button>
+        <button class="btn btn-primary" id="sendBtn">→</button>
+        <button class="btn btn-mic" id="micBtn">🎙</button>
     </div>
 
     <!-- FOOTER -->
     <div class="footer">
         <div class="stats">
-            <span>●</span> <span class="highlight">200</span> CHAMADAS/DIA
+            <span>●</span> <span class="highlight">200</span> / DIA
         </div>
         <div class="stats">
-            <span>●</span> CHATANYWHERE <span>●</span> v2.0
+            <span>●</span> CHATANYWHERE
         </div>
     </div>
 </div>
@@ -592,9 +577,11 @@ const BASE_URL = "https://api.chatanywhere.tech/v1";
 const MODEL = "gpt-3.5-turbo";
 
 // ============================================================
-// CONFIGURAÇÃO DE VOZ
+// CONFIGURAÇÃO DE VOZ - MAIS GROSSA E RÁPIDA
 // ============================================================
-const SPEECH_RATE = 1.5;
+const SPEECH_RATE = 1.6;        // Rápido
+const SPEECH_PITCH = 0.6;       // <-- MAIS GROSSO (0.5 = mais grave, 1.0 = normal)
+const SPEECH_VOLUME = 1;
 
 // ============================================================
 // ELEMENTOS DOM
@@ -613,6 +600,7 @@ modelBadge.textContent = MODEL.toUpperCase();
 let isListening = false;
 let recognition = null;
 let isProcessing = false;
+let currentUtterance = null;
 
 // ============================================================
 // FUNÇÕES DA ESFERA
@@ -627,7 +615,6 @@ function setSphereState(state) {
 function setStatus(state, text) {
     statusDot.className = `status-dot ${state}`;
     statusText.textContent = text.toUpperCase();
-
     if (state === 'processing') {
         setSphereState('active');
     } else {
@@ -681,24 +668,49 @@ function hideTyping() {
 }
 
 // ============================================================
-// TEXTO-TO-SPEECH
+// TEXTO-TO-SPEECH - MAIS GROSSO E RÁPIDO
 // ============================================================
 function speakText(text) {
-    if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'pt-BR';
-        utterance.rate = SPEECH_RATE;
-        utterance.pitch = 1.0;
-        utterance.volume = 1;
+    if (!('speechSynthesis' in window)) return;
 
-        // Ativa a esfera enquanto fala
-        utterance.onstart = () => setSphereState('active');
-        utterance.onend = () => setSphereState('idle');
-        utterance.onerror = () => setSphereState('idle');
+    // Cancela qualquer fala anterior
+    window.speechSynthesis.cancel();
 
-        window.speechSynthesis.speak(utterance);
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'pt-BR';
+    utterance.rate = SPEECH_RATE;       // Mais rápido
+    utterance.pitch = SPEECH_PITCH;     // Mais grosso
+    utterance.volume = SPEECH_VOLUME;
+
+    // Tenta encontrar uma voz masculina e grave
+    const voices = window.speechSynthesis.getVoices();
+    // Prioriza vozes em português com tom mais grave
+    const preferredVoices = voices.filter(v => v.lang.startsWith('pt'));
+    if (preferredVoices.length > 0) {
+        // Pega a voz que parece mais grave (pitch mais baixo)
+        utterance.voice = preferredVoices[0];
     }
+
+    // Ativa a esfera enquanto fala
+    utterance.onstart = () => {
+        setSphereState('active');
+        setStatus('processing', 'Falando...');
+    };
+    utterance.onend = () => {
+        setSphereState('idle');
+        if (!isProcessing) {
+            setStatus('online', 'Online');
+        }
+    };
+    utterance.onerror = () => {
+        setSphereState('idle');
+        if (!isProcessing) {
+            setStatus('online', 'Online');
+        }
+    };
+
+    currentUtterance = utterance;
+    window.speechSynthesis.speak(utterance);
 }
 
 // ============================================================
@@ -722,7 +734,7 @@ async function sendMessageToAI(userMessage) {
             body: JSON.stringify({
                 model: MODEL,
                 messages: [
-                    { role: 'system', content: 'Você é o JARVIS, assistente pessoal inteligente e sofisticado. Responda de forma clara, direta e com um toque de elegância em português.' },
+                    { role: 'system', content: 'Você é o JARVIS, assistente pessoal. Seja direto, objetivo e formal. Responda em português.' },
                     { role: 'user', content: userMessage }
                 ],
                 max_tokens: 500,
@@ -741,7 +753,7 @@ async function sendMessageToAI(userMessage) {
         const reply = data.choices?.[0]?.message?.content || 'Desculpe, não consegui gerar uma resposta.';
 
         addMessage(reply, 'bot');
-        setStatus('online', 'Conectado');
+        setStatus('online', 'Online');
         speakText(reply);
 
     } catch (error) {
@@ -795,7 +807,7 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
         micBtn.classList.remove('listening');
         micBtn.textContent = '🎙';
         if (statusText.textContent === 'OUVINDO...') {
-            setStatus('online', 'Conectado');
+            setStatus('online', 'Online');
         }
     };
 
@@ -804,7 +816,7 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
         isListening = false;
         micBtn.classList.remove('listening');
         micBtn.textContent = '🎙';
-        setStatus('online', 'Conectado');
+        setStatus('online', 'Online');
         if (event.error === 'not-allowed') {
             addMessage('⚠️ Permita o acesso ao microfone.', 'bot');
         }
@@ -833,6 +845,17 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
 }
 
 // ============================================================
+// CARREGA VOZES DISPONÍVEIS
+// ============================================================
+if ('speechSynthesis' in window) {
+    // Força o carregamento das vozes
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+    };
+}
+
+// ============================================================
 // TESTE DE CONEXÃO
 // ============================================================
 async function testConnection() {
@@ -841,7 +864,7 @@ async function testConnection() {
             headers: { 'Authorization': `Bearer ${API_KEY}` }
         });
         if (response.ok) {
-            setStatus('online', 'Conectado');
+            setStatus('online', 'Online');
             console.log('✅ API Key válida!');
         } else {
             setStatus('offline', 'Falha na chave');
@@ -854,8 +877,8 @@ async function testConnection() {
 }
 testConnection();
 
-console.log('🚀 J.A.R.V.I.S iniciado com sucesso!');
-console.log(`📦 Modelo: ${MODEL} | Velocidade: ${SPEECH_RATE}x`);
+console.log('🚀 J.A.R.V.I.S iniciado');
+console.log(`📦 Modelo: ${MODEL} | Velocidade: ${SPEECH_RATE}x | Tom: ${SPEECH_PITCH}`);
 </script>
 </body>
 </html>
