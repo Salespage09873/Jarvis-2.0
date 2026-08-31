@@ -26,9 +26,6 @@
             padding: 20px;
         }
 
-        /* ============================================================
-           CONTAINER PRINCIPAL
-           ============================================================ */
         .container {
             background: #0d0d0d;
             border-radius: 24px;
@@ -52,9 +49,6 @@
             border-radius: 2px;
         }
 
-        /* ============================================================
-           CABEÇALHO
-           ============================================================ */
         .header {
             display: flex;
             justify-content: space-between;
@@ -129,9 +123,6 @@
             border: 1px solid #1a1a1a;
         }
 
-        /* ============================================================
-           ESFERA - AZUL VIBRANTE E VISÍVEL
-           ============================================================ */
         .sphere-container {
             display: flex;
             justify-content: center;
@@ -145,17 +136,12 @@
             height: 150px;
             border-radius: 50%;
             background: radial-gradient(circle at 35% 30%, rgba(79, 195, 247, 0.25), rgba(30, 100, 200, 0.1));
-            box-shadow:
-                0 0 60px rgba(79, 195, 247, 0.15),
-                0 0 120px rgba(79, 195, 247, 0.05),
-                inset 0 -30px 60px rgba(0, 0, 0, 0.6),
-                inset 0 20px 40px rgba(79, 195, 247, 0.1);
+            box-shadow: 0 0 60px rgba(79, 195, 247, 0.15), 0 0 120px rgba(79, 195, 247, 0.05), inset 0 -30px 60px rgba(0, 0, 0, 0.6), inset 0 20px 40px rgba(79, 195, 247, 0.1);
             position: relative;
             transition: all 0.6s ease;
             border: 2px solid rgba(79, 195, 247, 0.3);
         }
 
-        /* Líquido interno - azul vibrante */
         .sphere-liquid {
             width: 100%;
             height: 100%;
@@ -172,10 +158,7 @@
             height: 200%;
             top: -50%;
             left: -50%;
-            background:
-                radial-gradient(circle at 30% 40%, rgba(79, 195, 247, 0.2), transparent 50%),
-                radial-gradient(circle at 70% 60%, rgba(50, 150, 255, 0.15), transparent 40%),
-                radial-gradient(circle at 50% 80%, rgba(100, 200, 255, 0.1), transparent 30%);
+            background: radial-gradient(circle at 30% 40%, rgba(79, 195, 247, 0.2), transparent 50%), radial-gradient(circle at 70% 60%, rgba(50, 150, 255, 0.15), transparent 40%), radial-gradient(circle at 50% 80%, rgba(100, 200, 255, 0.1), transparent 30%);
             animation: liquid-move 10s ease-in-out infinite alternate;
         }
 
@@ -201,7 +184,6 @@
             100% { transform: translate(10%, -10%) rotate(-5deg) scale(1.05); }
         }
 
-        /* Brilho superior */
         .sphere-shine {
             position: absolute;
             top: 8%;
@@ -215,7 +197,6 @@
             filter: blur(2px);
         }
 
-        /* Anéis orbitais - azul visível */
         .sphere-rings {
             position: absolute;
             width: 190px;
@@ -233,39 +214,17 @@
             animation: ring-rotate 25s linear infinite;
         }
 
-        .ring:nth-child(1) {
-            animation-duration: 18s;
-            border: 1px solid rgba(79, 195, 247, 0.15);
-        }
-        .ring:nth-child(2) {
-            width: 210px;
-            height: 210px;
-            top: -30px;
-            left: -30px;
-            animation-duration: 28s;
-            animation-direction: reverse;
-            border: 1px solid rgba(79, 195, 247, 0.08);
-        }
-        .ring:nth-child(3) {
-            width: 170px;
-            height: 170px;
-            top: -10px;
-            left: -10px;
-            animation-duration: 22s;
-            border: 1px dashed rgba(79, 195, 247, 0.06);
-        }
+        .ring:nth-child(1) { animation-duration: 18s; border: 1px solid rgba(79, 195, 247, 0.15); }
+        .ring:nth-child(2) { width: 210px; height: 210px; top: -30px; left: -30px; animation-duration: 28s; animation-direction: reverse; border: 1px solid rgba(79, 195, 247, 0.08); }
+        .ring:nth-child(3) { width: 170px; height: 170px; top: -10px; left: -10px; animation-duration: 22s; border: 1px dashed rgba(79, 195, 247, 0.06); }
 
         @keyframes ring-rotate {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
-        /* Estado ATIVO - brilho intenso */
         .sphere.active {
-            box-shadow:
-                0 0 80px rgba(79, 195, 247, 0.3),
-                0 0 160px rgba(79, 195, 247, 0.1),
-                inset 0 0 60px rgba(79, 195, 247, 0.1);
+            box-shadow: 0 0 80px rgba(79, 195, 247, 0.3), 0 0 160px rgba(79, 195, 247, 0.1), inset 0 0 60px rgba(79, 195, 247, 0.1);
             border-color: rgba(79, 195, 247, 0.6);
             animation: sphere-pulse 1.5s ease-in-out infinite;
         }
@@ -280,9 +239,6 @@
             50% { transform: scale(1.03); }
         }
 
-        /* ============================================================
-           CHAT BOX
-           ============================================================ */
         .chat-box {
             background: #080808;
             border-radius: 16px;
@@ -346,9 +302,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* ============================================================
-           TYPING INDICATOR
-           ============================================================ */
         .typing-indicator {
             display: flex;
             align-items: center;
@@ -370,9 +323,6 @@
             30% { transform: translateY(-6px); opacity: 0.8; }
         }
 
-        /* ============================================================
-           INPUT AREA
-           ============================================================ */
         .input-area {
             display: flex;
             gap: 10px;
@@ -472,9 +422,6 @@
             50% { box-shadow: 0 0 0 12px rgba(79, 195, 247, 0); }
         }
 
-        /* ============================================================
-           FOOTER
-           ============================================================ */
         .footer {
             margin-top: 18px;
             display: flex;
@@ -496,9 +443,6 @@
             opacity: 0.6;
         }
 
-        /* ============================================================
-           RESPONSIVIDADE
-           ============================================================ */
         @media (max-width: 600px) {
             .container { padding: 20px 16px; }
             .sphere { width: 120px; height: 120px; }
@@ -515,7 +459,6 @@
 <body>
 
 <div class="container">
-    <!-- CABEÇALHO -->
     <div class="header">
         <div class="logo-area">
             <span class="logo-icon">◆</span>
@@ -528,7 +471,6 @@
         </div>
     </div>
 
-    <!-- ESFERA -->
     <div class="sphere-container">
         <div class="sphere" id="sphere">
             <div class="sphere-liquid"></div>
@@ -541,17 +483,15 @@
         </div>
     </div>
 
-    <!-- CHAT -->
     <div class="chat-box" id="chatBox">
         <div class="message bot">
             <div class="bubble">
-                Sistema J.A.R.V.I.S ativado.
+                Sistema J.A.R.V.I.S ativado. Como posso auxiliá-lo, senhor?
                 <span class="timestamp">● INICIALIZADO</span>
             </div>
         </div>
     </div>
 
-    <!-- INPUT -->
     <div class="input-area">
         <div class="input-wrapper">
             <input type="text" id="userInput" placeholder="DIGITE SUA MENSAGEM..." />
@@ -560,7 +500,6 @@
         <button class="btn btn-mic" id="micBtn">🎙</button>
     </div>
 
-    <!-- FOOTER -->
     <div class="footer">
         <div class="stats">
             <span>●</span> <span class="highlight">200</span> / DIA
@@ -580,11 +519,16 @@ const BASE_URL = "https://api.chatanywhere.tech/v1";
 const MODEL = "gpt-3.5-turbo";
 
 // ============================================================
-// CONFIGURAÇÃO DE VOZ - MAIS GROSSA E RÁPIDA
+// CONFIGURAÇÃO DE VOZ - MAIS GROSSA
 // ============================================================
 const SPEECH_RATE = 1.6;
-const SPEECH_PITCH = 0.6;
+const SPEECH_PITCH = 0.4;
 const SPEECH_VOLUME = 1;
+
+// ============================================================
+// HISTÓRICO DA CONVERSA
+// ============================================================
+const conversationHistory = [];
 
 // ============================================================
 // ELEMENTOS DOM
@@ -671,12 +615,28 @@ function hideTyping() {
 }
 
 // ============================================================
-// TEXTO-TO-SPEECH - MAIS GROSSO E RÁPIDO
+// TEXTO-TO-SPEECH - CORRIGIDO PARA CELULAR
 // ============================================================
 function speakText(text) {
-    if (!('speechSynthesis' in window)) return;
+    if (!('speechSynthesis' in window)) {
+        console.warn('❌ SpeechSynthesis não suportado neste navegador');
+        return;
+    }
 
+    // Cancela qualquer fala anterior
     window.speechSynthesis.cancel();
+
+    // Verifica se o navegador está pronto (especialmente no celular)
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length === 0) {
+        // Se não tiver vozes carregadas, espera carregar e tenta novamente
+        console.warn('⏳ Vozes não carregadas. Aguardando...');
+        window.speechSynthesis.onvoiceschanged = () => {
+            console.log('✅ Vozes carregadas, tentando falar novamente');
+            speakText(text);
+        };
+        return;
+    }
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'pt-BR';
@@ -684,23 +644,31 @@ function speakText(text) {
     utterance.pitch = SPEECH_PITCH;
     utterance.volume = SPEECH_VOLUME;
 
-    const voices = window.speechSynthesis.getVoices();
-    const preferredVoices = voices.filter(v => v.lang.startsWith('pt'));
-    if (preferredVoices.length > 0) {
-        utterance.voice = preferredVoices[0];
+    // Tenta usar uma voz em português
+    const ptVoices = voices.filter(v => v.lang.startsWith('pt'));
+    if (ptVoices.length > 0) {
+        // Escolhe a voz que parece mais masculina (pitch mais baixo)
+        utterance.voice = ptVoices[0];
+    } else if (voices.length > 0) {
+        utterance.voice = voices[0];
     }
 
     utterance.onstart = () => {
+        console.log('🗣️ JARVIS começou a falar');
         setSphereState('active');
         setStatus('processing', 'Falando...');
     };
+
     utterance.onend = () => {
+        console.log('✅ JARVIS terminou de falar');
         setSphereState('idle');
         if (!isProcessing) {
             setStatus('online', 'Online');
         }
     };
-    utterance.onerror = () => {
+
+    utterance.onerror = (event) => {
+        console.warn('⚠️ Erro na síntese de voz:', event.error);
         setSphereState('idle');
         if (!isProcessing) {
             setStatus('online', 'Online');
@@ -708,7 +676,38 @@ function speakText(text) {
     };
 
     currentUtterance = utterance;
-    window.speechSynthesis.speak(utterance);
+
+    // NO CELULAR: precisa de interação do usuário para tocar
+    // O áudio só vai tocar se for chamado após um clique/toque
+    try {
+        window.speechSynthesis.speak(utterance);
+    } catch (e) {
+        console.warn('⚠️ Erro ao tentar falar:', e);
+        setSphereState('idle');
+        setStatus('online', 'Online');
+    }
+}
+
+// ============================================================
+// FORÇA O CARREGAMENTO DAS VOZES NO CELULAR
+// ============================================================
+function ensureVoicesLoaded() {
+    if (!('speechSynthesis' in window)) return false;
+
+    // No celular, as vozes podem demorar a carregar
+    // Chamar getVoices() uma vez força o navegador a carregar
+    const voices = window.speechSynthesis.getVoices();
+
+    if (voices.length === 0) {
+        // Se não carregou, espera o evento
+        window.speechSynthesis.onvoiceschanged = () => {
+            console.log('✅ Vozes carregadas com sucesso!');
+        };
+        return false;
+    }
+
+    console.log(`✅ ${voices.length} vozes disponíveis`);
+    return true;
 }
 
 // ============================================================
@@ -723,6 +722,24 @@ async function sendMessageToAI(userMessage) {
         showTyping();
         setStatus('processing', 'Processando...');
 
+        conversationHistory.push({ role: 'user', content: userMessage });
+
+        const systemPrompt = `Você é o JARVIS, um assistente de IA extremamente inteligente, criado por Tony Stark. 
+        Você é formal, preciso, analítico e direto. Suas respostas devem ser:
+        - Inteligentes e bem fundamentadas
+        - Claras e objetivas
+        - Com um tom profissional
+        - Sempre em português
+        - Use sua memória do contexto para respostas mais coerentes
+        
+        Você tem acesso a todo o conhecimento geral e é especialista em tecnologia, física, engenharia e ciência.
+        Seja útil, proativo e ofereça insights valiosos.`;
+
+        const messages = [
+            { role: 'system', content: systemPrompt },
+            ...conversationHistory
+        ];
+
         const response = await fetch(`${BASE_URL}/chat/completions`, {
             method: 'POST',
             headers: {
@@ -731,12 +748,10 @@ async function sendMessageToAI(userMessage) {
             },
             body: JSON.stringify({
                 model: MODEL,
-                messages: [
-                    { role: 'system', content: 'Você é o JARVIS, assistente pessoal. Seja direto, objetivo e formal. Responda em português.' },
-                    { role: 'user', content: userMessage }
-                ],
-                max_tokens: 500,
-                temperature: 0.7
+                messages: messages,
+                max_tokens: 800,
+                temperature: 0.5,
+                top_p: 0.9
             })
         });
 
@@ -750,9 +765,19 @@ async function sendMessageToAI(userMessage) {
         const data = await response.json();
         const reply = data.choices?.[0]?.message?.content || 'Desculpe, não consegui gerar uma resposta.';
 
+        conversationHistory.push({ role: 'assistant', content: reply });
+
+        if (conversationHistory.length > 20) {
+            conversationHistory.splice(0, 2);
+        }
+
         addMessage(reply, 'bot');
         setStatus('online', 'Online');
-        speakText(reply);
+
+        // NO CELULAR: A fala precisa ser acionada após o clique do usuário
+        // Como o usuário clicou em "Enviar" ou falou no microfone, isso já é uma interação válida
+        ensureVoicesLoaded();
+        setTimeout(() => speakText(reply), 300);
 
     } catch (error) {
         hideTyping();
@@ -775,6 +800,9 @@ function handleSend() {
     addMessage(text, 'user');
     userInput.value = '';
     userInput.focus();
+
+    // Garante que as vozes estão carregadas antes de enviar
+    ensureVoicesLoaded();
     sendMessageToAI(text);
 }
 
@@ -823,6 +851,8 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript;
         userInput.value = transcript;
+        // Envia automaticamente após ouvir
+        ensureVoicesLoaded();
         setTimeout(() => handleSend(), 300);
     };
 
@@ -832,6 +862,7 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             return;
         }
         try {
+            // No celular, o microfone só funciona se o usuário clicou
             recognition.start();
         } catch (e) {
             console.warn('Erro ao iniciar microfone:', e);
@@ -840,16 +871,35 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
 
 } else {
     micBtn.style.display = 'none';
+    console.warn('❌ Reconhecimento de voz não suportado');
 }
 
 // ============================================================
-// CARREGA VOZES DISPONÍVEIS
+// INICIALIZAÇÃO - CARREGA VOZES NO CELULAR
 // ============================================================
-if ('speechSynthesis' in window) {
-    window.speechSynthesis.getVoices();
-    window.speechSynthesis.onvoiceschanged = () => {
+function init() {
+    // Força o carregamento das vozes desde o início
+    if ('speechSynthesis' in window) {
+        // Primeira tentativa
         window.speechSynthesis.getVoices();
-    };
+
+        // Aguarda o evento de carregamento
+        window.speechSynthesis.onvoiceschanged = () => {
+            const voices = window.speechSynthesis.getVoices();
+            console.log(`✅ Vozes carregadas: ${voices.length} vozes disponíveis`);
+        };
+
+        // Fallback: tenta recarregar após 2 segundos
+        setTimeout(() => {
+            const voices = window.speechSynthesis.getVoices();
+            if (voices.length === 0) {
+                console.warn('⚠️ Nenhuma voz encontrada. Pode ser necessário interagir com a página.');
+            }
+        }, 2000);
+    }
+
+    // Teste de conexão com a API
+    testConnection();
 }
 
 // ============================================================
@@ -872,10 +922,14 @@ async function testConnection() {
         console.warn('⚠️ Não foi possível conectar');
     }
 }
-testConnection();
+
+// Inicializa o sistema
+init();
 
 console.log('🚀 J.A.R.V.I.S iniciado');
-console.log(`📦 Modelo: ${MODEL} | Velocidade: ${SPEECH_RATE}x | Tom: ${SPEECH_PITCH}`);
+console.log(`📦 Modelo: ${MODEL} | Velocidade: ${SPEECH_RATE}x | Tom: ${SPEECH_PITCH} (MAIS GROSSO)`);
+console.log('🧠 Sistema com personalidade JARVIS e contexto persistente');
+console.log('📱 Modo celular: corrigido para falar automaticamente');
 </script>
 </body>
 </html>
