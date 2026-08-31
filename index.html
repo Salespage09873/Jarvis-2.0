@@ -14,27 +14,49 @@
             box-sizing: border-box;
         }
 
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&display=swap');
 
         body {
             font-family: 'Rajdhani', 'Segoe UI', sans-serif;
-            background: #0a0a0a;
+            background: #010a0f; /* Fundo azul quase preto */
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Fundo com Grade de Circuitos (Estilo HUD) */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            animation: gridMove 15s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes gridMove {
+            from { background-position: 0 0; }
+            to { background-position: 40px 40px; }
         }
 
         .container {
-            background: #0d0d0d;
+            background: rgba(5, 15, 20, 0.85);
             border-radius: 24px;
             padding: 35px 40px 30px;
             max-width: 780px;
             width: 100%;
-            border: 1px solid #1a1a1a;
-            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.9), inset 0 0 80px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.2), inset 0 0 30px rgba(0, 240, 255, 0.05);
             position: relative;
+            backdrop-filter: blur(10px);
         }
 
         .container::before {
@@ -43,10 +65,10 @@
             top: -1px;
             left: 20%;
             right: 20%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #4fc3f7, transparent);
-            opacity: 0.4;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #00f0ff, transparent);
             border-radius: 2px;
+            box-shadow: 0 0 20px #00f0ff;
         }
 
         .header {
@@ -55,7 +77,7 @@
             align-items: center;
             margin-bottom: 28px;
             padding-bottom: 14px;
-            border-bottom: 1px solid #141414;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
         }
 
         .logo-area {
@@ -66,19 +88,21 @@
 
         .logo-icon {
             font-size: 1.4rem;
-            color: #4fc3f7;
+            color: #00f0ff;
+            text-shadow: 0 0 10px #00f0ff;
         }
 
         .logo-text {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 700;
             font-family: 'Orbitron', monospace;
-            color: #e0e0e0;
-            letter-spacing: 4px;
+            color: #ffffff;
+            letter-spacing: 6px;
+            text-shadow: 0 0 15px rgba(0, 240, 255, 0.8);
         }
 
         .logo-text span {
-            color: #4fc3f7;
+            color: #00f0ff;
             font-weight: 300;
         }
 
@@ -89,7 +113,7 @@
             font-size: 0.55rem;
             font-family: 'Orbitron', monospace;
             letter-spacing: 1px;
-            color: #333;
+            color: #00f0ff;
         }
 
         .status-dot {
@@ -99,28 +123,31 @@
             display: inline-block;
             transition: all 0.3s;
         }
-        .status-dot.online { background: #4fc3f7; box-shadow: 0 0 15px rgba(79, 195, 247, 0.4); }
-        .status-dot.offline { background: #ff3333; box-shadow: 0 0 15px rgba(255, 51, 51, 0.3); }
-        .status-dot.processing { background: #4fc3f7; box-shadow: 0 0 30px rgba(79, 195, 247, 0.6); animation: dot-pulse 0.8s infinite; }
+        
+        .status-dot.online { background: #00f0ff; box-shadow: 0 0 15px #00f0ff, 0 0 30px #00f0ff; animation: dot-pulse 2s infinite; }
+        .status-dot.offline { background: #ff3333; box-shadow: 0 0 15px #ff3333; }
+        .status-dot.processing { background: #00f0ff; box-shadow: 0 0 30px #00f0ff; animation: dot-pulse 0.8s infinite; }
 
         @keyframes dot-pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.5); }
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.7; }
         }
 
         .status-text {
-            color: #555;
+            color: #00f0ff;
             font-size: 0.5rem;
+            text-shadow: 0 0 5px #00f0ff;
         }
 
         .model-badge {
-            background: #111;
+            background: rgba(0, 240, 255, 0.1);
             padding: 3px 12px;
             border-radius: 12px;
-            color: #444;
+            color: #00f0ff;
             font-size: 0.5rem;
             letter-spacing: 1px;
-            border: 1px solid #1a1a1a;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.2);
         }
 
         .sphere-container {
@@ -131,15 +158,18 @@
             position: relative;
         }
 
+        /* ============================================================
+           ESFERA J.A.R.V.I.S. ESTILO RADAR
+           ============================================================ */
         .sphere {
             width: 150px;
             height: 150px;
             border-radius: 50%;
-            background: radial-gradient(circle at 35% 30%, rgba(79, 195, 247, 0.25), rgba(30, 100, 200, 0.1));
-            box-shadow: 0 0 60px rgba(79, 195, 247, 0.15), 0 0 120px rgba(79, 195, 247, 0.05), inset 0 -30px 60px rgba(0, 0, 0, 0.6), inset 0 20px 40px rgba(79, 195, 247, 0.1);
+            background: radial-gradient(circle at 35% 30%, rgba(0, 240, 255, 0.4), rgba(0, 100, 200, 0.1));
+            box-shadow: 0 0 60px rgba(0, 240, 255, 0.4), 0 0 120px rgba(0, 240, 255, 0.2), inset 0 -30px 60px rgba(0, 0, 0, 0.8), inset 0 20px 40px rgba(0, 240, 255, 0.2);
             position: relative;
             transition: all 0.6s ease;
-            border: 2px solid rgba(79, 195, 247, 0.3);
+            border: 2px solid rgba(0, 240, 255, 0.6);
         }
 
         .sphere-liquid {
@@ -148,7 +178,6 @@
             border-radius: 50%;
             position: relative;
             overflow: hidden;
-            background: radial-gradient(circle at 30% 30%, rgba(79, 195, 247, 0.15), rgba(30, 100, 200, 0.05));
         }
 
         .sphere-liquid::before {
@@ -158,19 +187,10 @@
             height: 200%;
             top: -50%;
             left: -50%;
-            background: radial-gradient(circle at 30% 40%, rgba(79, 195, 247, 0.2), transparent 50%), radial-gradient(circle at 70% 60%, rgba(50, 150, 255, 0.15), transparent 40%), radial-gradient(circle at 50% 80%, rgba(100, 200, 255, 0.1), transparent 30%);
+            background: radial-gradient(circle at 30% 40%, rgba(0, 240, 255, 0.4), transparent 50%), 
+                        radial-gradient(circle at 70% 60%, rgba(50, 150, 255, 0.3), transparent 40%), 
+                        radial-gradient(circle at 50% 80%, rgba(100, 200, 255, 0.2), transparent 30%);
             animation: liquid-move 10s ease-in-out infinite alternate;
-        }
-
-        .sphere-liquid::after {
-            content: '';
-            position: absolute;
-            width: 150%;
-            height: 150%;
-            top: -25%;
-            left: -25%;
-            background: radial-gradient(circle at 60% 20%, rgba(79, 195, 247, 0.1), transparent 40%);
-            animation: liquid-move-alt 7s ease-in-out infinite alternate;
         }
 
         @keyframes liquid-move {
@@ -179,24 +199,21 @@
             100% { transform: translate(-5%, 10%) rotate(-3deg) scale(0.98); }
         }
 
-        @keyframes liquid-move-alt {
-            0% { transform: translate(-5%, 10%) rotate(0deg) scale(1); }
-            100% { transform: translate(10%, -10%) rotate(-5deg) scale(1.05); }
-        }
-
         .sphere-shine {
             position: absolute;
             top: 8%;
             left: 18%;
             width: 35%;
             height: 20%;
-            background: radial-gradient(ellipse, rgba(255, 255, 255, 0.15), transparent 70%);
+            background: radial-gradient(ellipse, rgba(255, 255, 255, 0.5), transparent 70%);
             border-radius: 50%;
             transform: rotate(-30deg);
             pointer-events: none;
             filter: blur(2px);
+            z-index: 2;
         }
 
+        /* Anéis de Radar (Os famosos "círculos" do JARVIS) */
         .sphere-rings {
             position: absolute;
             width: 190px;
@@ -212,11 +229,25 @@
             height: 100%;
             border-radius: 50%;
             animation: ring-rotate 25s linear infinite;
+            border: 1px solid rgba(0, 240, 255, 0.5);
         }
 
-        .ring:nth-child(1) { animation-duration: 18s; border: 1px solid rgba(79, 195, 247, 0.15); }
-        .ring:nth-child(2) { width: 210px; height: 210px; top: -30px; left: -30px; animation-duration: 28s; animation-direction: reverse; border: 1px solid rgba(79, 195, 247, 0.08); }
-        .ring:nth-child(3) { width: 170px; height: 170px; top: -10px; left: -10px; animation-duration: 22s; border: 1px dashed rgba(79, 195, 247, 0.06); }
+        .ring::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: #00f0ff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00f0ff;
+            transform: translate(-50%, -50%);
+        }
+
+        .ring:nth-child(1) { animation-duration: 5s; border: 1px solid rgba(0, 240, 255, 0.7); }
+        .ring:nth-child(2) { width: 220px; height: 220px; top: -35px; left: -35px; animation-duration: 8s; animation-direction: reverse; border: 1px dashed rgba(0, 240, 255, 0.4); }
+        .ring:nth-child(3) { width: 170px; height: 170px; top: -10px; left: -10px; animation-duration: 12s; border: 1px dotted rgba(0, 240, 255, 0.3); }
 
         @keyframes ring-rotate {
             0% { transform: rotate(0deg); }
@@ -224,35 +255,33 @@
         }
 
         .sphere.active {
-            box-shadow: 0 0 80px rgba(79, 195, 247, 0.3), 0 0 160px rgba(79, 195, 247, 0.1), inset 0 0 60px rgba(79, 195, 247, 0.1);
-            border-color: rgba(79, 195, 247, 0.6);
-            animation: sphere-pulse 1.5s ease-in-out infinite;
-        }
-
-        .sphere.active .sphere-liquid::before {
-            animation-duration: 2s;
-            animation-timing-function: ease-in-out;
+            box-shadow: 0 0 100px rgba(0, 240, 255, 0.6), inset 0 0 60px rgba(0, 240, 255, 0.2);
+            animation: sphere-pulse 1s ease-in-out infinite;
         }
 
         @keyframes sphere-pulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.03); }
+            50% { transform: scale(1.05); }
         }
 
+        /* ============================================================
+           CHAT E INTERAÇÃO
+           ============================================================ */
         .chat-box {
-            background: #080808;
+            background: rgba(0, 10, 15, 0.9);
             border-radius: 16px;
             padding: 18px 20px;
             min-height: 260px;
             max-height: 350px;
             overflow-y: auto;
             margin-bottom: 18px;
-            border: 1px solid #111;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            box-shadow: inset 0 0 30px rgba(0, 240, 255, 0.05);
         }
 
-        .chat-box::-webkit-scrollbar { width: 3px; }
-        .chat-box::-webkit-scrollbar-track { background: #0a0a0a; }
-        .chat-box::-webkit-scrollbar-thumb { background: rgba(79, 195, 247, 0.2); border-radius: 10px; }
+        .chat-box::-webkit-scrollbar { width: 4px; }
+        .chat-box::-webkit-scrollbar-track { background: #010a0f; }
+        .chat-box::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.4); border-radius: 10px; box-shadow: 0 0 5px #00f0ff; }
 
         .message {
             display: flex;
@@ -271,31 +300,32 @@
             max-width: 80%;
             padding: 10px 18px;
             border-radius: 14px;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             line-height: 1.6;
             word-wrap: break-word;
             font-family: 'Rajdhani', sans-serif;
-            font-weight: 400;
+            font-weight: 500;
             letter-spacing: 0.2px;
         }
 
         .user .bubble {
-            background: #121212;
-            color: #ccc;
+            background: rgba(0, 240, 255, 0.1);
+            color: #ffffff;
             border-bottom-right-radius: 3px;
-            border: 1px solid #1a1a1a;
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.1);
         }
 
         .bot .bubble {
-            background: #0a0a0a;
-            color: #aaa;
+            background: rgba(0, 0, 0, 0.5);
+            color: #ccffff;
             border-bottom-left-radius: 3px;
-            border: 1px solid #111;
+            border: 1px solid rgba(0, 240, 255, 0.2);
         }
 
         .bot .bubble .timestamp {
             font-size: 0.5rem;
-            color: #222;
+            color: rgba(0, 240, 255, 0.6);
             display: block;
             margin-top: 4px;
             font-family: 'Orbitron', monospace;
@@ -312,7 +342,8 @@
             width: 6px;
             height: 6px;
             border-radius: 50%;
-            background: rgba(79, 195, 247, 0.3);
+            background: #00f0ff;
+            box-shadow: 0 0 10px #00f0ff;
             animation: typing-bounce 1.4s infinite;
         }
         .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
@@ -320,7 +351,7 @@
 
         @keyframes typing-bounce {
             0%, 60%, 100% { transform: translateY(0); opacity: 0.2; }
-            30% { transform: translateY(-6px); opacity: 0.8; }
+            30% { transform: translateY(-6px); opacity: 1; }
         }
 
         .input-area {
@@ -340,26 +371,26 @@
             width: 100%;
             padding: 14px 20px;
             border-radius: 25px;
-            border: 1px solid #141414;
-            background: #080808;
-            color: #aaa;
-            font-size: 0.85rem;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            background: rgba(0, 10, 15, 0.8);
+            color: #00f0ff;
+            font-size: 0.9rem;
             outline: none;
             transition: all 0.3s;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 300;
+            font-family: 'Share Tech Mono', monospace;
+            box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1);
         }
 
         .input-wrapper input::placeholder {
-            color: #222;
+            color: rgba(0, 240, 255, 0.4);
             font-family: 'Orbitron', monospace;
-            font-size: 0.55rem;
-            letter-spacing: 1px;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
         }
 
         .input-wrapper input:focus {
-            border-color: rgba(79, 195, 247, 0.15);
-            background: #0a0a0a;
+            border-color: #00f0ff;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4), inset 0 0 10px rgba(0, 240, 255, 0.2);
         }
 
         .btn {
@@ -375,51 +406,35 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            background: #0d0d0d;
-            color: #333;
-            border: 1px solid #141414;
+            background: rgba(0, 240, 255, 0.1);
+            color: #00f0ff;
+            border: 1px solid rgba(0, 240, 255, 0.4);
         }
 
-        .btn-primary {
-            background: #0d0d0d;
-            color: #666;
-            border: 1px solid #1a1a1a;
+        .btn:hover {
+            background: rgba(0, 240, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
         }
 
-        .btn-primary:hover {
-            background: #111;
-            color: #4fc3f7;
-            border-color: rgba(79, 195, 247, 0.15);
-        }
-
-        .btn-primary:disabled {
+        .btn:disabled {
             opacity: 0.3;
             cursor: not-allowed;
         }
 
         .btn-mic {
-            background: #0a0a0a;
-            color: #333;
-            border: 1px solid #141414;
             padding: 14px 18px;
             font-size: 1rem;
         }
 
-        .btn-mic:hover {
-            background: #0f0f0f;
-            border-color: rgba(79, 195, 247, 0.1);
-        }
-
         .btn-mic.listening {
-            background: #0a0a0a;
-            border-color: #4fc3f7;
-            color: #4fc3f7;
+            border-color: #00f0ff;
+            background: rgba(0, 240, 255, 0.4);
             animation: mic-pulse 1s infinite;
         }
 
         @keyframes mic-pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(79, 195, 247, 0.1); }
-            50% { box-shadow: 0 0 0 12px rgba(79, 195, 247, 0); }
+            0%, 100% { box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.4); }
+            50% { box-shadow: 0 0 0 12px rgba(0, 240, 255, 0); }
         }
 
         .footer {
@@ -427,20 +442,20 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.45rem;
+            font-size: 0.5rem;
             font-family: 'Orbitron', monospace;
-            color: #1a1a1a;
+            color: rgba(0, 240, 255, 0.5);
             letter-spacing: 0.5px;
         }
 
         .footer .stats span {
-            color: #222;
+            color: rgba(0, 240, 255, 0.4);
             margin: 0 3px;
         }
 
         .footer .stats .highlight {
-            color: #4fc3f7;
-            opacity: 0.6;
+            color: #00f0ff;
+            text-shadow: 0 0 5px #00f0ff;
         }
 
         @media (max-width: 600px) {
@@ -449,7 +464,7 @@
             .sphere-rings { width: 150px; height: 150px; top: -15px; left: -15px; }
             .ring:nth-child(2) { width: 170px; height: 170px; top: -25px; left: -25px; }
             .ring:nth-child(3) { width: 135px; height: 135px; top: -7px; left: -7px; }
-            .logo-text { font-size: 0.9rem; letter-spacing: 2px; }
+            .logo-text { font-size: 1rem; letter-spacing: 3px; }
             .chat-box { min-height: 180px; max-height: 250px; padding: 14px; }
             .btn { padding: 12px 16px; font-size: 0.55rem; }
             .header { flex-wrap: wrap; gap: 8px; }
@@ -623,16 +638,12 @@ function speakText(text) {
         return;
     }
 
-    // Cancela qualquer fala anterior
     window.speechSynthesis.cancel();
 
-    // Verifica se o navegador está pronto (especialmente no celular)
     const voices = window.speechSynthesis.getVoices();
     if (voices.length === 0) {
-        // Se não tiver vozes carregadas, espera carregar e tenta novamente
         console.warn('⏳ Vozes não carregadas. Aguardando...');
         window.speechSynthesis.onvoiceschanged = () => {
-            console.log('✅ Vozes carregadas, tentando falar novamente');
             speakText(text);
         };
         return;
@@ -644,45 +655,32 @@ function speakText(text) {
     utterance.pitch = SPEECH_PITCH;
     utterance.volume = SPEECH_VOLUME;
 
-    // Tenta usar uma voz em português
     const ptVoices = voices.filter(v => v.lang.startsWith('pt'));
     if (ptVoices.length > 0) {
-        // Escolhe a voz que parece mais masculina (pitch mais baixo)
         utterance.voice = ptVoices[0];
     } else if (voices.length > 0) {
         utterance.voice = voices[0];
     }
 
     utterance.onstart = () => {
-        console.log('🗣️ JARVIS começou a falar');
         setSphereState('active');
         setStatus('processing', 'Falando...');
     };
 
     utterance.onend = () => {
-        console.log('✅ JARVIS terminou de falar');
         setSphereState('idle');
-        if (!isProcessing) {
-            setStatus('online', 'Online');
-        }
+        if (!isProcessing) setStatus('online', 'Online');
     };
 
     utterance.onerror = (event) => {
-        console.warn('⚠️ Erro na síntese de voz:', event.error);
         setSphereState('idle');
-        if (!isProcessing) {
-            setStatus('online', 'Online');
-        }
+        if (!isProcessing) setStatus('online', 'Online');
     };
 
     currentUtterance = utterance;
-
-    // NO CELULAR: precisa de interação do usuário para tocar
-    // O áudio só vai tocar se for chamado após um clique/toque
     try {
         window.speechSynthesis.speak(utterance);
     } catch (e) {
-        console.warn('⚠️ Erro ao tentar falar:', e);
         setSphereState('idle');
         setStatus('online', 'Online');
     }
@@ -693,19 +691,13 @@ function speakText(text) {
 // ============================================================
 function ensureVoicesLoaded() {
     if (!('speechSynthesis' in window)) return false;
-
-    // No celular, as vozes podem demorar a carregar
-    // Chamar getVoices() uma vez força o navegador a carregar
     const voices = window.speechSynthesis.getVoices();
-
     if (voices.length === 0) {
-        // Se não carregou, espera o evento
         window.speechSynthesis.onvoiceschanged = () => {
             console.log('✅ Vozes carregadas com sucesso!');
         };
         return false;
     }
-
     console.log(`✅ ${voices.length} vozes disponíveis`);
     return true;
 }
@@ -774,8 +766,6 @@ async function sendMessageToAI(userMessage) {
         addMessage(reply, 'bot');
         setStatus('online', 'Online');
 
-        // NO CELULAR: A fala precisa ser acionada após o clique do usuário
-        // Como o usuário clicou em "Enviar" ou falou no microfone, isso já é uma interação válida
         ensureVoicesLoaded();
         setTimeout(() => speakText(reply), 300);
 
@@ -801,7 +791,6 @@ function handleSend() {
     userInput.value = '';
     userInput.focus();
 
-    // Garante que as vozes estão carregadas antes de enviar
     ensureVoicesLoaded();
     sendMessageToAI(text);
 }
@@ -851,7 +840,6 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript;
         userInput.value = transcript;
-        // Envia automaticamente após ouvir
         ensureVoicesLoaded();
         setTimeout(() => handleSend(), 300);
     };
@@ -862,7 +850,6 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             return;
         }
         try {
-            // No celular, o microfone só funciona se o usuário clicou
             recognition.start();
         } catch (e) {
             console.warn('Erro ao iniciar microfone:', e);
@@ -878,18 +865,14 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
 // INICIALIZAÇÃO - CARREGA VOZES NO CELULAR
 // ============================================================
 function init() {
-    // Força o carregamento das vozes desde o início
     if ('speechSynthesis' in window) {
-        // Primeira tentativa
         window.speechSynthesis.getVoices();
 
-        // Aguarda o evento de carregamento
         window.speechSynthesis.onvoiceschanged = () => {
             const voices = window.speechSynthesis.getVoices();
             console.log(`✅ Vozes carregadas: ${voices.length} vozes disponíveis`);
         };
 
-        // Fallback: tenta recarregar após 2 segundos
         setTimeout(() => {
             const voices = window.speechSynthesis.getVoices();
             if (voices.length === 0) {
@@ -898,7 +881,6 @@ function init() {
         }, 2000);
     }
 
-    // Teste de conexão com a API
     testConnection();
 }
 
