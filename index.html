@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>J.A.R.V.I.S</title>
+    <title>J.A.R.V.I.S - OpenRouter</title>
     <style>
         /* ============================================================
            RESET E CONFIGURAÇÃO GLOBAL
@@ -18,7 +18,7 @@
 
         body {
             font-family: 'Rajdhani', 'Segoe UI', sans-serif;
-            background: #010a0f; /* Fundo azul quase preto */
+            background: #010a0f;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -28,14 +28,16 @@
             position: relative;
         }
 
-        /* Fundo com Grade de Circuitos (Estilo HUD) */
         body::before {
             content: "";
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: 
-                linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 240, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
             background-size: 40px 40px;
             z-index: -1;
             animation: gridMove 15s linear infinite;
@@ -123,10 +125,21 @@
             display: inline-block;
             transition: all 0.3s;
         }
-        
-        .status-dot.online { background: #00f0ff; box-shadow: 0 0 15px #00f0ff, 0 0 30px #00f0ff; animation: dot-pulse 2s infinite; }
-        .status-dot.offline { background: #ff3333; box-shadow: 0 0 15px #ff3333; }
-        .status-dot.processing { background: #00f0ff; box-shadow: 0 0 30px #00f0ff; animation: dot-pulse 0.8s infinite; }
+
+        .status-dot.online {
+            background: #00f0ff;
+            box-shadow: 0 0 15px #00f0ff, 0 0 30px #00f0ff;
+            animation: dot-pulse 2s infinite;
+        }
+        .status-dot.offline {
+            background: #ff3333;
+            box-shadow: 0 0 15px #ff3333;
+        }
+        .status-dot.processing {
+            background: #00f0ff;
+            box-shadow: 0 0 30px #00f0ff;
+            animation: dot-pulse 0.8s infinite;
+        }
 
         @keyframes dot-pulse {
             0%, 100% { transform: scale(1); opacity: 1; }
@@ -150,6 +163,9 @@
             box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.2);
         }
 
+        /* ============================================================
+           ESFERA J.A.R.V.I.S. ESTILO RADAR
+           ============================================================ */
         .sphere-container {
             display: flex;
             justify-content: center;
@@ -158,15 +174,13 @@
             position: relative;
         }
 
-        /* ============================================================
-           ESFERA J.A.R.V.I.S. ESTILO RADAR
-           ============================================================ */
         .sphere {
             width: 150px;
             height: 150px;
             border-radius: 50%;
             background: radial-gradient(circle at 35% 30%, rgba(0, 240, 255, 0.4), rgba(0, 100, 200, 0.1));
-            box-shadow: 0 0 60px rgba(0, 240, 255, 0.4), 0 0 120px rgba(0, 240, 255, 0.2), inset 0 -30px 60px rgba(0, 0, 0, 0.8), inset 0 20px 40px rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 60px rgba(0, 240, 255, 0.4), 0 0 120px rgba(0, 240, 255, 0.2),
+                inset 0 -30px 60px rgba(0, 0, 0, 0.8), inset 0 20px 40px rgba(0, 240, 255, 0.2);
             position: relative;
             transition: all 0.6s ease;
             border: 2px solid rgba(0, 240, 255, 0.6);
@@ -187,9 +201,10 @@
             height: 200%;
             top: -50%;
             left: -50%;
-            background: radial-gradient(circle at 30% 40%, rgba(0, 240, 255, 0.4), transparent 50%), 
-                        radial-gradient(circle at 70% 60%, rgba(50, 150, 255, 0.3), transparent 40%), 
-                        radial-gradient(circle at 50% 80%, rgba(100, 200, 255, 0.2), transparent 30%);
+            background:
+                radial-gradient(circle at 30% 40%, rgba(0, 240, 255, 0.4), transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(50, 150, 255, 0.3), transparent 40%),
+                radial-gradient(circle at 50% 80%, rgba(100, 200, 255, 0.2), transparent 30%);
             animation: liquid-move 10s ease-in-out infinite alternate;
         }
 
@@ -213,7 +228,6 @@
             z-index: 2;
         }
 
-        /* Anéis de Radar (Os famosos "círculos" do JARVIS) */
         .sphere-rings {
             position: absolute;
             width: 190px;
@@ -229,25 +243,29 @@
             height: 100%;
             border-radius: 50%;
             animation: ring-rotate 25s linear infinite;
-            border: 1px solid rgba(0, 240, 255, 0.5);
         }
 
-        .ring::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 5px;
-            height: 5px;
-            background: #00f0ff;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #00f0ff;
-            transform: translate(-50%, -50%);
+        .ring:nth-child(1) {
+            animation-duration: 5s;
+            border: 1px solid rgba(0, 240, 255, 0.7);
         }
-
-        .ring:nth-child(1) { animation-duration: 5s; border: 1px solid rgba(0, 240, 255, 0.7); }
-        .ring:nth-child(2) { width: 220px; height: 220px; top: -35px; left: -35px; animation-duration: 8s; animation-direction: reverse; border: 1px dashed rgba(0, 240, 255, 0.4); }
-        .ring:nth-child(3) { width: 170px; height: 170px; top: -10px; left: -10px; animation-duration: 12s; border: 1px dotted rgba(0, 240, 255, 0.3); }
+        .ring:nth-child(2) {
+            width: 220px;
+            height: 220px;
+            top: -35px;
+            left: -35px;
+            animation-duration: 8s;
+            animation-direction: reverse;
+            border: 1px dashed rgba(0, 240, 255, 0.4);
+        }
+        .ring:nth-child(3) {
+            width: 170px;
+            height: 170px;
+            top: -10px;
+            left: -10px;
+            animation-duration: 12s;
+            border: 1px dotted rgba(0, 240, 255, 0.3);
+        }
 
         @keyframes ring-rotate {
             0% { transform: rotate(0deg); }
@@ -281,7 +299,8 @@
 
         .chat-box::-webkit-scrollbar { width: 4px; }
         .chat-box::-webkit-scrollbar-track { background: #010a0f; }
-        .chat-box::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.4); border-radius: 10px; box-shadow: 0 0 5px #00f0ff; }
+        .chat-box::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.4); border-radius: 10px;
+            box-shadow: 0 0 5px #00f0ff; }
 
         .message {
             display: flex;
@@ -473,445 +492,483 @@
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
-        <div class="logo-area">
-            <span class="logo-icon">◆</span>
-            <span class="logo-text">J.A.R.V.I.S</span>
+    <div class="container">
+        <div class="header">
+            <div class="logo-area">
+                <span class="logo-icon">◆</span>
+                <span class="logo-text">J.A.R.V.I.S</span>
+            </div>
+            <div class="status-area">
+                <span class="status-dot online" id="statusDot"></span>
+                <span class="status-text" id="statusText">ONLINE</span>
+                <span class="model-badge" id="modelBadge">DEEPSEEK V4</span>
+            </div>
         </div>
-        <div class="status-area">
-            <span class="status-dot online" id="statusDot"></span>
-            <span class="status-text" id="statusText">ONLINE</span>
-            <span class="model-badge" id="modelBadge">GPT-3.5</span>
-        </div>
-    </div>
 
-    <div class="sphere-container">
-        <div class="sphere" id="sphere">
-            <div class="sphere-liquid"></div>
-            <div class="sphere-shine"></div>
-            <div class="sphere-rings">
-                <div class="ring"></div>
-                <div class="ring"></div>
-                <div class="ring"></div>
+        <div class="sphere-container">
+            <div class="sphere" id="sphere">
+                <div class="sphere-liquid"></div>
+                <div class="sphere-shine"></div>
+                <div class="sphere-rings">
+                    <div class="ring"></div>
+                    <div class="ring"></div>
+                    <div class="ring"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-box" id="chatBox">
+            <div class="message bot">
+                <div class="bubble">
+                    ⚡ Sistema J.A.R.V.I.S ativado.<br />
+                    🧠 Modelo: DeepSeek V4 (via OpenRouter)<br />
+                    🌐 Limite: ~200 chamadas/dia<br />
+                    Como posso auxiliá-lo, senhor?
+                    <span class="timestamp">● INICIALIZADO</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-area">
+            <div class="input-wrapper">
+                <input type="text" id="userInput" placeholder="DIGITE SUA MENSAGEM..." />
+            </div>
+            <button class="btn btn-primary" id="sendBtn">→</button>
+            <button class="btn btn-mic" id="micBtn">🎙</button>
+        </div>
+
+        <div class="footer">
+            <div class="stats">
+                <span>●</span> <span class="highlight">~200</span> / DIA
+            </div>
+            <div class="stats">
+                <span>●</span> OPENROUTER
             </div>
         </div>
     </div>
 
-    <div class="chat-box" id="chatBox">
-        <div class="message bot">
-            <div class="bubble">
-                Sistema J.A.R.V.I.S ativado. Como posso auxiliá-lo, senhor?
-                <span class="timestamp">● INICIALIZADO</span>
-            </div>
-        </div>
-    </div>
+    <script>
+        // ============================================================
+        // CONFIGURAÇÃO DA API - OPENROUTER
+        // ============================================================
+        const API_KEY = "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";
+        const BASE_URL = "https://openrouter.ai/api/v1";
 
-    <div class="input-area">
-        <div class="input-wrapper">
-            <input type="text" id="userInput" placeholder="DIGITE SUA MENSAGEM..." />
-        </div>
-        <button class="btn btn-primary" id="sendBtn">→</button>
-        <button class="btn btn-mic" id="micBtn">🎙</button>
-    </div>
+        // ============================================================
+        // MODELOS GRATUITOS DISPONÍVEIS NO OPENROUTER
+        // ============================================================
+        // Escolha um dos modelos abaixo:
+        // "deepseek/deepseek-v4-flash:free"    - ~200 req/dia (recomendado)
+        // "deepseek/deepseek-r1:free"          - ~50 req/dia (raciocínio profundo)
+        // "qwen/qwen-2.5-72b-instruct:free"    - ~100 req/dia (muito inteligente)
+        // "google/gemini-2.0-flash-lite:free"  - ~100 req/dia (rápido)
+        // "microsoft/phi-4:free"               - ~200 req/dia (bom para tarefas gerais)
+        // ============================================================
+        const MODEL = "deepseek/deepseek-v4-flash:free";
 
-    <div class="footer">
-        <div class="stats">
-            <span>●</span> <span class="highlight">200</span> / DIA
-        </div>
-        <div class="stats">
-            <span>●</span> CHATANYWHERE
-        </div>
-    </div>
-</div>
+        // ============================================================
+        // CONFIGURAÇÃO DE VOZ - MAIS GROSSA
+        // ============================================================
+        const SPEECH_RATE = 1.6;
+        const SPEECH_PITCH = 0.4;
+        const SPEECH_VOLUME = 1;
 
-<script>
-// ============================================================
-// CONFIGURAÇÃO DA API
-// ============================================================
-const API_KEY = "sk-hvnrnWWAFZQDygNaqXgT7vzaoAvdcIHeqopGanhZcaC80pxP";
-const BASE_URL = "https://api.chatanywhere.tech/v1";
-const MODEL = "gpt-3.5-turbo";
+        // ============================================================
+        // HISTÓRICO DA CONVERSA
+        // ============================================================
+        const conversationHistory = [];
 
-// ============================================================
-// CONFIGURAÇÃO DE VOZ - MAIS GROSSA
-// ============================================================
-const SPEECH_RATE = 1.6;
-const SPEECH_PITCH = 0.4;
-const SPEECH_VOLUME = 1;
+        // ============================================================
+        // ELEMENTOS DOM
+        // ============================================================
+        const chatBox = document.getElementById('chatBox');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const micBtn = document.getElementById('micBtn');
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+        const modelBadge = document.getElementById('modelBadge');
+        const sphere = document.getElementById('sphere');
 
-// ============================================================
-// HISTÓRICO DA CONVERSA
-// ============================================================
-const conversationHistory = [];
+        modelBadge.textContent = "DEEPSEEK V4";
 
-// ============================================================
-// ELEMENTOS DOM
-// ============================================================
-const chatBox = document.getElementById('chatBox');
-const userInput = document.getElementById('userInput');
-const sendBtn = document.getElementById('sendBtn');
-const micBtn = document.getElementById('micBtn');
-const statusDot = document.getElementById('statusDot');
-const statusText = document.getElementById('statusText');
-const modelBadge = document.getElementById('modelBadge');
-const sphere = document.getElementById('sphere');
+        let isListening = false;
+        let recognition = null;
+        let isProcessing = false;
+        let currentUtterance = null;
 
-modelBadge.textContent = MODEL.toUpperCase();
-
-let isListening = false;
-let recognition = null;
-let isProcessing = false;
-let currentUtterance = null;
-
-// ============================================================
-// FUNÇÕES DA ESFERA
-// ============================================================
-function setSphereState(state) {
-    sphere.classList.remove('active');
-    if (state === 'active') {
-        sphere.classList.add('active');
-    }
-}
-
-function setStatus(state, text) {
-    statusDot.className = `status-dot ${state}`;
-    statusText.textContent = text.toUpperCase();
-    if (state === 'processing') {
-        setSphereState('active');
-    } else {
-        setSphereState('idle');
-    }
-}
-
-// ============================================================
-// MENSAGENS
-// ============================================================
-function addMessage(text, sender) {
-    const div = document.createElement('div');
-    div.className = `message ${sender}`;
-    const bubble = document.createElement('div');
-    bubble.className = 'bubble';
-
-    if (sender === 'bot') {
-        const timestamp = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-        bubble.innerHTML = `${text}<span class="timestamp">● ${timestamp}</span>`;
-    } else {
-        bubble.textContent = text;
-    }
-
-    div.appendChild(bubble);
-    chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-// ============================================================
-// TYPING INDICATOR
-// ============================================================
-function showTyping() {
-    const div = document.createElement('div');
-    div.className = 'message bot';
-    div.id = 'typingIndicator';
-    const bubble = document.createElement('div');
-    bubble.className = 'bubble';
-    bubble.innerHTML = `
-        <div class="typing-indicator">
-            <span></span><span></span><span></span>
-        </div>
-    `;
-    div.appendChild(bubble);
-    chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-function hideTyping() {
-    const el = document.getElementById('typingIndicator');
-    if (el) el.remove();
-}
-
-// ============================================================
-// TEXTO-TO-SPEECH - CORRIGIDO PARA CELULAR
-// ============================================================
-function speakText(text) {
-    if (!('speechSynthesis' in window)) {
-        console.warn('❌ SpeechSynthesis não suportado neste navegador');
-        return;
-    }
-
-    window.speechSynthesis.cancel();
-
-    const voices = window.speechSynthesis.getVoices();
-    if (voices.length === 0) {
-        console.warn('⏳ Vozes não carregadas. Aguardando...');
-        window.speechSynthesis.onvoiceschanged = () => {
-            speakText(text);
-        };
-        return;
-    }
-
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'pt-BR';
-    utterance.rate = SPEECH_RATE;
-    utterance.pitch = SPEECH_PITCH;
-    utterance.volume = SPEECH_VOLUME;
-
-    const ptVoices = voices.filter(v => v.lang.startsWith('pt'));
-    if (ptVoices.length > 0) {
-        utterance.voice = ptVoices[0];
-    } else if (voices.length > 0) {
-        utterance.voice = voices[0];
-    }
-
-    utterance.onstart = () => {
-        setSphereState('active');
-        setStatus('processing', 'Falando...');
-    };
-
-    utterance.onend = () => {
-        setSphereState('idle');
-        if (!isProcessing) setStatus('online', 'Online');
-    };
-
-    utterance.onerror = (event) => {
-        setSphereState('idle');
-        if (!isProcessing) setStatus('online', 'Online');
-    };
-
-    currentUtterance = utterance;
-    try {
-        window.speechSynthesis.speak(utterance);
-    } catch (e) {
-        setSphereState('idle');
-        setStatus('online', 'Online');
-    }
-}
-
-// ============================================================
-// FORÇA O CARREGAMENTO DAS VOZES NO CELULAR
-// ============================================================
-function ensureVoicesLoaded() {
-    if (!('speechSynthesis' in window)) return false;
-    const voices = window.speechSynthesis.getVoices();
-    if (voices.length === 0) {
-        window.speechSynthesis.onvoiceschanged = () => {
-            console.log('✅ Vozes carregadas com sucesso!');
-        };
-        return false;
-    }
-    console.log(`✅ ${voices.length} vozes disponíveis`);
-    return true;
-}
-
-// ============================================================
-// CHAMADA À API
-// ============================================================
-async function sendMessageToAI(userMessage) {
-    if (isProcessing) return;
-    isProcessing = true;
-    sendBtn.disabled = true;
-
-    try {
-        showTyping();
-        setStatus('processing', 'Processando...');
-
-        conversationHistory.push({ role: 'user', content: userMessage });
-
-        const systemPrompt = `Você é o JARVIS, um assistente de IA extremamente inteligente, criado por Tony Stark. 
-        Você é formal, preciso, analítico e direto. Suas respostas devem ser:
-        - Inteligentes e bem fundamentadas
-        - Claras e objetivas
-        - Com um tom profissional
-        - Sempre em português
-        - Use sua memória do contexto para respostas mais coerentes
-        
-        Você tem acesso a todo o conhecimento geral e é especialista em tecnologia, física, engenharia e ciência.
-        Seja útil, proativo e ofereça insights valiosos.`;
-
-        const messages = [
-            { role: 'system', content: systemPrompt },
-            ...conversationHistory
-        ];
-
-        const response = await fetch(`${BASE_URL}/chat/completions`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${API_KEY}`
-            },
-            body: JSON.stringify({
-                model: MODEL,
-                messages: messages,
-                max_tokens: 800,
-                temperature: 0.5,
-                top_p: 0.9
-            })
-        });
-
-        hideTyping();
-
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(`Erro ${response.status}: ${errorData.error?.message || response.statusText}`);
-        }
-
-        const data = await response.json();
-        const reply = data.choices?.[0]?.message?.content || 'Desculpe, não consegui gerar uma resposta.';
-
-        conversationHistory.push({ role: 'assistant', content: reply });
-
-        if (conversationHistory.length > 20) {
-            conversationHistory.splice(0, 2);
-        }
-
-        addMessage(reply, 'bot');
-        setStatus('online', 'Online');
-
-        ensureVoicesLoaded();
-        setTimeout(() => speakText(reply), 300);
-
-    } catch (error) {
-        hideTyping();
-        addMessage(`⚠️ ${error.message}`, 'bot');
-        setStatus('offline', 'Erro');
-        console.error('Erro na API:', error);
-    } finally {
-        isProcessing = false;
-        sendBtn.disabled = false;
-    }
-}
-
-// ============================================================
-// ENVIO DE MENSAGEM
-// ============================================================
-function handleSend() {
-    const text = userInput.value.trim();
-    if (!text || isProcessing) return;
-
-    addMessage(text, 'user');
-    userInput.value = '';
-    userInput.focus();
-
-    ensureVoicesLoaded();
-    sendMessageToAI(text);
-}
-
-sendBtn.addEventListener('click', handleSend);
-userInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') handleSend();
-});
-
-// ============================================================
-// MICROFONE
-// ============================================================
-if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    recognition = new SpeechRecognition();
-    recognition.lang = 'pt-BR';
-    recognition.continuous = false;
-    recognition.interimResults = false;
-
-    recognition.onstart = () => {
-        isListening = true;
-        micBtn.classList.add('listening');
-        micBtn.textContent = '⏹';
-        setStatus('processing', 'Ouvindo...');
-    };
-
-    recognition.onend = () => {
-        isListening = false;
-        micBtn.classList.remove('listening');
-        micBtn.textContent = '🎙';
-        if (statusText.textContent === 'OUVINDO...') {
-            setStatus('online', 'Online');
-        }
-    };
-
-    recognition.onerror = (event) => {
-        console.warn('Erro no microfone:', event.error);
-        isListening = false;
-        micBtn.classList.remove('listening');
-        micBtn.textContent = '🎙';
-        setStatus('online', 'Online');
-        if (event.error === 'not-allowed') {
-            addMessage('⚠️ Permita o acesso ao microfone.', 'bot');
-        }
-    };
-
-    recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        userInput.value = transcript;
-        ensureVoicesLoaded();
-        setTimeout(() => handleSend(), 300);
-    };
-
-    micBtn.addEventListener('click', () => {
-        if (isListening) {
-            recognition.stop();
-            return;
-        }
-        try {
-            recognition.start();
-        } catch (e) {
-            console.warn('Erro ao iniciar microfone:', e);
-        }
-    });
-
-} else {
-    micBtn.style.display = 'none';
-    console.warn('❌ Reconhecimento de voz não suportado');
-}
-
-// ============================================================
-// INICIALIZAÇÃO - CARREGA VOZES NO CELULAR
-// ============================================================
-function init() {
-    if ('speechSynthesis' in window) {
-        window.speechSynthesis.getVoices();
-
-        window.speechSynthesis.onvoiceschanged = () => {
-            const voices = window.speechSynthesis.getVoices();
-            console.log(`✅ Vozes carregadas: ${voices.length} vozes disponíveis`);
-        };
-
-        setTimeout(() => {
-            const voices = window.speechSynthesis.getVoices();
-            if (voices.length === 0) {
-                console.warn('⚠️ Nenhuma voz encontrada. Pode ser necessário interagir com a página.');
+        // ============================================================
+        // FUNÇÕES DA ESFERA
+        // ============================================================
+        function setSphereState(state) {
+            sphere.classList.remove('active');
+            if (state === 'active') {
+                sphere.classList.add('active');
             }
-        }, 2000);
-    }
-
-    testConnection();
-}
-
-// ============================================================
-// TESTE DE CONEXÃO
-// ============================================================
-async function testConnection() {
-    try {
-        const response = await fetch(`${BASE_URL}/models`, {
-            headers: { 'Authorization': `Bearer ${API_KEY}` }
-        });
-        if (response.ok) {
-            setStatus('online', 'Online');
-            console.log('✅ API Key válida!');
-        } else {
-            setStatus('offline', 'Falha na chave');
-            console.warn('⚠️ Verifique sua API Key');
         }
-    } catch (e) {
-        setStatus('offline', 'Sem conexão');
-        console.warn('⚠️ Não foi possível conectar');
-    }
-}
 
-// Inicializa o sistema
-init();
+        function setStatus(state, text) {
+            statusDot.className = `status-dot ${state}`;
+            statusText.textContent = text.toUpperCase();
+            if (state === 'processing') {
+                setSphereState('active');
+            } else {
+                setSphereState('idle');
+            }
+        }
 
-console.log('🚀 J.A.R.V.I.S iniciado');
-console.log(`📦 Modelo: ${MODEL} | Velocidade: ${SPEECH_RATE}x | Tom: ${SPEECH_PITCH} (MAIS GROSSO)`);
-console.log('🧠 Sistema com personalidade JARVIS e contexto persistente');
-console.log('📱 Modo celular: corrigido para falar automaticamente');
-</script>
+        // ============================================================
+        // MENSAGENS
+        // ============================================================
+        function addMessage(text, sender) {
+            const div = document.createElement('div');
+            div.className = `message ${sender}`;
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+
+            if (sender === 'bot') {
+                const timestamp = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit',
+                    minute: '2-digit' });
+                bubble.innerHTML = `${text}<span class="timestamp">● ${timestamp}</span>`;
+            } else {
+                bubble.textContent = text;
+            }
+
+            div.appendChild(bubble);
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // ============================================================
+        // TYPING INDICATOR
+        // ============================================================
+        function showTyping() {
+            const div = document.createElement('div');
+            div.className = 'message bot';
+            div.id = 'typingIndicator';
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            bubble.innerHTML = `
+                    <div class="typing-indicator">
+                        <span></span><span></span><span></span>
+                    </div>
+                `;
+            div.appendChild(bubble);
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function hideTyping() {
+            const el = document.getElementById('typingIndicator');
+            if (el) el.remove();
+        }
+
+        // ============================================================
+        // TEXTO-TO-SPEECH
+        // ============================================================
+        function speakText(text) {
+            if (!('speechSynthesis' in window)) {
+                console.warn('❌ SpeechSynthesis não suportado');
+                return;
+            }
+
+            window.speechSynthesis.cancel();
+
+            const voices = window.speechSynthesis.getVoices();
+
+            if (voices.length === 0) {
+                console.log('⏳ Aguardando vozes carregarem...');
+                window.speechSynthesis.onvoiceschanged = function() {
+                    console.log('✅ Vozes carregadas!');
+                    speakText(text);
+                };
+                return;
+            }
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'pt-BR';
+            utterance.rate = SPEECH_RATE;
+            utterance.pitch = SPEECH_PITCH;
+            utterance.volume = SPEECH_VOLUME;
+
+            const ptVoices = voices.filter(v => v.lang.startsWith('pt'));
+            if (ptVoices.length > 0) {
+                utterance.voice = ptVoices[0];
+            } else if (voices.length > 0) {
+                utterance.voice = voices[0];
+            }
+
+            utterance.onstart = function() {
+                console.log('🗣️ JARVIS falando...');
+                setSphereState('active');
+                setStatus('processing', 'Falando...');
+            };
+
+            utterance.onend = function() {
+                console.log('✅ Fala finalizada');
+                setSphereState('idle');
+                if (!isProcessing) {
+                    setStatus('online', 'Online');
+                }
+            };
+
+            utterance.onerror = function(event) {
+                console.warn('⚠️ Erro na fala:', event.error);
+                setSphereState('idle');
+                if (!isProcessing) {
+                    setStatus('online', 'Online');
+                }
+            };
+
+            currentUtterance = utterance;
+
+            try {
+                window.speechSynthesis.speak(utterance);
+            } catch (e) {
+                console.warn('Erro ao falar:', e);
+                setSphereState('idle');
+                setStatus('online', 'Online');
+            }
+        }
+
+        // ============================================================
+        // FUNÇÃO QUE GARANTE QUE AS VOZES ESTÃO CARREGADAS
+        // ============================================================
+        function ensureVoicesLoaded() {
+            if (!('speechSynthesis' in window)) return false;
+
+            const voices = window.speechSynthesis.getVoices();
+
+            if (voices.length === 0) {
+                window.speechSynthesis.onvoiceschanged = function() {
+                    console.log('✅ Vozes carregadas!');
+                };
+                return false;
+            }
+
+            console.log(`✅ ${voices.length} vozes disponíveis`);
+            return true;
+        }
+
+        // ============================================================
+        // CHAMADA À API - OPENROUTER
+        // ============================================================
+        async function sendMessageToAI(userMessage) {
+            if (isProcessing) return;
+            isProcessing = true;
+            sendBtn.disabled = true;
+
+            try {
+                showTyping();
+                setStatus('processing', 'Processando...');
+
+                conversationHistory.push({ role: 'user', content: userMessage });
+
+                const systemPrompt =
+                    `Você é o JARVIS, assistente de IA criado por Tony Stark. 
+                        Você é extremamente inteligente, analítico, preciso e formal.
+                        Suas respostas devem ser:
+                        - Bem fundamentadas e detalhadas
+                        - Claras e objetivas
+                        - Em português
+                        - Use o contexto da conversa para respostas coerentes
+                        
+                        Você é especialista em tecnologia, física, engenharia, ciência e cultura pop.
+                        Seja proativo e ofereça insights valiosos.`;
+
+                const messages = [
+                    { role: 'system', content: systemPrompt },
+                    ...conversationHistory
+                ];
+
+                const response = await fetch(`${BASE_URL}/chat/completions`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: MODEL,
+                        messages: messages,
+                        max_tokens: 800,
+                        temperature: 0.5,
+                        top_p: 0.9
+                    })
+                });
+
+                hideTyping();
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(`Erro ${response.status}: ${errorData.error?.message || response
+                        .statusText}`);
+                }
+
+                const data = await response.json();
+                const reply = data.choices?.[0]?.message?.content || 'Desculpe, não consegui gerar uma resposta.';
+
+                conversationHistory.push({ role: 'assistant', content: reply });
+
+                if (conversationHistory.length > 20) {
+                    conversationHistory.splice(0, 2);
+                }
+
+                addMessage(reply, 'bot');
+                setStatus('online', 'Online');
+
+                ensureVoicesLoaded();
+                setTimeout(function() {
+                    speakText(reply);
+                }, 300);
+
+            } catch (error) {
+                hideTyping();
+                addMessage(`⚠️ ${error.message}`, 'bot');
+                setStatus('offline', 'Erro');
+                console.error('Erro na API:', error);
+            } finally {
+                isProcessing = false;
+                sendBtn.disabled = false;
+            }
+        }
+
+        // ============================================================
+        // ENVIO DE MENSAGEM
+        // ============================================================
+        function handleSend() {
+            const text = userInput.value.trim();
+            if (!text || isProcessing) return;
+
+            addMessage(text, 'user');
+            userInput.value = '';
+            userInput.focus();
+
+            ensureVoicesLoaded();
+            sendMessageToAI(text);
+        }
+
+        sendBtn.addEventListener('click', handleSend);
+        userInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') handleSend();
+        });
+
+        // ============================================================
+        // MICROFONE
+        // ============================================================
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.lang = 'pt-BR';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            recognition.onstart = function() {
+                isListening = true;
+                micBtn.classList.add('listening');
+                micBtn.textContent = '⏹';
+                setStatus('processing', 'Ouvindo...');
+            };
+
+            recognition.onend = function() {
+                isListening = false;
+                micBtn.classList.remove('listening');
+                micBtn.textContent = '🎙';
+                if (statusText.textContent === 'OUVINDO...') {
+                    setStatus('online', 'Online');
+                }
+            };
+
+            recognition.onerror = function(event) {
+                console.warn('Erro no microfone:', event.error);
+                isListening = false;
+                micBtn.classList.remove('listening');
+                micBtn.textContent = '🎙';
+                setStatus('online', 'Online');
+                if (event.error === 'not-allowed') {
+                    addMessage('⚠️ Permita o acesso ao microfone.', 'bot');
+                }
+            };
+
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                userInput.value = transcript;
+                ensureVoicesLoaded();
+                setTimeout(function() {
+                    handleSend();
+                }, 300);
+            };
+
+            micBtn.addEventListener('click', function() {
+                if (isListening) {
+                    recognition.stop();
+                    return;
+                }
+                try {
+                    recognition.start();
+                } catch (e) {
+                    console.warn('Erro ao iniciar microfone:', e);
+                }
+            });
+
+        } else {
+            micBtn.style.display = 'none';
+            console.warn('❌ Reconhecimento de voz não suportado');
+        }
+
+        // ============================================================
+        // INICIALIZAÇÃO
+        // ============================================================
+        function init() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.getVoices();
+
+                window.speechSynthesis.onvoiceschanged = function() {
+                    const voices = window.speechSynthesis.getVoices();
+                    console.log(`✅ Vozes carregadas: ${voices.length} disponíveis`);
+                };
+
+                setTimeout(function() {
+                    const voices = window.speechSynthesis.getVoices();
+                    if (voices.length === 0) {
+                        console.warn('⚠️ Nenhuma voz encontrada. Interaja com a página para ativar.');
+                    }
+                }, 2000);
+            }
+
+            testConnection();
+        }
+
+        // ============================================================
+        // TESTE DE CONEXÃO
+        // ============================================================
+        async function testConnection() {
+            try {
+                const response = await fetch(`${BASE_URL}/models`, {
+                    headers: { 'Authorization': `Bearer ${API_KEY}` }
+                });
+                if (response.ok) {
+                    setStatus('online', 'Online');
+                    console.log('✅ API Key válida!');
+                    console.log('✅ Modelo:', MODEL);
+                } else {
+                    setStatus('offline', 'Falha na chave');
+                    console.warn('⚠️ Verifique sua API Key');
+                }
+            } catch (e) {
+                setStatus('offline', 'Sem conexão');
+                console.warn('⚠️ Não foi possível conectar');
+            }
+        }
+
+        // Inicializa o sistema
+        init();
+
+        console.log('🚀 J.A.R.V.I.S iniciado');
+        console.log(`📦 Modelo: ${MODEL}`);
+        console.log(`🗣️ Velocidade: ${SPEECH_RATE}x | Tom: ${SPEECH_PITCH} (MAIS GROSSO)`);
+        console.log('🧠 Sistema com personalidade JARVIS e contexto persistente');
+        console.log('📱 Modo celular: fala corrigida e funcionando!');
+        console.log('🌐 OpenRouter: ~200 chamadas/dia grátis!');
+    </script>
 </body>
 </html>
