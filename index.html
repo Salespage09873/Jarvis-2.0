@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>J.A.R.V.I.S - OpenRouter</title>
+    <title>J.A.R.V.I.S - Groq AI</title>
     <style>
         /* ============================================================
            RESET E CONFIGURAÇÃO GLOBAL
@@ -501,7 +501,7 @@
             <div class="status-area">
                 <span class="status-dot online" id="statusDot"></span>
                 <span class="status-text" id="statusText">ONLINE</span>
-                <span class="model-badge" id="modelBadge">DEEPSEEK V4</span>
+                <span class="model-badge" id="modelBadge">GROQ</span>
             </div>
         </div>
 
@@ -521,8 +521,9 @@
             <div class="message bot">
                 <div class="bubble">
                     ⚡ Sistema J.A.R.V.I.S ativado.<br />
-                    🧠 Modelo: DeepSeek V4 (via OpenRouter)<br />
-                    🌐 Limite: ~200 chamadas/dia<br />
+                    🧠 Modelo: Llama 3.3 70B (Groq)<br />
+                    🌐 Limite: 14.400 chamadas/dia<br />
+                    ⚡ Velocidade ultrarrápida!<br />
                     Como posso auxiliá-lo, senhor?
                     <span class="timestamp">● INICIALIZADO</span>
                 </div>
@@ -539,35 +540,28 @@
 
         <div class="footer">
             <div class="stats">
-                <span>●</span> <span class="highlight">~200</span> / DIA
+                <span>●</span> <span class="highlight">14.400</span> / DIA
             </div>
             <div class="stats">
-                <span>●</span> OPENROUTER
+                <span>●</span> GROQ
             </div>
         </div>
     </div>
 
     <script>
         // ============================================================
-        // CONFIGURAÇÃO DA API - OPENROUTER
+        // CONFIGURAÇÃO DA API - GROQ
         // ============================================================
-        const API_KEY = "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";
-        const BASE_URL = "https://openrouter.ai/api/v1";
+        const API_KEY = "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";
+        const BASE_URL = "https://api.groq.com/openai/v1";
 
         // ============================================================
-        // MODELOS GRATUITOS DISPONÍVEIS NO OPENROUTER
+        // MODELOS GRATUITOS DA GROQ
         // ============================================================
-        // Escolha um dos modelos abaixo:
-        // "deepseek/deepseek-v4-flash:free"    - ~200 req/dia (recomendado)
-        // "deepseek/deepseek-r1:free"          - ~50 req/dia (raciocínio profundo)
-        // "qwen/qwen-2.5-72b-instruct:free"    - ~100 req/dia (muito inteligente)
-        // "google/gemini-2.0-flash-lite:free"  - ~100 req/dia (rápido)
-        // "microsoft/phi-4:free"               - ~200 req/dia (bom para tarefas gerais)
-        // ============================================================
-        const MODEL = "deepseek/deepseek-v4-flash:free";
+        const MODEL = "llama-3.3-70b-versatile";
 
         // ============================================================
-        // CONFIGURAÇÃO DE VOZ - MAIS GROSSA
+        // CONFIGURAÇÃO DE VOZ
         // ============================================================
         const SPEECH_RATE = 1.6;
         const SPEECH_PITCH = 0.4;
@@ -590,7 +584,7 @@
         const modelBadge = document.getElementById('modelBadge');
         const sphere = document.getElementById('sphere');
 
-        modelBadge.textContent = "DEEPSEEK V4";
+        modelBadge.textContent = "GROQ";
 
         let isListening = false;
         let recognition = null;
@@ -751,7 +745,7 @@
         }
 
         // ============================================================
-        // CHAMADA À API - OPENROUTER
+        // CHAMADA À API - GROQ
         // ============================================================
         async function sendMessageToAI(userMessage) {
             if (isProcessing) return;
@@ -950,6 +944,7 @@
                     setStatus('online', 'Online');
                     console.log('✅ API Key válida!');
                     console.log('✅ Modelo:', MODEL);
+                    console.log('✅ Limite: 14.400 req/dia!');
                 } else {
                     setStatus('offline', 'Falha na chave');
                     console.warn('⚠️ Verifique sua API Key');
@@ -963,12 +958,13 @@
         // Inicializa o sistema
         init();
 
-        console.log('🚀 J.A.R.V.I.S iniciado');
+        console.log('🚀 J.A.R.V.I.S iniciado com GROQ!');
         console.log(`📦 Modelo: ${MODEL}`);
         console.log(`🗣️ Velocidade: ${SPEECH_RATE}x | Tom: ${SPEECH_PITCH} (MAIS GROSSO)`);
         console.log('🧠 Sistema com personalidade JARVIS e contexto persistente');
         console.log('📱 Modo celular: fala corrigida e funcionando!');
-        console.log('🌐 OpenRouter: ~200 chamadas/dia grátis!');
+        console.log('🌐 GROQ: 14.400 chamadas/dia grátis!');
+        console.log('⚡ Velocidade ultrarrápida!');
     </script>
 </body>
 </html>
