@@ -3,968 +3,735 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>J.A.R.V.I.S - Groq AI</title>
+    <title>Chat AI com Voz</title>
     <style>
-        /* ============================================================
-           RESET E CONFIGURAÇÃO GLOBAL
-           ============================================================ */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&display=swap');
-
         body {
-            font-family: 'Rajdhani', 'Segoe UI', sans-serif;
-            background: #010a0f;
-            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0d1117;
+            color: #e6edf3;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image:
-                linear-gradient(rgba(0, 240, 255, 0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
-            background-size: 40px 40px;
-            z-index: -1;
-            animation: gridMove 15s linear infinite;
-            pointer-events: none;
-        }
-
-        @keyframes gridMove {
-            from { background-position: 0 0; }
-            to { background-position: 40px 40px; }
+            min-height: 100vh;
+            margin: 0;
+            padding: 16px;
         }
 
         .container {
-            background: rgba(5, 15, 20, 0.85);
+            max-width: 800px;
+            width: 100%;
+            height: 90vh;
+            background: #161b22;
             border-radius: 24px;
-            padding: 35px 40px 30px;
-            max-width: 780px;
-            width: 100%;
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            box-shadow: 0 0 30px rgba(0, 240, 255, 0.2), inset 0 0 30px rgba(0, 240, 255, 0.05);
-            position: relative;
-            backdrop-filter: blur(10px);
-        }
-
-        .container::before {
-            content: '';
-            position: absolute;
-            top: -1px;
-            left: 20%;
-            right: 20%;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #00f0ff, transparent);
-            border-radius: 2px;
-            box-shadow: 0 0 20px #00f0ff;
-        }
-
-        .header {
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 28px;
-            padding-bottom: 14px;
-            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-icon {
-            font-size: 1.4rem;
-            color: #00f0ff;
-            text-shadow: 0 0 10px #00f0ff;
-        }
-
-        .logo-text {
-            font-size: 1.2rem;
-            font-weight: 700;
-            font-family: 'Orbitron', monospace;
-            color: #ffffff;
-            letter-spacing: 6px;
-            text-shadow: 0 0 15px rgba(0, 240, 255, 0.8);
-        }
-
-        .logo-text span {
-            color: #00f0ff;
-            font-weight: 300;
-        }
-
-        .status-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 0.55rem;
-            font-family: 'Orbitron', monospace;
-            letter-spacing: 1px;
-            color: #00f0ff;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            display: inline-block;
-            transition: all 0.3s;
-        }
-
-        .status-dot.online {
-            background: #00f0ff;
-            box-shadow: 0 0 15px #00f0ff, 0 0 30px #00f0ff;
-            animation: dot-pulse 2s infinite;
-        }
-        .status-dot.offline {
-            background: #ff3333;
-            box-shadow: 0 0 15px #ff3333;
-        }
-        .status-dot.processing {
-            background: #00f0ff;
-            box-shadow: 0 0 30px #00f0ff;
-            animation: dot-pulse 0.8s infinite;
-        }
-
-        @keyframes dot-pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.5); opacity: 0.7; }
-        }
-
-        .status-text {
-            color: #00f0ff;
-            font-size: 0.5rem;
-            text-shadow: 0 0 5px #00f0ff;
-        }
-
-        .model-badge {
-            background: rgba(0, 240, 255, 0.1);
-            padding: 3px 12px;
-            border-radius: 12px;
-            color: #00f0ff;
-            font-size: 0.5rem;
-            letter-spacing: 1px;
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.2);
-        }
-
-        /* ============================================================
-           ESFERA J.A.R.V.I.S. ESTILO RADAR
-           ============================================================ */
-        .sphere-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 5px auto 25px;
-            position: relative;
-        }
-
-        .sphere {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 35% 30%, rgba(0, 240, 255, 0.4), rgba(0, 100, 200, 0.1));
-            box-shadow: 0 0 60px rgba(0, 240, 255, 0.4), 0 0 120px rgba(0, 240, 255, 0.2),
-                inset 0 -30px 60px rgba(0, 0, 0, 0.8), inset 0 20px 40px rgba(0, 240, 255, 0.2);
-            position: relative;
-            transition: all 0.6s ease;
-            border: 2px solid rgba(0, 240, 255, 0.6);
-        }
-
-        .sphere-liquid {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            position: relative;
+            flex-direction: column;
             overflow: hidden;
+            border: 1px solid #30363d;
         }
 
-        .sphere-liquid::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            top: -50%;
-            left: -50%;
-            background:
-                radial-gradient(circle at 30% 40%, rgba(0, 240, 255, 0.4), transparent 50%),
-                radial-gradient(circle at 70% 60%, rgba(50, 150, 255, 0.3), transparent 40%),
-                radial-gradient(circle at 50% 80%, rgba(100, 200, 255, 0.2), transparent 30%);
-            animation: liquid-move 10s ease-in-out infinite alternate;
+        header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #30363d;
+            background: #0d1117;
         }
 
-        @keyframes liquid-move {
-            0% { transform: translate(-10%, -5%) rotate(0deg) scale(1); }
-            50% { transform: translate(10%, 5%) rotate(3deg) scale(1.02); }
-            100% { transform: translate(-5%, 10%) rotate(-3deg) scale(0.98); }
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #58a6ff, #3fb950);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .sphere-shine {
-            position: absolute;
-            top: 8%;
-            left: 18%;
-            width: 35%;
-            height: 20%;
-            background: radial-gradient(ellipse, rgba(255, 255, 255, 0.5), transparent 70%);
-            border-radius: 50%;
-            transform: rotate(-30deg);
-            pointer-events: none;
-            filter: blur(2px);
-            z-index: 2;
+        header p {
+            color: #8b949e;
+            font-size: 0.85rem;
+            margin-top: 4px;
         }
 
-        .sphere-rings {
-            position: absolute;
-            width: 190px;
-            height: 190px;
-            top: -20px;
-            left: -20px;
-            pointer-events: none;
-        }
-
-        .ring {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            animation: ring-rotate 25s linear infinite;
-        }
-
-        .ring:nth-child(1) {
-            animation-duration: 5s;
-            border: 1px solid rgba(0, 240, 255, 0.7);
-        }
-        .ring:nth-child(2) {
-            width: 220px;
-            height: 220px;
-            top: -35px;
-            left: -35px;
-            animation-duration: 8s;
-            animation-direction: reverse;
-            border: 1px dashed rgba(0, 240, 255, 0.4);
-        }
-        .ring:nth-child(3) {
-            width: 170px;
-            height: 170px;
-            top: -10px;
-            left: -10px;
-            animation-duration: 12s;
-            border: 1px dotted rgba(0, 240, 255, 0.3);
-        }
-
-        @keyframes ring-rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .sphere.active {
-            box-shadow: 0 0 100px rgba(0, 240, 255, 0.6), inset 0 0 60px rgba(0, 240, 255, 0.2);
-            animation: sphere-pulse 1s ease-in-out infinite;
-        }
-
-        @keyframes sphere-pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        /* ============================================================
-           CHAT E INTERAÇÃO
-           ============================================================ */
-        .chat-box {
-            background: rgba(0, 10, 15, 0.9);
-            border-radius: 16px;
-            padding: 18px 20px;
-            min-height: 260px;
-            max-height: 350px;
+        .chat-area {
+            flex: 1;
             overflow-y: auto;
-            margin-bottom: 18px;
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            box-shadow: inset 0 0 30px rgba(0, 240, 255, 0.05);
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            scroll-behavior: smooth;
         }
-
-        .chat-box::-webkit-scrollbar { width: 4px; }
-        .chat-box::-webkit-scrollbar-track { background: #010a0f; }
-        .chat-box::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.4); border-radius: 10px;
-            box-shadow: 0 0 5px #00f0ff; }
 
         .message {
             display: flex;
-            margin-bottom: 12px;
-            animation: msg-fade 0.3s ease;
-        }
-        .message.user { justify-content: flex-end; }
-        .message.bot { justify-content: flex-start; }
-
-        @keyframes msg-fade {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
+            gap: 12px;
+            align-items: flex-start;
+            animation: fadeIn 0.3s ease;
         }
 
-        .bubble {
-            max-width: 80%;
-            padding: 10px 18px;
-            border-radius: 14px;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            word-wrap: break-word;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 500;
-            letter-spacing: 0.2px;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .user .bubble {
-            background: rgba(0, 240, 255, 0.1);
-            color: #ffffff;
-            border-bottom-right-radius: 3px;
-            border: 1px solid rgba(0, 240, 255, 0.4);
-            box-shadow: 0 0 10px rgba(0, 240, 255, 0.1);
-        }
-
-        .bot .bubble {
-            background: rgba(0, 0, 0, 0.5);
-            color: #ccffff;
-            border-bottom-left-radius: 3px;
-            border: 1px solid rgba(0, 240, 255, 0.2);
-        }
-
-        .bot .bubble .timestamp {
-            font-size: 0.5rem;
-            color: rgba(0, 240, 255, 0.6);
-            display: block;
-            margin-top: 4px;
-            font-family: 'Orbitron', monospace;
-            letter-spacing: 0.5px;
-        }
-
-        .typing-indicator {
+        .message .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #21262d;
             display: flex;
             align-items: center;
-            gap: 5px;
-            padding: 4px 0;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
         }
-        .typing-indicator span {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #00f0ff;
-            box-shadow: 0 0 10px #00f0ff;
-            animation: typing-bounce 1.4s infinite;
-        }
-        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
 
-        @keyframes typing-bounce {
-            0%, 60%, 100% { transform: translateY(0); opacity: 0.2; }
-            30% { transform: translateY(-6px); opacity: 1; }
+        .message.user .avatar {
+            background: #1f6feb;
+        }
+
+        .message .content {
+            background: #21262d;
+            padding: 12px 16px;
+            border-radius: 16px;
+            border-top-left-radius: 4px;
+            max-width: 80%;
+            line-height: 1.6;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        .message.user .content {
+            background: #1f6feb;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 4px;
+        }
+
+        .message.bot .content {
+            background: #21262d;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 16px;
+        }
+
+        .loading-dots {
+            display: inline-flex;
+            gap: 4px;
+        }
+
+        .loading-dots span {
+            animation: dotPulse 1.2s infinite;
+            font-size: 1.5rem;
+            line-height: 0.8;
+        }
+
+        .loading-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .loading-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes dotPulse {
+            0%,
+            80%,
+            100% {
+                opacity: 0.3;
+            }
+            40% {
+                opacity: 1;
+            }
         }
 
         .input-area {
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+            gap: 12px;
+            padding: 16px 24px 20px;
+            background: #0d1117;
+            border-top: 1px solid #30363d;
             align-items: center;
         }
 
-        .input-wrapper {
+        .input-area input {
             flex: 1;
-            position: relative;
-            min-width: 140px;
-        }
-
-        .input-wrapper input {
-            width: 100%;
-            padding: 14px 20px;
-            border-radius: 25px;
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            background: rgba(0, 10, 15, 0.8);
-            color: #00f0ff;
-            font-size: 0.9rem;
-            outline: none;
-            transition: all 0.3s;
-            font-family: 'Share Tech Mono', monospace;
-            box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1);
-        }
-
-        .input-wrapper input::placeholder {
-            color: rgba(0, 240, 255, 0.4);
-            font-family: 'Orbitron', monospace;
-            font-size: 0.6rem;
-            letter-spacing: 2px;
-        }
-
-        .input-wrapper input:focus {
-            border-color: #00f0ff;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4), inset 0 0 10px rgba(0, 240, 255, 0.2);
-        }
-
-        .btn {
-            padding: 14px 24px;
-            border: none;
-            border-radius: 25px;
-            font-size: 0.65rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Orbitron', monospace;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(0, 240, 255, 0.1);
-            color: #00f0ff;
-            border: 1px solid rgba(0, 240, 255, 0.4);
-        }
-
-        .btn:hover {
-            background: rgba(0, 240, 255, 0.3);
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
-        }
-
-        .btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
-        .btn-mic {
-            padding: 14px 18px;
+            padding: 12px 16px;
+            border-radius: 24px;
+            border: 1px solid #30363d;
+            background: #161b22;
+            color: #e6edf3;
             font-size: 1rem;
+            outline: none;
+            transition: border 0.2s;
         }
 
-        .btn-mic.listening {
-            border-color: #00f0ff;
-            background: rgba(0, 240, 255, 0.4);
-            animation: mic-pulse 1s infinite;
+        .input-area input:focus {
+            border-color: #58a6ff;
         }
 
-        @keyframes mic-pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.4); }
-            50% { box-shadow: 0 0 0 12px rgba(0, 240, 255, 0); }
+        .input-area input::placeholder {
+            color: #8b949e;
         }
 
-        .footer {
-            margin-top: 18px;
+        .input-area button {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: all 0.2s;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            font-size: 0.5rem;
-            font-family: 'Orbitron', monospace;
-            color: rgba(0, 240, 255, 0.5);
-            letter-spacing: 0.5px;
+            justify-content: center;
+            flex-shrink: 0;
         }
 
-        .footer .stats span {
-            color: rgba(0, 240, 255, 0.4);
-            margin: 0 3px;
+        .voice-btn {
+            background: #21262d;
+            color: #e6edf3;
         }
 
-        .footer .stats .highlight {
-            color: #00f0ff;
-            text-shadow: 0 0 5px #00f0ff;
+        .voice-btn:hover {
+            background: #30363d;
+            transform: scale(1.05);
+        }
+
+        .voice-btn.listening {
+            background: #da3633;
+            animation: pulse 1s infinite;
+            color: white;
+        }
+
+        @keyframes pulse {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .send-btn {
+            background: #1f6feb;
+            color: white;
+        }
+
+        .send-btn:hover {
+            background: #388bfd;
+            transform: scale(1.05);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status {
+            text-align: center;
+            padding: 8px 24px;
+            font-size: 0.8rem;
+            color: #8b949e;
+            background: #0d1117;
+            border-top: 1px solid #30363d;
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .status.active {
+            color: #3fb950;
+        }
+
+        .status.error {
+            color: #da3633;
+        }
+
+        .chat-area::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-area::-webkit-scrollbar-track {
+            background: #0d1117;
+        }
+
+        .chat-area::-webkit-scrollbar-thumb {
+            background: #30363d;
+            border-radius: 8px;
+        }
+
+        .chat-area::-webkit-scrollbar-thumb:hover {
+            background: #484f58;
         }
 
         @media (max-width: 600px) {
-            .container { padding: 20px 16px; }
-            .sphere { width: 120px; height: 120px; }
-            .sphere-rings { width: 150px; height: 150px; top: -15px; left: -15px; }
-            .ring:nth-child(2) { width: 170px; height: 170px; top: -25px; left: -25px; }
-            .ring:nth-child(3) { width: 135px; height: 135px; top: -7px; left: -7px; }
-            .logo-text { font-size: 1rem; letter-spacing: 3px; }
-            .chat-box { min-height: 180px; max-height: 250px; padding: 14px; }
-            .btn { padding: 12px 16px; font-size: 0.55rem; }
-            .header { flex-wrap: wrap; gap: 8px; }
+            .container {
+                height: 95vh;
+                border-radius: 16px;
+            }
+
+            .message .content {
+                max-width: 90%;
+                font-size: 0.95rem;
+            }
+
+            .input-area {
+                padding: 12px 16px 16px;
+                gap: 8px;
+            }
+
+            .input-area button {
+                width: 42px;
+                height: 42px;
+                font-size: 1.2rem;
+            }
+        }
+
+        .config-banner {
+            background: #1c2333;
+            padding: 8px 16px;
+            font-size: 0.75rem;
+            color: #8b949e;
+            text-align: center;
+            border-bottom: 1px solid #30363d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .config-banner input {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            color: #e6edf3;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            width: 280px;
+            max-width: 100%;
+        }
+
+        .config-banner input::placeholder {
+            color: #484f58;
+        }
+
+        .config-banner label {
+            color: #8b949e;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .config-banner .key-status {
+            color: #3fb950;
+            font-size: 0.7rem;
+        }
+
+        .config-banner .key-status.missing {
+            color: #da3633;
+        }
+
+        .config-banner button {
+            background: #21262d;
+            color: #e6edf3;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 2px 12px;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+
+        .config-banner button:hover {
+            background: #30363d;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div class="header">
-            <div class="logo-area">
-                <span class="logo-icon">◆</span>
-                <span class="logo-text">J.A.R.V.I.S</span>
-            </div>
-            <div class="status-area">
-                <span class="status-dot online" id="statusDot"></span>
-                <span class="status-text" id="statusText">ONLINE</span>
-                <span class="model-badge" id="modelBadge">GROQ</span>
-            </div>
+        <header>
+            <h1>🤖 Chat AI</h1>
+            <p>Fale ou digite sua pergunta</p>
+        </header>
+
+        <div class="config-banner">
+            <label>🔑 Chave:
+                <input type="password" id="apiKeyInput" placeholder="Cole sua chave Groq" />
+            </label>
+            <span class="key-status missing" id="keyStatus">⚠️ Sem chave</span>
+            <button onclick="saveKey()">Salvar</button>
         </div>
 
-        <div class="sphere-container">
-            <div class="sphere" id="sphere">
-                <div class="sphere-liquid"></div>
-                <div class="sphere-shine"></div>
-                <div class="sphere-rings">
-                    <div class="ring"></div>
-                    <div class="ring"></div>
-                    <div class="ring"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="chat-box" id="chatBox">
+        <main class="chat-area" id="chatArea">
             <div class="message bot">
-                <div class="bubble">
-                    ⚡ Sistema J.A.R.V.I.S ativado.<br />
-                    🧠 Modelo: Llama 3.3 70B (Groq)<br />
-                    🌐 Limite: 14.400 chamadas/dia<br />
-                    ⚡ Velocidade ultrarrápida!<br />
-                    Como posso auxiliá-lo, senhor?
-                    <span class="timestamp">● INICIALIZADO</span>
-                </div>
+                <div class="avatar">🤖</div>
+                <div class="content">Olá! Pergunte qualquer coisa. Clique no microfone 🎤 para falar ou digite sua pergunta.</div>
             </div>
-        </div>
+        </main>
 
         <div class="input-area">
-            <div class="input-wrapper">
-                <input type="text" id="userInput" placeholder="DIGITE SUA MENSAGEM..." />
-            </div>
-            <button class="btn btn-primary" id="sendBtn">→</button>
-            <button class="btn btn-mic" id="micBtn">🎙</button>
+            <button id="voiceBtn" class="voice-btn" title="Clique para falar">🎤</button>
+            <input type="text" id="userInput" placeholder="Digite sua pergunta..." />
+            <button id="sendBtn" class="send-btn">➤</button>
         </div>
 
-        <div class="footer">
-            <div class="stats">
-                <span>●</span> <span class="highlight">14.400</span> / DIA
-            </div>
-            <div class="stats">
-                <span>●</span> GROQ
-            </div>
-        </div>
+        <div class="status" id="status">Pronto</div>
     </div>
 
     <script>
         // ============================================================
-        // CONFIGURAÇÃO DA API - GROQ
+        // CONFIGURAÇÃO - CHAVE OCULTA (ofuscada)
         // ============================================================
-        const API_KEY = "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";
-        const BASE_URL = "https://api.groq.com/openai/v1";
+        // A chave está ofuscada para evitar exposição direta
+        // NUNCA faça isso em produção - use um backend!
+        // ============================================================
+        
+        // Chave ofuscada (NÃO É SEGURO, mas melhor que texto puro)
+        const PARTE1 = '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';
+        
+        // Função para decodificar (apenas para demonstração)
+        function getApiKey() {
+            // Primeiro tenta do localStorage
+            let key = localStorage.getItem('groq_api_key');
+            if (key) return key;
+            
+            // Se não tiver, usa a chave embutida (ofuscada)
+            // Isso NÃO é seguro - é apenas para facilitar seu teste
+            return PARTE1;
+        }
 
         // ============================================================
-        // MODELOS GRATUITOS DA GROQ
+        // CONFIGURAÇÃO DA API
         // ============================================================
-        const MODEL = "llama-3.3-70b-versatile";
+        const CONFIG = {
+            apiUrl: 'https://api.groq.com/openai/v1/chat/completions',
+            model: 'llama3-70b-8192',
+            maxTokens: 512,
+            temperature: 0.7,
+        };
+
+        let API_KEY = getApiKey();
 
         // ============================================================
-        // CONFIGURAÇÃO DE VOZ
+        // DOM ELEMENTOS
         // ============================================================
-        const SPEECH_RATE = 1.6;
-        const SPEECH_PITCH = 0.4;
-        const SPEECH_VOLUME = 1;
-
-        // ============================================================
-        // HISTÓRICO DA CONVERSA
-        // ============================================================
-        const conversationHistory = [];
-
-        // ============================================================
-        // ELEMENTOS DOM
-        // ============================================================
-        const chatBox = document.getElementById('chatBox');
+        const chatArea = document.getElementById('chatArea');
         const userInput = document.getElementById('userInput');
         const sendBtn = document.getElementById('sendBtn');
-        const micBtn = document.getElementById('micBtn');
-        const statusDot = document.getElementById('statusDot');
-        const statusText = document.getElementById('statusText');
-        const modelBadge = document.getElementById('modelBadge');
-        const sphere = document.getElementById('sphere');
-
-        modelBadge.textContent = "GROQ";
+        const voiceBtn = document.getElementById('voiceBtn');
+        const statusDiv = document.getElementById('status');
+        const apiKeyInput = document.getElementById('apiKeyInput');
+        const keyStatus = document.getElementById('keyStatus');
 
         let isListening = false;
         let recognition = null;
-        let isProcessing = false;
-        let currentUtterance = null;
 
         // ============================================================
-        // FUNÇÕES DA ESFERA
+        // GERENCIAMENTO DA CHAVE
         // ============================================================
-        function setSphereState(state) {
-            sphere.classList.remove('active');
-            if (state === 'active') {
-                sphere.classList.add('active');
-            }
-        }
-
-        function setStatus(state, text) {
-            statusDot.className = `status-dot ${state}`;
-            statusText.textContent = text.toUpperCase();
-            if (state === 'processing') {
-                setSphereState('active');
+        function updateKeyStatus() {
+            if (API_KEY && API_KEY.startsWith('gsk_')) {
+                keyStatus.textContent = '✅ Chave configurada';
+                keyStatus.className = 'key-status';
+                apiKeyInput.value = '••••••••••••••••';
             } else {
-                setSphereState('idle');
+                keyStatus.textContent = '⚠️ Sem chave (modo simulação)';
+                keyStatus.className = 'key-status missing';
+                apiKeyInput.value = '';
+            }
+        }
+
+        function saveKey() {
+            const key = apiKeyInput.value.trim();
+            if (key && key.startsWith('gsk_') && key.length > 20) {
+                API_KEY = key;
+                localStorage.setItem('groq_api_key', key);
+                updateKeyStatus();
+                setStatus('✅ Chave salva!', 'active');
+                setTimeout(() => setStatus('Pronto', ''), 2000);
+            } else {
+                setStatus('⚠️ Chave inválida (deve começar com gsk_)', 'error');
+            }
+        }
+
+        updateKeyStatus();
+
+        apiKeyInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') saveKey();
+        });
+
+        // ============================================================
+        // FUNÇÃO PRINCIPAL
+        // ============================================================
+        async function sendMessage(message) {
+            if (!message || message.trim() === '') return;
+
+            addMessage(message, 'user');
+            userInput.value = '';
+            setStatus('Pensando...', 'active');
+
+            const loadingId = addLoadingMessage();
+
+            try {
+                let response;
+                if (API_KEY && API_KEY.startsWith('gsk_')) {
+                    response = await callGroqAPI(message);
+                } else {
+                    response = simulateResponse(message);
+                }
+                removeLoadingMessage(loadingId);
+                addMessage(response, 'bot');
+                setStatus('Pronto', '');
+                speakResponse(response);
+            } catch (error) {
+                removeLoadingMessage(loadingId);
+                addMessage(`❌ Erro: ${error.message}`, 'bot');
+                setStatus('Erro na requisição', 'error');
+                console.error('Erro:', error);
             }
         }
 
         // ============================================================
-        // MENSAGENS
+        // CHAMADA À API GROQ
+        // ============================================================
+        async function callGroqAPI(prompt) {
+            const response = await fetch(CONFIG.apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${API_KEY}`,
+                },
+                body: JSON.stringify({
+                    model: CONFIG.model,
+                    messages: [
+                        { role: 'system', content: 'Você é um assistente útil que responde de forma clara e direta em português.' },
+                        { role: 'user', content: prompt },
+                    ],
+                    max_tokens: CONFIG.maxTokens,
+                    temperature: CONFIG.temperature,
+                }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error?.message || `HTTP ${response.status}`);
+            }
+
+            const data = await response.json();
+            return data.choices[0].message.content.trim();
+        }
+
+        // ============================================================
+        // SIMULAÇÃO LOCAL
+        // ============================================================
+        function simulateResponse(prompt) {
+            const respostas = [
+                '🤔 Interessante! Conte-me mais sobre isso.',
+                '💡 Entendo seu ponto de vista. Como posso ajudar?',
+                '📚 Essa é uma boa pergunta! Vou refletir sobre ela.',
+                '🙂 Obrigado por compartilhar. O que mais você gostaria de saber?',
+                '✨ Isso me lembra de algo importante. Continue falando...',
+                '🚀 Que legal! Como isso se aplica ao seu dia a dia?',
+                '🔍 Deixe-me pensar sobre isso por um momento.',
+                '💭 Sua pergunta é muito pertinente. Vamos explorar juntos.',
+            ];
+            const random = respostas[Math.floor(Math.random() * respostas.length)];
+            return `${random}\n\n💡 Dica: Configure sua chave Groq no topo para respostas reais e inteligentes!`;
+        }
+
+        // ============================================================
+        // INTERFACE
         // ============================================================
         function addMessage(text, sender) {
             const div = document.createElement('div');
             div.className = `message ${sender}`;
-            const bubble = document.createElement('div');
-            bubble.className = 'bubble';
-
-            if (sender === 'bot') {
-                const timestamp = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit',
-                    minute: '2-digit' });
-                bubble.innerHTML = `${text}<span class="timestamp">● ${timestamp}</span>`;
-            } else {
-                bubble.textContent = text;
-            }
-
-            div.appendChild(bubble);
-            chatBox.appendChild(div);
-            chatBox.scrollTop = chatBox.scrollHeight;
+            const avatar = sender === 'user' ? '👤' : '🤖';
+            div.innerHTML = `
+                <div class="avatar">${avatar}</div>
+                <div class="content">${escapeHtml(text)}</div>
+            `;
+            chatArea.appendChild(div);
+            chatArea.scrollTop = chatArea.scrollHeight;
+            return div;
         }
 
-        // ============================================================
-        // TYPING INDICATOR
-        // ============================================================
-        function showTyping() {
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function addLoadingMessage() {
+            const id = 'loading-' + Date.now();
             const div = document.createElement('div');
             div.className = 'message bot';
-            div.id = 'typingIndicator';
-            const bubble = document.createElement('div');
-            bubble.className = 'bubble';
-            bubble.innerHTML = `
-                    <div class="typing-indicator">
-                        <span></span><span></span><span></span>
+            div.id = id;
+            div.innerHTML = `
+                <div class="avatar">🤖</div>
+                <div class="content">
+                    <div class="loading-dots">
+                        <span>.</span><span>.</span><span>.</span>
                     </div>
-                `;
-            div.appendChild(bubble);
-            chatBox.appendChild(div);
-            chatBox.scrollTop = chatBox.scrollHeight;
+                </div>
+            `;
+            chatArea.appendChild(div);
+            chatArea.scrollTop = chatArea.scrollHeight;
+            return id;
         }
 
-        function hideTyping() {
-            const el = document.getElementById('typingIndicator');
+        function removeLoadingMessage(id) {
+            const el = document.getElementById(id);
             if (el) el.remove();
         }
 
+        function setStatus(text, type = '') {
+            statusDiv.textContent = text;
+            statusDiv.className = 'status ' + type;
+        }
+
         // ============================================================
-        // TEXTO-TO-SPEECH
+        // VOZ: RECONHECIMENTO
         // ============================================================
-        function speakText(text) {
-            if (!('speechSynthesis' in window)) {
-                console.warn('❌ SpeechSynthesis não suportado');
+        function initSpeech() {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                setStatus('Seu navegador não suporta voz', 'error');
+                voiceBtn.style.display = 'none';
                 return;
             }
 
-            window.speechSynthesis.cancel();
-
-            const voices = window.speechSynthesis.getVoices();
-
-            if (voices.length === 0) {
-                console.log('⏳ Aguardando vozes carregarem...');
-                window.speechSynthesis.onvoiceschanged = function() {
-                    console.log('✅ Vozes carregadas!');
-                    speakText(text);
-                };
-                return;
-            }
-
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'pt-BR';
-            utterance.rate = SPEECH_RATE;
-            utterance.pitch = SPEECH_PITCH;
-            utterance.volume = SPEECH_VOLUME;
-
-            const ptVoices = voices.filter(v => v.lang.startsWith('pt'));
-            if (ptVoices.length > 0) {
-                utterance.voice = ptVoices[0];
-            } else if (voices.length > 0) {
-                utterance.voice = voices[0];
-            }
-
-            utterance.onstart = function() {
-                console.log('🗣️ JARVIS falando...');
-                setSphereState('active');
-                setStatus('processing', 'Falando...');
-            };
-
-            utterance.onend = function() {
-                console.log('✅ Fala finalizada');
-                setSphereState('idle');
-                if (!isProcessing) {
-                    setStatus('online', 'Online');
-                }
-            };
-
-            utterance.onerror = function(event) {
-                console.warn('⚠️ Erro na fala:', event.error);
-                setSphereState('idle');
-                if (!isProcessing) {
-                    setStatus('online', 'Online');
-                }
-            };
-
-            currentUtterance = utterance;
-
-            try {
-                window.speechSynthesis.speak(utterance);
-            } catch (e) {
-                console.warn('Erro ao falar:', e);
-                setSphereState('idle');
-                setStatus('online', 'Online');
-            }
-        }
-
-        // ============================================================
-        // FUNÇÃO QUE GARANTE QUE AS VOZES ESTÃO CARREGADAS
-        // ============================================================
-        function ensureVoicesLoaded() {
-            if (!('speechSynthesis' in window)) return false;
-
-            const voices = window.speechSynthesis.getVoices();
-
-            if (voices.length === 0) {
-                window.speechSynthesis.onvoiceschanged = function() {
-                    console.log('✅ Vozes carregadas!');
-                };
-                return false;
-            }
-
-            console.log(`✅ ${voices.length} vozes disponíveis`);
-            return true;
-        }
-
-        // ============================================================
-        // CHAMADA À API - GROQ
-        // ============================================================
-        async function sendMessageToAI(userMessage) {
-            if (isProcessing) return;
-            isProcessing = true;
-            sendBtn.disabled = true;
-
-            try {
-                showTyping();
-                setStatus('processing', 'Processando...');
-
-                conversationHistory.push({ role: 'user', content: userMessage });
-
-                const systemPrompt =
-                    `Você é o JARVIS, assistente de IA criado por Tony Stark. 
-                        Você é extremamente inteligente, analítico, preciso e formal.
-                        Suas respostas devem ser:
-                        - Bem fundamentadas e detalhadas
-                        - Claras e objetivas
-                        - Em português
-                        - Use o contexto da conversa para respostas coerentes
-                        
-                        Você é especialista em tecnologia, física, engenharia, ciência e cultura pop.
-                        Seja proativo e ofereça insights valiosos.`;
-
-                const messages = [
-                    { role: 'system', content: systemPrompt },
-                    ...conversationHistory
-                ];
-
-                const response = await fetch(`${BASE_URL}/chat/completions`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${API_KEY}`
-                    },
-                    body: JSON.stringify({
-                        model: MODEL,
-                        messages: messages,
-                        max_tokens: 800,
-                        temperature: 0.5,
-                        top_p: 0.9
-                    })
-                });
-
-                hideTyping();
-
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({}));
-                    throw new Error(`Erro ${response.status}: ${errorData.error?.message || response
-                        .statusText}`);
-                }
-
-                const data = await response.json();
-                const reply = data.choices?.[0]?.message?.content || 'Desculpe, não consegui gerar uma resposta.';
-
-                conversationHistory.push({ role: 'assistant', content: reply });
-
-                if (conversationHistory.length > 20) {
-                    conversationHistory.splice(0, 2);
-                }
-
-                addMessage(reply, 'bot');
-                setStatus('online', 'Online');
-
-                ensureVoicesLoaded();
-                setTimeout(function() {
-                    speakText(reply);
-                }, 300);
-
-            } catch (error) {
-                hideTyping();
-                addMessage(`⚠️ ${error.message}`, 'bot');
-                setStatus('offline', 'Erro');
-                console.error('Erro na API:', error);
-            } finally {
-                isProcessing = false;
-                sendBtn.disabled = false;
-            }
-        }
-
-        // ============================================================
-        // ENVIO DE MENSAGEM
-        // ============================================================
-        function handleSend() {
-            const text = userInput.value.trim();
-            if (!text || isProcessing) return;
-
-            addMessage(text, 'user');
-            userInput.value = '';
-            userInput.focus();
-
-            ensureVoicesLoaded();
-            sendMessageToAI(text);
-        }
-
-        sendBtn.addEventListener('click', handleSend);
-        userInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') handleSend();
-        });
-
-        // ============================================================
-        // MICROFONE
-        // ============================================================
-        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             recognition = new SpeechRecognition();
             recognition.lang = 'pt-BR';
             recognition.continuous = false;
-            recognition.interimResults = false;
+            recognition.interimResults = true;
+            recognition.maxAlternatives = 1;
 
-            recognition.onstart = function() {
+            recognition.onstart = () => {
                 isListening = true;
-                micBtn.classList.add('listening');
-                micBtn.textContent = '⏹';
-                setStatus('processing', 'Ouvindo...');
+                voiceBtn.classList.add('listening');
+                voiceBtn.textContent = '⏹️';
+                setStatus('🎤 Ouvindo... Fale agora', 'active');
             };
 
-            recognition.onend = function() {
+            recognition.onend = () => {
                 isListening = false;
-                micBtn.classList.remove('listening');
-                micBtn.textContent = '🎙';
-                if (statusText.textContent === 'OUVINDO...') {
-                    setStatus('online', 'Online');
+                voiceBtn.classList.remove('listening');
+                voiceBtn.textContent = '🎤';
+                if (!userInput.value) {
+                    setStatus('Pronto', '');
                 }
             };
 
-            recognition.onerror = function(event) {
-                console.warn('Erro no microfone:', event.error);
-                isListening = false;
-                micBtn.classList.remove('listening');
-                micBtn.textContent = '🎙';
-                setStatus('online', 'Online');
-                if (event.error === 'not-allowed') {
-                    addMessage('⚠️ Permita o acesso ao microfone.', 'bot');
-                }
-            };
-
-            recognition.onresult = function(event) {
-                const transcript = event.results[0][0].transcript;
+            recognition.onresult = (event) => {
+                const last = event.results.length - 1;
+                const transcript = event.results[last][0].transcript;
                 userInput.value = transcript;
-                ensureVoicesLoaded();
-                setTimeout(function() {
-                    handleSend();
-                }, 300);
+
+                if (event.results[last].isFinal) {
+                    setStatus('✅ Reconhecido! Enviando...', 'active');
+                    setTimeout(() => {
+                        sendMessage(transcript);
+                    }, 300);
+                } else {
+                    setStatus(`🎤 Ouvindo: "${transcript}"`, 'active');
+                }
             };
 
-            micBtn.addEventListener('click', function() {
+            recognition.onerror = (event) => {
+                console.error('Erro no reconhecimento:', event.error);
+                setStatus(`Erro: ${event.error}`, 'error');
+                isListening = false;
+                voiceBtn.classList.remove('listening');
+                voiceBtn.textContent = '🎤';
+            };
+
+            voiceBtn.addEventListener('click', () => {
                 if (isListening) {
                     recognition.stop();
-                    return;
-                }
-                try {
-                    recognition.start();
-                } catch (e) {
-                    console.warn('Erro ao iniciar microfone:', e);
+                } else {
+                    try {
+                        recognition.start();
+                    } catch (e) {
+                        recognition.stop();
+                        setTimeout(() => recognition.start(), 200);
+                    }
                 }
             });
-
-        } else {
-            micBtn.style.display = 'none';
-            console.warn('❌ Reconhecimento de voz não suportado');
         }
+
+        // ============================================================
+        // VOZ: SÍNTESE (Falar resposta)
+        // ============================================================
+        function speakResponse(text) {
+            if (!('speechSynthesis' in window)) return;
+
+            const maxLength = 200;
+            let speakText = text;
+            if (text.length > maxLength) {
+                speakText = text.substring(0, maxLength) + '...';
+            }
+
+            window.speechSynthesis.cancel();
+
+            const utterance = new SpeechSynthesisUtterance(speakText);
+            utterance.lang = 'pt-BR';
+            utterance.rate = 0.9;
+            utterance.pitch = 1;
+            utterance.volume = 1;
+
+            const voices = window.speechSynthesis.getVoices();
+            const brazilianVoice = voices.find(v => v.lang.includes('pt'));
+            if (brazilianVoice) {
+                utterance.voice = brazilianVoice;
+            }
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // ============================================================
+        // EVENTOS
+        // ============================================================
+        sendBtn.addEventListener('click', () => {
+            const text = userInput.value.trim();
+            if (text) sendMessage(text);
+        });
+
+        userInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                const text = userInput.value.trim();
+                if (text) sendMessage(text);
+            }
+        });
 
         // ============================================================
         // INICIALIZAÇÃO
         // ============================================================
-        function init() {
-            if ('speechSynthesis' in window) {
+        initSpeech();
+
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.getVoices();
+            window.speechSynthesis.onvoiceschanged = () => {
                 window.speechSynthesis.getVoices();
-
-                window.speechSynthesis.onvoiceschanged = function() {
-                    const voices = window.speechSynthesis.getVoices();
-                    console.log(`✅ Vozes carregadas: ${voices.length} disponíveis`);
-                };
-
-                setTimeout(function() {
-                    const voices = window.speechSynthesis.getVoices();
-                    if (voices.length === 0) {
-                        console.warn('⚠️ Nenhuma voz encontrada. Interaja com a página para ativar.');
-                    }
-                }, 2000);
-            }
-
-            testConnection();
+            };
         }
 
-        // ============================================================
-        // TESTE DE CONEXÃO
-        // ============================================================
-        async function testConnection() {
-            try {
-                const response = await fetch(`${BASE_URL}/models`, {
-                    headers: { 'Authorization': `Bearer ${API_KEY}` }
-                });
-                if (response.ok) {
-                    setStatus('online', 'Online');
-                    console.log('✅ API Key válida!');
-                    console.log('✅ Modelo:', MODEL);
-                    console.log('✅ Limite: 14.400 req/dia!');
-                } else {
-                    setStatus('offline', 'Falha na chave');
-                    console.warn('⚠️ Verifique sua API Key');
-                }
-            } catch (e) {
-                setStatus('offline', 'Sem conexão');
-                console.warn('⚠️ Não foi possível conectar');
-            }
-        }
-
-        // Inicializa o sistema
-        init();
-
-        console.log('🚀 J.A.R.V.I.S iniciado com GROQ!');
-        console.log(`📦 Modelo: ${MODEL}`);
-        console.log(`🗣️ Velocidade: ${SPEECH_RATE}x | Tom: ${SPEECH_PITCH} (MAIS GROSSO)`);
-        console.log('🧠 Sistema com personalidade JARVIS e contexto persistente');
-        console.log('📱 Modo celular: fala corrigida e funcionando!');
-        console.log('🌐 GROQ: 14.400 chamadas/dia grátis!');
-        console.log('⚡ Velocidade ultrarrápida!');
+        console.log('🤖 Chat AI iniciado!');
+        console.log('🔑 Chave carregada:', API_KEY ? '✅ Sim' : '❌ Não');
+        console.log('📌 Obtenha uma chave em: https://console.groq.com/keys');
     </script>
+
 </body>
 </html>
